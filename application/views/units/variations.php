@@ -7,7 +7,7 @@
     <div class="card-body">
         <h5 class="title"> <?php echo $this->lang->line('Variations') ?> <a
                     href="<?php echo base_url('units/create_va') ?>"
-                    class="btn btn-primary btn-sm rounded">
+                    class="btn btn-primary btn-sm rounded hidden">
                 <?php echo $this->lang->line('Add new') ?>
             </a>
         </h5>
@@ -36,7 +36,7 @@
                     <td>$name</td>
                    
                  
-                    <td><a href='" . base_url("units/edit_va?id=$cid") . "' class='btn btn-warning btn-xs'><i class='icon-pencil'></i> " . $this->lang->line('Edit') . "</a>&nbsp;<a href='#' data-object-id='" . $cid . "' class='btn btn-danger btn-xs delete-object' title='Delete'><i class='fa fa-trash'></i></a></td></tr>";
+                    <td><a href='" . base_url("units/edit_va?id=$cid") . "' class='btn btn-warning btn-xs'><i class='icon-pencil'></i> " . $this->lang->line('Edit') . "</a>&nbsp;<a href='#' data-object-id='" . $cid . "' class='btn btn-danger btn-xs delete-object hidden' title='Delete'><i class='fa fa-trash'></i></a></td></tr>";
                 $i++;
             }
             ?>

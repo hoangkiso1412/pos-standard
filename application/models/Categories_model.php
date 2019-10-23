@@ -99,6 +99,7 @@ ORDER BY id DESC");
 p.pid='$id' $qj ");
         return $query->row_array();
     }
+    
 
 
     public function addnew($cat_name, $cat_desc, $cat_type = 0, $cat_rel = 0)

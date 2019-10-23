@@ -84,6 +84,28 @@ class Units_model extends CI_Model
         $query = $this->db->query("SELECT * FROM geopos_units WHERE type=1 ORDER BY id DESC");
         return $query->result_array();
     }
+    // Srieng modified 23-10-2020
+    public function variations_year_list()
+    {
+        $query = $this->db->query("SELECT * FROM geopos_units WHERE rid=2 ORDER BY id DESC");
+        return $query->result_array();
+    }
+    public function variations_color_list()
+    {
+        $query = $this->db->query("SELECT * FROM geopos_units WHERE rid=1 ORDER BY id DESC");
+        return $query->result_array();
+    }
+    public function variations_year_list_s($id) {
+        $query = $this->db->query("SELECT u.id,u.name FROM geopos_products AS p LEFT JOIN geopos_units AS u ON p.year=u.name WHERE
+        p.pid='$id' and u.rid=2");
+        return $query->row_array();
+    }
+    public function variations_color_list_s($id) {
+        $query = $this->db->query("SELECT u.id,u.name FROM geopos_products AS p LEFT JOIN geopos_units AS u ON p.color=u.name WHERE
+        p.pid='$id' and u.rid=1");
+        return $query->row_array();
+    }
+    //end
 
     public function create_va($name, $type = 0)
     {

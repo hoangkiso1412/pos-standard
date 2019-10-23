@@ -73,7 +73,43 @@
                         </div>
                     </div>
 
+                    <!-- Srieng modified 23-10-2020 -->
                     <div class="form-group row">
+
+                        <div class="col-sm-6"><label class="col-form-label"
+                                                     for="product_cat"><?php echo "Year"//$this->lang->line('Product Category') ?>
+                                *</label>
+                                <select name="product_year" id="product_year" class="form-control">
+                                    <?php
+                                    echo '<option value="' . $year_select['name'] . '">' . $year_select['name'] . ' (S)</option>';
+                                    foreach ($years as $row) {
+                                        $id = $row['name'];
+                                        $title = $row['name'];
+                                        echo "<option value='$id'>$title</option>";
+                                    }
+                                    ?>
+                                </select>
+                        </div>
+
+
+                        <div class="col-sm-6"><label class="col-form-label"
+                                                     for="sub_cat"><?php echo "Color"//$this->lang->line('Sub') ?><?php //echo $this->lang->line('Category') ?></label>
+                          <select name="product_color" id="product_color" class="form-control">
+                              <?php
+                              echo '<option value="' . $color_select['name'] . '">' . $color_select['name'] . ' (S)</option>';
+                              foreach ($colors as $row) {
+                                  $id = $row['name'];
+                                  $title = $row['name'];
+                                  echo "<option value='$id'>$title</option>";
+                              }
+                              ?>
+                          </select>
+                        </div>
+                    </div>
+
+                    <!-- End -->
+
+                    <div class="form-group row hidden">
 
                         <label class="col-sm-2 col-form-label"
                                for="product_cat"><?php echo $this->lang->line('Warehouse') ?>*</label>
@@ -169,7 +205,7 @@
                             <small><?php echo $this->lang->line('Discount rate during') ?></small>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row hidden">
 
                         <label class="col-sm-2 col-form-label"><?php echo $this->lang->line('Stock Units') ?>*</label>
 
@@ -180,7 +216,7 @@
                                    value="<?php echo amountFormat_general($product['qty']) ?>">
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row hidden">
 
                         <label class="col-sm-2 col-form-label"
                                for="product_cat"><?php echo $this->lang->line('Measurement Unit') ?></label>
@@ -200,7 +236,7 @@
 
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row hidden">
 
                         <label class="col-sm-2 col-form-label"><?php echo $this->lang->line('Alert Quantity') ?></label>
 
@@ -212,7 +248,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row hidden">
 
                         <label class="col-sm-2 col-form-label"><?php echo $this->lang->line('BarCode') ?></label>
                         <div class="col-sm-2">
@@ -249,7 +285,7 @@
                         ><?php echo $product['product_des'] ?></textarea>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row hidden">
 
                         <label class="col-sm-2 control-label"
                                for="edate"><?php echo $this->lang->line('Valid') . ' (' . $this->lang->line('To Date') ?>
