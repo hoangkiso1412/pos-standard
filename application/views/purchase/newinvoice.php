@@ -183,12 +183,16 @@
                             <thead>
 
                             <tr class="item_header bg-gradient-directional-amber">
-                                <th width="30%" class="text-center"><?php echo $this->lang->line('Item Name') ?></th>
-                                <th width="8%" class="text-center"><?php echo $this->lang->line('Quantity') ?></th>
-                                <th width="10%" class="text-center"><?php echo $this->lang->line('Rate') ?></th>
-                                <th width="10%" class="text-center"><?php echo $this->lang->line('Tax') ?>(%)</th>
-                                <th width="10%" class="text-center"><?php echo $this->lang->line('Tax') ?></th>
-                                <th width="7%" class="text-center"><?php echo $this->lang->line('Discount') ?></th>
+                                <th width="15%" class="text-center"><?php echo $this->lang->line('Item Name') ?></th>
+                                <th width="10%" class="text-center"><?php echo "Body Number"//echo $this->lang->line('Item Name') ?></th>
+                                <th width="10%" class="text-center"><?php echo "Engine Number"//echo $this->lang->line('Item Name') ?></th>
+                                <th width="10%" class="text-center"><?php echo "Plate Number"//echo $this->lang->line('Item Name') ?></th>
+                                <th width="10%" class="text-center"><?php echo "Other expense"//echo $this->lang->line('Item Name') ?></th>
+                                <th width="3%" class="text-center hidden"><?php echo $this->lang->line('Quantity') ?></th>
+                                <th width="5%" class="text-center"><?php echo $this->lang->line('Rate') ?></th>
+                                <th width="5%" class="text-center"><?php echo $this->lang->line('Tax') ?>(%)</th>
+                                <th width="5%" class="text-center"><?php echo $this->lang->line('Tax') ?></th>
+                                <th width="5%" class="text-center"><?php echo $this->lang->line('Discount') ?></th>
                                 <th width="10%" class="text-center">
                                     <?php echo $this->lang->line('Amount') ?>
                                     (<?php echo $this->config->item('currency'); ?>)
@@ -202,7 +206,23 @@
                                            placeholder="<?php echo $this->lang->line('Enter Product name') ?>"
                                            id='productname-0'>
                                 </td>
-                                <td><input type="text" class="form-control req amnt" name="product_qty[]" id="amount-0"
+                                <td><input type="text" class="form-control text-center" name="body_number[]"
+                                           placeholder="<?php echo "Body number"//$this->lang->line('Enter Product name') ?>"
+                                           id='bodynumber-0'>
+                                </td>
+                                <td><input type="text" class="form-control text-center" name="engine_number[]"
+                                           placeholder="<?php echo "Engine number"//$this->lang->line('Enter Product name') ?>"
+                                           id='enginenumber-0'>
+                                </td>
+                                <td><input type="text" class="form-control text-center" name="plate_number[]"
+                                           placeholder="<?php echo "Plate number"//$this->lang->line('Enter Product name') ?>"
+                                           id='platenumber-0'>
+                                </td>
+                                <td><input type="text" class="form-control text-center" name="other_expense[]"
+                                           placeholder="<?php echo "Other expense"//$this->lang->line('Enter Product name') ?>"
+                                           id='otherexpense-0'>
+                                </td>
+                                <td class="hidden"><input type="text" class="form-control req amnt" name="product_qty[]" id="amount-0"
                                            onkeypress="return isNumber(event)" onkeyup="rowTotal('0'), billUpyog()"
                                            autocomplete="off" value="1"></td>
                                 <td><input type="text" class="form-control req prc" name="product_price[]" id="price-0"
@@ -229,7 +249,7 @@
                                                                                                value="">
                             </tr>
                             <tr>
-                                <td colspan="8"><textarea id="dpid-0" class="form-control" name="product_description[]"
+                                <td colspan="12"><textarea id="dpid-0" class="form-control" name="product_description[]"
                                                           placeholder="<?php echo $this->lang->line('Enter Product description'); ?>"
                                                           autocomplete="off"></textarea><br></td>
                             </tr>
@@ -260,19 +280,7 @@
                                     <span id="discs" class="lightMode">0</span></td>
                             </tr>
 
-                            <tr class="sub_c" style="display: table-row;">
-                                <td colspan="6" align="right">
-                                    <strong><?php echo $this->lang->line('Shipping') ?></strong></td>
-                                <td align="left" colspan="2"><input type="text" class="form-control shipVal"
-                                                                    onkeypress="return isNumber(event)"
-                                                                    placeholder="Value"
-                                                                    name="shipping" autocomplete="off"
-                                                                    onkeyup="billUpyog();">
-                                    ( <?php echo $this->lang->line('Tax') ?> <?= $this->config->item('currency'); ?>
-                                    <span id="ship_final">0</span> )
-                                </td>
-                            </tr>
-
+                            <!-- Srieng modified 23-10-2020 -->
                             <tr class="sub_c" style="display: table-row;">
                                 <td colspan="2"><?php if ($exchange['active'] == 1){
                                     echo $this->lang->line('Payment Currency client') . ' <small>' . $this->lang->line('based on live market') ?></small>
@@ -293,6 +301,21 @@
 
                                 </td>
                             </tr>
+                            <!-- End -->
+                            <tr class="sub_c hidden" style="display: table-row;">
+                                <td colspan="6" align="right">
+                                    <strong><?php echo $this->lang->line('Shipping') ?></strong></td>
+                                <td align="left" colspan="2"><input type="text" class="form-control shipVal"
+                                                                    onkeypress="return isNumber(event)"
+                                                                    placeholder="Value"
+                                                                    name="shipping" autocomplete="off"
+                                                                    onkeyup="billUpyog();">
+                                    ( <?php echo $this->lang->line('Tax') ?> <?= $this->config->item('currency'); ?>
+                                    <span id="ship_final">0</span> )
+                                </td>
+                            </tr>
+
+                            
                             <tr class="sub_c" style="display: table-row;">
                                 <td colspan="2"><?php echo $this->lang->line('Payment Terms') ?> <select name="pterms"
                                                                                                          class="selectpicker form-control"><?php foreach ($terms as $row) {
@@ -300,7 +323,7 @@
                                         } ?>
 
                                     </select></td>
-                                <td colspan="2">
+                                <td colspan="2" class="hidden">
                                     <div>
                                         <label><?php echo $this->lang->line('Update Stock') ?></label>
                                         <fieldset class="right-radio">
@@ -328,8 +351,6 @@
 
                                 </td>
                             </tr>
-
-
                             </tbody>
                         </table>
                     </div>

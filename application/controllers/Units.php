@@ -112,6 +112,7 @@ class Units Extends CI_Controller
         $this->load->view('units/variations', $data);
         $this->load->view('fixed/footer');
     }
+    
 
     public function create_va()
     {
