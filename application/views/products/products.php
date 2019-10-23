@@ -1,5 +1,5 @@
 <div class="content-body">
-    <div class="row">
+    <div class="row hidden">
         <div class="col-xl-4 col-lg-6 col-12">
             <div class="card">
                 <div class="card-content">
@@ -149,11 +149,19 @@
                             extend: 'excelHtml5',
                             footer: true,
                             exportOptions: {
-                                columns: [1, 2, 3, 4, 5, 6]
+                                columns: [1, 2, 3, 4 , 6]
                             }
                         }
-                    ],
-
+                    ],"columnDefs": [
+                        {
+                            "targets": [ 2 ],
+                            "visible": false
+                        },
+                        {
+                            "targets": [ 5 ],
+                            "visible": false,
+                        }
+                    ]
                 });
                 miniDash();
 

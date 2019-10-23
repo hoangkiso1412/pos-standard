@@ -68,8 +68,39 @@
 
                     </div>
                 </div>
-
+                <!-- Srieng modified -->
                 <div class="form-group row">
+
+                    <div class="col-sm-6"><label class="col-form-label"
+                                                 for="product_cat"><?php echo "Year"//$this->lang->line('Product Category') ?>
+                            *</label>
+                        <select name="product_year" id="product_year" class="form-control">
+                            <?php
+                            foreach ($years as $row) {
+                                $id = $row['name'];
+                                $title = $row['name'];
+                                echo "<option value='$id'>$title</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-sm-6"><label class="col-form-label"
+                                                 for="sub_cat"><?php echo "Color"//$this->lang->line('Sub') ?><?php echo $this->lang->line('Category') ?></label>
+                        <select name="product_color" id="product_color" class="form-control">
+                            <?php
+                            foreach ($colors as $row) {
+                                $id = $row['name'];
+                                $title = $row['name'];
+                                echo "<option value='$id'>$title</option>";
+                            }
+                            ?>
+                        </select>
+
+
+                    </div>
+                </div>
+                <!-- End -->
+                <div class="form-group row hidden">
 
                     <label class="col-sm-2 col-form-label"
                            for="product_cat"><?php echo $this->lang->line('Warehouse') ?>*</label>
@@ -148,12 +179,12 @@
                         <small><?php echo $this->lang->line('Tax rate during') ?></small>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row hidden">
 
 
                     <div class="col-sm-4">
                         <input type="text" placeholder="<?php echo $this->lang->line('Stock Units') ?>*"
-                               class="form-control margin-bottom required" name="product_qty"
+                               class="form-control margin-bottom" name="product_qty"
                                onkeypress="return isNumber(event)"></div>
 
                     <div class="col-sm-4">
@@ -165,7 +196,7 @@
                 </div>
                 <hr>
 
-                <div class="form-group row">
+                <div class="form-group row hidden">
 
                     <label class="col-sm-2 col-form-label"
                            for="product_cat"><?php echo $this->lang->line('Measurement Unit') ?>*</label>
@@ -187,7 +218,7 @@
                 </div>
 
 
-                <div class="form-group row">
+                <div class="form-group row hidden">
 
                     <label class="col-sm-2 col-form-label"><?php echo $this->lang->line('BarCode') ?></label>
                     <div class="col-sm-2">
@@ -218,7 +249,7 @@
                         ></textarea>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row hidden">
 
                     <label class="col-sm-2 control-label"
                            for="edate"><?php echo $this->lang->line('Valid') . ' (' . $this->lang->line('To Date') ?>
@@ -283,7 +314,7 @@
                         <input type="hidden" value="products/addproduct" id="action-url">
                     </div>
                 </div>
-                <div id="accordionWrapa1" role="tablist" aria-multiselectable="true">
+                <div id="accordionWrapa1" class="hidden" role="tablist" aria-multiselectable="true">
 
                     <div id="coupon4" class="card-header">
                         <a data-toggle="collapse" data-parent="#accordionWrapa1" href="#accordion41"
@@ -326,7 +357,7 @@
                     </div>
 
                 </div>
-                <div id="accordionWrapa2" role="tablist" aria-multiselectable="true">
+                <div id="accordionWrapa2" class="hidden" role="tablist" aria-multiselectable="true">
 
                     <div id="coupon5" class="card-header">
                         <a data-toggle="collapse" data-parent="#accordionWrapa2" href="#accordion42"
