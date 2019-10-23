@@ -67,6 +67,10 @@ class Products extends CI_Controller
         $data['custom_fields'] = $this->custom->add_fields(4);
         $this->load->model('units_model', 'units');
         $data['variables'] = $this->units->variables_list();
+        //Srieng modified 10-23-2020
+        $data['years'] = $this->units->variations_year_list();
+        $data['colors'] = $this->units->variations_color_list();
+        //end
         $head['title'] = "Add Product";
         $head['usernm'] = $this->aauth->get_user()->username;
         $this->load->view('fixed/header', $head);
@@ -92,19 +96,20 @@ class Products extends CI_Controller
             $row = array();
             $row[] = $no;
             $pid = $prd->pid;
-            $row[] = '<a href="#" data-object-id="' . $pid . '" class="view-object"><span class="avatar-lg align-baseline"><img src="' . base_url() . 'userfiles/product/thumbnail/' . $prd->image . '" ></span>&nbsp;' . $prd->product_name . '</a>';
+            //$row[] = '<a href="#" data-object-id="' . $pid . '" class="view-object"><span class="avatar-lg align-baseline"><img src="' . base_url() . 'userfiles/product/thumbnail/' . $prd->image . '" ></span>&nbsp;' . $prd->product_name . '</a>';
+            $row[] = '<span class="avatar-lg align-baseline"><img src="' . base_url() . 'userfiles/product/thumbnail/' . $prd->image . '" ></span>&nbsp;' . $prd->product_name;
             $row[] = +$prd->qty;
             $row[] = $prd->product_code;
             $row[] = $prd->c_title;
             $row[] = $prd->title;
             $row[] = amountExchange($prd->product_price, 0, $this->aauth->get_user()->loc);
-            $row[] = '<a href="#" data-object-id="' . $pid . '" class="btn btn-success  btn-sm  view-object"><span class="fa fa-eye"></span> ' . $this->lang->line('View') . '</a> 
+            $row[] = '<a href="#" data-object-id="' . $pid . '" class="btn btn-success  btn-sm  view-object hidden"><span class="fa fa-eye"></span> ' . $this->lang->line('View') . '</a> 
 <div class="btn-group">
                                     <button type="button" class="btn btn-indigo dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-print"></i>  ' . $this->lang->line('Print') . '</button>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="' . base_url() . 'products/barcode?id=' . $pid . '" target="_blank"> ' . $this->lang->line('BarCode') . '</a><div class="dropdown-divider"></div> <a class="dropdown-item" href="' . base_url() . 'products/posbarcode?id=' . $pid . '" target="_blank"> ' . $this->lang->line('BarCode') . ' - Compact</a> <div class="dropdown-divider"></div>
                                              <a class="dropdown-item" href="' . base_url() . 'products/label?id=' . $pid . '" target="_blank"> ' . $this->lang->line('Product') . ' Label</a><div class="dropdown-divider"></div>
-                                         <a class="dropdown-item" href="' . base_url() . 'products/poslabel?id=' . $pid . '" target="_blank"> Label - Compact</a></div></div><a class="btn btn-pink  btn-sm" href="' . base_url() . 'products/report_product?id=' . $pid . '" target="_blank"> <span class="fa fa-pie-chart"></span> ' . $this->lang->line('Sales') . '</a><div class="btn-group">
+                                         <a class="dropdown-item" href="' . base_url() . 'products/poslabel?id=' . $pid . '" target="_blank"> Label - Compact</a></div></div><a class="btn btn-pink  btn-sm hidden" href="' . base_url() . 'products/report_product?id=' . $pid . '" target="_blank"> <span class="fa fa-pie-chart"></span> ' . $this->lang->line('Sales') . '</a><div class="btn-group">
                                     <button type="button" class="btn btn btn-primary dropdown-toggle   btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-cog"></i>  </button>
                                     <div class="dropdown-menu">
 &nbsp;<a href="' . base_url() . 'products/edit?id=' . $pid . '"  class="btn btn-purple btn-sm"><span class="fa fa-edit"></span>' . $this->lang->line('Edit') . '</a><div class="dropdown-divider"></div>&nbsp;<a href="#" data-object-id="' . $pid . '" class="btn btn-danger btn-sm  delete-object"><span class="fa fa-trash"></span>' . $this->lang->line('Delete') . '</a>
@@ -132,9 +137,11 @@ class Products extends CI_Controller
         $factoryprice = numberClean($this->input->post('fproduct_price'));
         $taxrate = numberClean($this->input->post('product_tax', true));
         $disrate = numberClean($this->input->post('product_disc', true));
-        $product_qty = numberClean($this->input->post('product_qty', true));
+        $product_qty = numberClean($this->input->post('product_qty'));
         $product_qty_alert = numberClean($this->input->post('product_qty_alert'));
         $product_desc = $this->input->post('product_desc', true);
+        $product_year = $this->input->post('product_year', true);
+        $product_color = $this->input->post('product_color', true);
         $image = $this->input->post('image');
         $unit = $this->input->post('unit', true);
         $barcode = $this->input->post('barcode');
@@ -149,7 +156,7 @@ class Products extends CI_Controller
         $sub_cat = $this->input->post('sub_cat');
         $brand = $this->input->post('brand');
         if ($catid) {
-            $this->products->addnew($catid, $warehouse, $product_name, $product_code, $product_price, $factoryprice, $taxrate, $disrate, $product_qty, $product_qty_alert, $product_desc, $image, $unit, $barcode, $v_type, $v_stock, $v_alert, $wdate, $code_type, $w_type, $w_stock, $w_alert, $sub_cat, $brand);
+            $this->products->addnew($catid, $warehouse, $product_name, $product_code, $product_price, $factoryprice, $taxrate, $disrate, $product_qty, $product_qty_alert, $product_desc, $product_year, $product_color, $image, $unit, $barcode, $v_type, $v_stock, $v_alert, $wdate, $code_type, $w_type, $w_stock, $w_alert, $sub_cat, $brand);
         }
     }
 
@@ -186,6 +193,13 @@ class Products extends CI_Controller
         $data['units'] = $this->products->units();
         $data['cat_ware'] = $this->categories_model->cat_ware($pid);
         $data['cat_sub'] = $this->categories_model->sub_cat_curr($data['product']['sub_id']);
+        //Srieng modified 10-23-2020
+        $this->load->model('units_model', 'units');
+        $data['year_select'] = $this->units->variations_year_list_s($pid);
+        $data['color_select'] = $this->units->variations_color_list_s($pid);
+        $data['years'] = $this->units->variations_year_list();
+        $data['colors'] = $this->units->variations_color_list();
+        //end
         $data['cat_sub_list'] = $this->categories_model->sub_cat_list($data['product']['pcat']);
         $data['warehouse'] = $this->categories_model->warehouse_list();
         $data['cat'] = $this->categories_model->category_list();
@@ -217,11 +231,13 @@ class Products extends CI_Controller
         $barcode = $this->input->post('barcode');
         $code_type = $this->input->post('code_type');
         $sub_cat = $this->input->post('sub_cat');
+        $product_year = $this->input->post('product_year', true);
+        $product_color = $this->input->post('product_color', true);
         if (!$sub_cat) $sub_cat = 0;
         echo $sub_cat;
         $brand = $this->input->post('brand');
         if ($pid) {
-            $this->products->edit($pid, $catid, $warehouse, $product_name, $product_code, $product_price, $factoryprice, $taxrate, $disrate, $product_qty, $product_qty_alert, $product_desc, $image, $unit, $barcode, $code_type, $sub_cat, $brand);
+            $this->products->edit($pid, $catid, $warehouse, $product_name, $product_code, $product_price, $factoryprice, $taxrate, $disrate, $product_qty, $product_qty_alert, $product_desc, $image, $unit, $barcode, $code_type, $sub_cat, $brand, $product_year, $product_color);
         }
     }
 
