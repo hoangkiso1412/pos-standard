@@ -234,7 +234,7 @@ class Products extends CI_Controller
         $product_year = $this->input->post('product_year', true);
         $product_color = $this->input->post('product_color', true);
         if (!$sub_cat) $sub_cat = 0;
-        echo $sub_cat;
+        //echo $sub_cat;
         $brand = $this->input->post('brand');
         if ($pid) {
             $this->products->edit($pid, $catid, $warehouse, $product_name, $product_code, $product_price, $factoryprice, $taxrate, $disrate, $product_qty, $product_qty_alert, $product_desc, $image, $unit, $barcode, $code_type, $sub_cat, $brand, $product_year, $product_color);

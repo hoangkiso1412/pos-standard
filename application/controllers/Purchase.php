@@ -98,6 +98,7 @@ class Purchase extends CI_Controller
     //action
     public function action()
     {
+        $s_warehouse = $this->input->post("s_warehouses");
         $currency = $this->input->post('mcurrency');
         $customer_id = $this->input->post('customer_id');
         $invocieno = $this->input->post('invocieno');
@@ -142,11 +143,19 @@ class Purchase extends CI_Controller
 
             $pid = $this->input->post('pid');
             $productlist = array();
+            $stocklist = array();
             $prodindex = 0;
             $itc = 0;
             $flag = false;
             $product_id = $this->input->post('pid');
             $product_name1 = $this->input->post('product_name', true);
+            // Srieng modified 24-10-2020
+            $body_num= $this->input->post('body_number', true);
+            $engine_num= $this->input->post('engine_number', true);
+            $plate_num= $this->input->post('plate_number', true);
+            $other_expense= $this->input->post('other_expense', true);
+            
+            // End
             $product_qty = $this->input->post('product_qty');
             $product_price = $this->input->post('product_price');
             $product_tax = $this->input->post('product_tax');
@@ -179,9 +188,24 @@ class Purchase extends CI_Controller
                     'product_des' => $product_des[$key],
                     'unit' => $product_unit[$key]
                 );
+                // $date = DateTime::createFromFormat('d/m/Y', $invoicedate);
+                $date = str_replace('/', '-', $invoicedate );
+                $newDate = date("Y-m-d", strtotime($date));
+                $data_stock = array(
+                    'product_id' => $product_id[$key],
+                    'warehouse_id' => $s_warehouse,
+                    'body_number'  => $body_num[$key],
+                    'engine_number' =>$engine_num[$key],
+                    'plate_number' => $plate_num [$key],
+                    'other_expense' => $other_expense[$key],
+                    'total' => rev_amountExchange_s($product_price[$key]+$other_expense[$key], $currency, $this->aauth->get_user()->loc),
+                    'purchase_date' => $newDate,
+                    'purchase_id' => $invocieno
+                );
 
                 $flag = true;
                 $productlist[$prodindex] = $data;
+                $stocklist[$prodindex] = $data_stock;
                 $i++;
                 $prodindex++;
                 $amt = numberClean($product_qty[$key]);
@@ -202,6 +226,12 @@ class Purchase extends CI_Controller
                 $this->db->set(array('discount' => rev_amountExchange_s(amountFormat_general($total_discount), $currency, $this->aauth->get_user()->loc), 'tax' => rev_amountExchange_s(amountFormat_general($total_tax), $currency, $this->aauth->get_user()->loc), 'items' => $itc));
                 $this->db->where('id', $invocieno);
                 $this->db->update('geopos_purchase');
+
+                //print_r($stocklist);
+                $this->db->insert_batch('tb_stock', $stocklist);
+                //$this->db->set(array('discount' => rev_amountExchange_s(amountFormat_general($total_discount), $currency, $this->aauth->get_user()->loc), 'tax' => rev_amountExchange_s(amountFormat_general($total_tax), $currency, $this->aauth->get_user()->loc), 'items' => $itc));
+                // $this->db->where('id', $invocieno);
+                // $this->db->update('geopos_purchase');
 
             } else {
                 echo json_encode(array('status' => 'Error', 'message' =>
