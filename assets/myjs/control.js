@@ -734,7 +734,7 @@ $("#submit-data").on("click", function (e) {
     e.preventDefault();
     var o_data = $("#data_form").serialize();
     var action_url = $('#action-url').val();
-    alert(action_url);
+    // alert(action_url);
     addObject(o_data, action_url);
 });
 $("#submit-data2").on("click", function (e) {

@@ -86,6 +86,8 @@
                     <tr>
                         <th>#</th>
                         <th><?php echo $this->lang->line('Name') ?></th>
+                        <th><?php echo $this->lang->line('Color') ?></th>
+                        <th><?php echo $this->lang->line('Year') ?></th>
                         <th><?php echo $this->lang->line('Qty') ?></th>
                         <th><?php echo $this->lang->line('Code') ?></th>
                         <th><?php echo $this->lang->line('Category') ?></th>
@@ -101,6 +103,8 @@
                     <tr>
                         <th>#</th>
                         <th><?php echo $this->lang->line('Name') ?></th>
+                        <th><?php echo $this->lang->line('Color') ?></th>
+                        <th><?php echo $this->lang->line('Year') ?></th>
                         <th><?php echo $this->lang->line('Qty') ?></th>
                         <th><?php echo $this->lang->line('Code') ?></th>
                         <th><?php echo $this->lang->line('Category') ?></th>
@@ -149,16 +153,16 @@
                             extend: 'excelHtml5',
                             footer: true,
                             exportOptions: {
-                                columns: [1, 2, 3, 4 , 6]
+                                columns: [1, 2, 3, 4 , 5 , 6 , 7 , 8]
                             }
                         }
                     ],"columnDefs": [
                         {
-                            "targets": [ 2 ],
+                            "targets": [ 3 ],
                             "visible": false
                         },
                         {
-                            "targets": [ 5 ],
+                            "targets": [ 7 ],
                             "visible": false,
                         }
                     ]

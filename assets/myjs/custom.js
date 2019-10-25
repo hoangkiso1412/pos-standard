@@ -1,7 +1,7 @@
 var billtype = $('#billtype').val();
 var d_csrf = crsf_token + '=' + crsf_hash;
 $('#addproduct').on('click', function () {
-    alert("ok");
+    // alert("ok");
     var cvalue = parseInt($('#ganak').val()) + 1;
     var nxt = parseInt(cvalue);
     $('#ganak').val(nxt);

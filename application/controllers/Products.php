@@ -98,7 +98,9 @@ class Products extends CI_Controller
             $pid = $prd->pid;
             //$row[] = '<a href="#" data-object-id="' . $pid . '" class="view-object"><span class="avatar-lg align-baseline"><img src="' . base_url() . 'userfiles/product/thumbnail/' . $prd->image . '" ></span>&nbsp;' . $prd->product_name . '</a>';
             $row[] = '<span class="avatar-lg align-baseline"><img src="' . base_url() . 'userfiles/product/thumbnail/' . $prd->image . '" ></span>&nbsp;' . $prd->product_name;
-            $row[] = +$prd->qty;
+            $row[] = $prd->color;
+            $row[] = $prd->year;
+            $row[] = $prd->qty;
             $row[] = $prd->product_code;
             $row[] = $prd->c_title;
             $row[] = $prd->title;

@@ -138,6 +138,8 @@ class Purchase extends CI_Controller
         $data = array('tid' => $invocieno, 'invoicedate' => $bill_date, 'invoiceduedate' => $bill_due_date, 'subtotal' => $subtotal, 'shipping' => $shipping, 'ship_tax' => $shipping_tax, 'ship_tax_type' => $ship_taxtype, 'total' => $total, 'notes' => $notes, 'csd' => $customer_id, 'eid' => $this->aauth->get_user()->id, 'taxstatus' => $tax, 'discstatus' => $discstatus, 'format_discount' => $discountFormat, 'refer' => $refer, 'term' => $pterms, 'loc' => $this->aauth->get_user()->loc, 'multi' => $currency);
 
 
+        
+
         if ($this->db->insert('geopos_purchase', $data)) {
             $invocieno = $this->db->insert_id();
 
@@ -167,8 +169,49 @@ class Purchase extends CI_Controller
             $product_unit = $this->input->post('unit');
             $product_hsn = $this->input->post('hsn');
 
-
             foreach ($pid as $key => $value) {
+              //Check validation when user not input in product name, engine number and body number
+              if($product_name1[$key]=="") {
+                echo json_encode(array('status' => 'Error', 'message' =>
+                        "Product name require!"));
+                    $transok = false;
+                    exit;
+              }
+              if($body_num[$key]=="") {
+                echo json_encode(array('status' => 'Error', 'message' =>
+                        "Body number require!"));
+                    $transok = false;
+                    exit;
+              }
+              if($engine_num[$key]=="") {
+                echo json_encode(array('status' => 'Error', 'message' =>
+                        "Engine number require!"));
+                    $transok = false;
+                    exit;
+              }
+              
+            // Check validation of product exising with engine number and body number 
+              $engineno=$this->db->query("select tb_stock.engine_number from tb_stock 
+                            where tb_stock.product_id=".$product_id[$key]." and tb_stock.engine_number='".$engine_num[$key]."' and tb_stock.body_number='".$body_num[$key]."'")->row()->engine_number;
+                if($engineno!=""){
+                        echo json_encode(array('status' => 'Error', 'message' =>
+                        "This product $product_name1[$key] and body number: $body_num[$key] and engine number: $engine_num[$key] already exist!"));
+                    $transok = false;
+                    exit;
+                }
+              // Check validation of plate number exising
+              if($plate_num[$key]!="") {
+                  $plateno=$this->db->query("select tb_stock.plate_number from tb_stock 
+                  where tb_stock.plate_number='".$plate_num[$key]."'")->row()->plate_number;
+                  if($plateno!=""){
+                          echo json_encode(array('status' => 'Error', 'message' =>
+                          "This plate number $plate_num[$key] already exist!"));
+                      $transok = false;
+                      exit;
+                  }
+              }
+
+
                 $total_discount += numberClean(@$ptotal_disc[$key]);
                 $total_tax += numberClean($ptotal_tax[$key]);
 
@@ -219,7 +262,6 @@ class Purchase extends CI_Controller
                     }
                     $itc += $amt;
                 }
-
             }
             if ($prodindex > 0) {
                 $this->db->insert_batch('geopos_purchase_items', $productlist);
