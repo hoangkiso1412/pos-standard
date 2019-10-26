@@ -98,7 +98,9 @@ class Products extends CI_Controller
             $pid = $prd->pid;
             //$row[] = '<a href="#" data-object-id="' . $pid . '" class="view-object"><span class="avatar-lg align-baseline"><img src="' . base_url() . 'userfiles/product/thumbnail/' . $prd->image . '" ></span>&nbsp;' . $prd->product_name . '</a>';
             $row[] = '<span class="avatar-lg align-baseline"><img src="' . base_url() . 'userfiles/product/thumbnail/' . $prd->image . '" ></span>&nbsp;' . $prd->product_name;
-            $row[] = +$prd->qty;
+            $row[] = $prd->color;
+            $row[] = $prd->year;
+            $row[] = $prd->qty;
             $row[] = $prd->product_code;
             $row[] = $prd->c_title;
             $row[] = $prd->title;
@@ -234,7 +236,7 @@ class Products extends CI_Controller
         $product_year = $this->input->post('product_year', true);
         $product_color = $this->input->post('product_color', true);
         if (!$sub_cat) $sub_cat = 0;
-        echo $sub_cat;
+        //echo $sub_cat;
         $brand = $this->input->post('brand');
         if ($pid) {
             $this->products->edit($pid, $catid, $warehouse, $product_name, $product_code, $product_price, $factoryprice, $taxrate, $disrate, $product_qty, $product_qty_alert, $product_desc, $image, $unit, $barcode, $code_type, $sub_cat, $brand, $product_year, $product_color);

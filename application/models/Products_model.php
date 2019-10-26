@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Products_model extends CI_Model
 {
     var $table = 'geopos_products';
-    var $column_order = array(null, 'geopos_products.product_name', 'geopos_products.qty', 'geopos_products.product_code', 'geopos_product_cat.title', 'geopos_products.product_price', null); //set column field database for datatable orderable
+    var $column_order = array(null, 'geopos_products.product_name', 'geopos_products.qty', 'geopos_products.color', 'geopos_products.year', 'geopos_products.product_code', 'geopos_product_cat.title', 'geopos_products.product_price', null); //set column field database for datatable orderable
     var $column_search = array('geopos_products.product_name', 'geopos_products.product_code', 'geopos_product_cat.title', 'geopos_warehouse.title'); //set column field database for datatable searchable
     var $order = array('geopos_products.pid' => 'desc'); // default order
 
