@@ -86,6 +86,30 @@ class Purchase_model extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
+    public function purchase_product_list($id) {
+        $query=$this->db->query("select
+                          tb_stock.id as stock_id,
+                          CONCAT(geopos_products.product_name,' Color: ',IFNULL(geopos_products.color,''),'Year: ',IFNULL(geopos_products.year,'')) as product,
+                          tb_stock.product_id as pid,
+                          tb_stock.warehouse_id,
+                          1 as qty,
+                          tb_stock.body_number,
+                          tb_stock.engine_number,
+                          tb_stock.plate_number,
+                          tb_stock.other_expense,
+                          tb_stock.total as price,
+                          tb_stock.total as totaltax,
+                          tb_stock.tax,
+                          tb_stock.discount,
+                          tb_stock.subtotal,
+                          tb_stock.totaldiscount,
+                          tb_stock.totaltax,
+                          tb_stock.product_des,
+                          tb_stock.unit
+                          from tb_stock 
+                          inner join geopos_products on tb_stock.product_id = geopos_products.pid where tb_stock.purchase_id=$id")->result_array();
+          return $query;
+    }
 
     public function purchase_transactions($id)
     {
@@ -119,6 +143,7 @@ class Purchase_model extends CI_Model
         }
         $this->db->delete('geopos_purchase', $whr);
         if ($this->db->affected_rows()) $this->db->delete('geopos_purchase_items', array('tid' => $id));
+        // if ($this->db->affected_rows()) $this->db->delete('geopos_purchase_items', array('tid' => $id));
         if ($this->db->trans_complete()) {
             return true;
         } else {
