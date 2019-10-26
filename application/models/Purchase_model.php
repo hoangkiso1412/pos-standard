@@ -262,5 +262,10 @@ class Purchase_model extends CI_Model
             return $this->db->delete('geopos_metadata', array('rid' => $id, 'type' => $type, 'col1' => $name));
         }
     }
+    public function product_existing($product_id,$engine_num,$body_num) {
+        $this->db->query("select tb_stock.body_number,tb_stock.engine_number,tb_stock.product_id from tb_stock 
+                          where tb_stock.product_id=".$product_id." AND tb_stock.engine_number='$engine_num' AND tb_stock.body_number='$body_num'");
+        return $query->row_array();
+    }
 
 }
