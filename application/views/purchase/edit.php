@@ -173,54 +173,89 @@
 
                         <div id="saman-row">
                             <table class="table-responsive tfr my_stripe">
-
                                 <thead>
-                                <tr class="item_header bg-gradient-directional-amber">
-                                    <th width="30%"
-                                        class="text-center"><?php echo $this->lang->line('Item Name') ?></th>
-                                    <th width="8%" class="text-center"><?php echo $this->lang->line('Quantity') ?></th>
-                                    <th width="10%" class="text-center"><?php echo $this->lang->line('Rate') ?></th>
-                                    <th width="10%" class="text-center"><?php echo $this->lang->line('Tax') ?>(%)</th>
-                                    <th width="10%" class="text-center"><?php echo $this->lang->line('Tax') ?></th>
-                                    <th width="7%" class="text-center"><?php echo $this->lang->line('Discount') ?></th>
-                                    <th width="10%" class="text-center"><?php echo $this->lang->line('Amount') ?>
+                                    <tr class="item_header bg-gradient-directional-amber">
+                                    <th width="15%" class="text-center hidden"><?php echo "Purchase ID" //echo $this->lang->line('Item Name') ?></th>
+                                    <th width="15%" class="text-center"><?php echo $this->lang->line('Item Name') ?></th>
+                                    <th width="10%" class="text-center"><?php echo "Body Number"//echo $this->lang->line('Item Name') ?></th>
+                                    <th width="10%" class="text-center"><?php echo "Engine Number"//echo $this->lang->line('Item Name') ?></th>
+                                    <th width="10%" class="text-center"><?php echo "Plate Number"//echo $this->lang->line('Item Name') ?></th>
+                                    <th width="10%" class="text-center"><?php echo "Other expense"//echo $this->lang->line('Item Name') ?></th>
+                                    <th width="3%" class="text-center hidden"><?php echo $this->lang->line('Quantity') ?></th>
+                                    <th width="7%" class="text-center"><?php echo $this->lang->line('Rate') ?></th>
+                                    <th width="5%" class="text-center"><?php echo $this->lang->line('Tax') ?>(%)</th>
+                                    <th width="5%" class="text-center"><?php echo $this->lang->line('Tax') ?></th>
+                                    <th width="5%" class="text-center"><?php echo $this->lang->line('Discount') ?></th>
+                                    <th width="3%" class="text-center">
+                                        <?php echo $this->lang->line('Amount') ?>
                                         (<?php echo $this->config->item('currency'); ?>)
                                     </th>
                                     <th width="5%" class="text-center"><?php echo $this->lang->line('Action') ?></th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <!-- Srieng modified 26-10-2020 -->
                                 <?php $i = 0;
                                 foreach ($products as $row) {
-                                    echo '<tr >
-                        <td><input type="text" class="form-control" name="product_name[]" placeholder="Enter Product name or Code"  value="' . $row['product'] . '">
-                        </td>
-                        <td><input type="text" class="form-control req amnt" name="product_qty[]" id="amount-' . $i . '"
-                                   onkeypress="return isNumber(event)" onkeyup="rowTotal(' . $i . '), billUpyog()"
-                                   autocomplete="off" value="' . amountFormat_general($row['qty']) . '" ><input type="hidden" name="old_product_qty[]" value="' . amountFormat_general($row['qty']) . '" ></td>
-                        <td><input type="text" class="form-control req prc" name="product_price[]" id="price-' . $i . '"
-                                   onkeypress="return isNumber(event)" onkeyup="rowTotal(' . $i . '), billUpyog()"
-                                   autocomplete="off" value="' . edit_amountExchange_s($row['price'], $invoice['multi'], $this->aauth->get_user()->loc) . '"></td>
-                        <td> <input type="text" class="form-control vat" name="product_tax[]" id="vat-' . $i . '"
-                                    onkeypress="return isNumber(event)" onkeyup="rowTotal(' . $i . '), billUpyog()"
-                                    autocomplete="off"  value="' . amountFormat_general($row['tax']) . '"></td>
-                        <td class="text-center" id="texttaxa-' . $i . '">' . edit_amountExchange_s($row['totaltax'], $invoice['multi'], $this->aauth->get_user()->loc) . '</td>
-                        <td><input type="text" class="form-control discount" name="product_discount[]"
-                                   onkeypress="return isNumber(event)" id="discount-' . $i . '"
-                                   onkeyup="rowTotal(' . $i . '), billUpyog()" autocomplete="off"  value="' . amountFormat_general($row['discount']) . '"></td>
-                        <td><span class="currenty">' . $this->config->item('currency') . '</span>
-                            <strong><span class="ttlText" id="result-' . $i . '">' . edit_amountExchange_s($row['subtotal'], $invoice['multi'], $this->aauth->get_user()->loc) . '</span></strong></td>
-                        <td class="text-center">
-<button type="button" data-rowid="' . $i . '" class="btn btn-danger removeProd" title="Remove"> <i class="fa fa-minus-square"></i> </button>
-                        </td>
-                        <input type="hidden" name="taxa[]" id="taxa-' . $i . '" value="' . edit_amountExchange_s($row['totaltax'], $invoice['multi'], $this->aauth->get_user()->loc) . '">
-                        <input type="hidden" name="disca[]" id="disca-' . $i . '" value="' . edit_amountExchange_s($row['totaldiscount'], $invoice['multi'], $this->aauth->get_user()->loc) . '">
-                        <input type="hidden" class="ttInput" name="product_subtotal[]" id="total-' . $i . '" value="' . edit_amountExchange_s($row['subtotal'], $invoice['multi'], $this->aauth->get_user()->loc) . '">
-                        <input type="hidden" class="pdIn" name="pid[]" id="pid-' . $i . '" value="' . $row['pid'] . '">
-                         <input type="hidden" name="unit[]" id="unit-' . $i . '" value="' . $row['unit'] . '">   <input type="hidden" name="hsn[]" id="unit-' . $i . '" value="' . $row['code'] . '">
-                    </tr><tr class="desc_p"><td colspan="8"><textarea id="dpid-' . $i . '" class="form-control" name="product_description[]" placeholder="Enter Product description" autocomplete="off">' . $row['product_des'] . '</textarea><br></td></tr>';
+                                  echo '<tr >
+                                          <td>
+                                            <input type="text" class="form-control" name="product_name[]" placeholder="Enter Product name or Code"  value="' . $row['product'] . '">
+                                          </td>
+                                          <td>
+                                            <input type="text" class="form-control text-center" name="body_number[]" id="bodynumber-0" value="' . $row['body_number'] . '">
+                                          </td>
+                                          <td>
+                                            <input type="text" class="form-control text-center" name="engine_number[]" id="enginenumber-0" value="' . $row['engine_number'] . '">
+                                          </td>
+                                          <td>
+                                            <input type="text" class="form-control text-center" name="plate_number[]" id="platenumber-0" value="' . $row['plate_number'] . '">
+                                          </td>
+                                          <td>
+                                            <input type="text" class="form-control text-center" name="other_expense[]" id="otherexpense-0" value="' . $row['other_expense'] . '">
+                                          </td>
+                                          <td class="hidden">
+                                            <input type="text" class="form-control req amnt" name="product_qty[]" id="amount-' . $i . '"
+                                                    onkeypress="return isNumber(event)" onkeyup="rowTotal(' . $i . '), billUpyog()"
+                                                    autocomplete="off" value="' . amountFormat_general($row['qty']) . '" >
+                                            <input type="hidden" name="old_product_qty[]" value="' . amountFormat_general($row['qty']) . '" >
+                                          </td>
+                                          <td>
+                                            <input type="text" class="form-control req prc" name="product_price[]" id="price-' . $i . '"
+                                                    onkeypress="return isNumber(event)" onkeyup="rowTotal(' . $i . '), billUpyog()"
+                                                    autocomplete="off" value="' . edit_amountExchange_s($row['price'], $invoice['multi'], $this->aauth->get_user()->loc) . '">
+                                          </td>
+                                          <td> 
+                                            <input type="text" class="form-control vat" name="product_tax[]" id="vat-' . $i . '"
+                                                      onkeypress="return isNumber(event)" onkeyup="rowTotal(' . $i . '), billUpyog()"
+                                                      autocomplete="off"  value="' . amountFormat_general($row['tax']) . '">
+                                          </td>
+                                          <td class="text-center" id="texttaxa-' . $i . '">' . edit_amountExchange_s($row['totaltax'], $invoice['multi'], $this->aauth->get_user()->loc) . '</td>
+                                          <td>
+                                            <input type="text" class="form-control discount" name="product_discount[]"
+                                                    onkeypress="return isNumber(event)" id="discount-' . $i . '"
+                                                    onkeyup="rowTotal(' . $i . '), billUpyog()" autocomplete="off"  value="' . amountFormat_general($row['discount']) . '">
+                                          </td>
+                                          <td>
+                                              <span class="currenty">' . $this->config->item('currency') . '</span>
+                                              <strong><span class="ttlText" id="result-' . $i . '">' . edit_amountExchange_s($row['subtotal'], $invoice['multi'], $this->aauth->get_user()->loc) . '</span></strong>
+                                          </td>
+                                          <td class="text-center">
+                                              <button type="button" data-rowid="' . $i . '" class="btn btn-danger removeProd" title="Remove"> <i class="fa fa-minus-square"></i> </button>
+                                          </td>
+                                          <input type="hidden" name="taxa[]" id="taxa-' . $i . '" value="' . edit_amountExchange_s($row['totaltax'], $invoice['multi'], $this->aauth->get_user()->loc) . '">
+                                          <input type="hidden" name="disca[]" id="disca-' . $i . '" value="' . edit_amountExchange_s($row['totaldiscount'], $invoice['multi'], $this->aauth->get_user()->loc) . '">
+                                          <input type="hidden" class="ttInput" name="product_subtotal[]" id="total-' . $i . '" value="' . edit_amountExchange_s($row['subtotal'], $invoice['multi'], $this->aauth->get_user()->loc) . '">
+                                          <input type="hidden" class="pdIn" name="pid[]" id="pid-' . $i . '" value="' . $row['pid'] . '">
+                                          <input type="hidden" name="unit[]" id="unit-' . $i . '" value="' . $row['unit'] . '">   <input type="hidden" name="hsn[]" id="unit-' . $i . '" value="' . $row['code'] . '">
+                                          <input type="hidden" class="form-control" name="purchase_id[]" placeholder="Purchase ID"  value="' . $row['stock_id'] . '">
+                                          <input type="hidden" class="form-control" name="old_product_id[]" placeholder="Product ID"  value="' . $row['pid'] . '">
+                                      </tr>
+                                        <tr class="desc_p">
+                                          <td colspan="12"><textarea id="dpid-' . $i . '" class="form-control" name="product_description[]" placeholder="Enter Product description" autocomplete="off">' . $row['product_des'] . '</textarea><br></td>
+                                        </tr>';
                                     $i++;
                                 } ?>
+                                <!-- end -->
                                 <tr class="last-item-row sub_c">
                                     <td class="add-row">
                                         <button type="button" class="btn btn-success" id="addproduct">
@@ -249,27 +284,6 @@
                                               class="lightMode"><?php echo edit_amountExchange_s($invoice['discount'], $invoice['multi'], $this->aauth->get_user()->loc) ?></span>
                                     </td>
                                 </tr>
-
-                                <tr class="sub_c" style="display: table-row;">
-                                    <td colspan="6" align="right"><input type="hidden"
-                                                                         value="<?php echo edit_amountExchange_s($invoice['subtotal'], $invoice['multi'], $this->aauth->get_user()->loc) ?>"
-                                                                         id="subttlform"
-                                                                         name="subtotal"><strong><?php echo $this->lang->line('Shipping') ?></strong>
-                                    </td>
-                                    <td align="left" colspan="2"><input type="text" class="form-control shipVal"
-                                                                        onkeypress="return isNumber(event)"
-                                                                        placeholder="Value"
-                                                                        name="shipping" autocomplete="off"
-                                                                        onkeyup="billUpyog()"
-                                                                        value="<?php if ($invoice['ship_tax_type'] == 'excl') {
-                                                                            $invoice['shipping'] = $invoice['shipping'] - $invoice['ship_tax'];
-                                                                        }
-                                                                        echo amountExchange_s($invoice['shipping'], $invoice['multi'], $this->aauth->get_user()->loc); ?>">( <?= $this->lang->line('Tax') ?> <?= $this->config->item('currency'); ?>
-                                        <span id="ship_final"><?= edit_amountExchange_s($invoice['ship_tax'], $invoice['multi'], $this->aauth->get_user()->loc) ?> </span>
-                                        )
-                                    </td>
-                                </tr>
-
                                 <tr class="sub_c" style="display: table-row;">
                                     <td colspan="2"><?php if ($exchange['active'] == 1){
                                         echo $this->lang->line('Payment Currency client') . ' <small>' . $this->lang->line('based on live market') ?></small>
@@ -295,6 +309,27 @@
 
                                     </td>
                                 </tr>
+                                <tr class="sub_c hidden" style="display: table-row;">
+                                    <td colspan="6" align="right"><input type="hidden"
+                                                                         value="<?php echo edit_amountExchange_s($invoice['subtotal'], $invoice['multi'], $this->aauth->get_user()->loc) ?>"
+                                                                         id="subttlform"
+                                                                         name="subtotal"><strong><?php echo $this->lang->line('Shipping') ?></strong>
+                                    </td>
+                                    <td align="left" colspan="2"><input type="text" class="form-control shipVal"
+                                                                        onkeypress="return isNumber(event)"
+                                                                        placeholder="Value"
+                                                                        name="shipping" autocomplete="off"
+                                                                        onkeyup="billUpyog()"
+                                                                        value="<?php if ($invoice['ship_tax_type'] == 'excl') {
+                                                                            $invoice['shipping'] = $invoice['shipping'] - $invoice['ship_tax'];
+                                                                        }
+                                                                        echo amountExchange_s($invoice['shipping'], $invoice['multi'], $this->aauth->get_user()->loc); ?>">( <?= $this->lang->line('Tax') ?> <?= $this->config->item('currency'); ?>
+                                        <span id="ship_final"><?= edit_amountExchange_s($invoice['ship_tax'], $invoice['multi'], $this->aauth->get_user()->loc) ?> </span>
+                                        )
+                                    </td>
+                                </tr>
+
+                                
                                 <tr class="sub_c" style="display: table-row;">
                                     <td colspan="2"><?php echo $this->lang->line('Payment Terms') ?> <select
                                                 name="pterms"
@@ -305,7 +340,7 @@
 
 
                                         </select></td>
-                                    <td colspan="2">
+                                    <td colspan="2" class="hidden">
                                         <div>
                                             <label><?php echo $this->lang->line('Update Stock') ?></label>
 
