@@ -197,6 +197,10 @@
                                 <!-- Srieng modified 26-10-2020 -->
                                 <?php $i = 0;
                                 foreach ($products as $row) {
+                                  $hidden="hidden";
+                                  if($row['status']=="") {
+                                    $hidden='';
+                                  }
                                   echo '<tr >
                                           <td>
                                             <input type="text" class="form-control" name="product_name[]" placeholder="Enter Product name or Code"  value="' . $row['product'] . '">
@@ -211,7 +215,7 @@
                                             <input type="text" class="form-control text-center" name="plate_number[]" id="platenumber-0" value="' . $row['plate_number'] . '">
                                           </td>
                                           <td>
-                                            <input type="text" class="form-control text-center" name="other_expense[]" id="otherexpense-0" value="' . $row['other_expense'] . '">
+                                            <input type="text" class="form-control text-center" name="other_expense[]" onkeypress="return isNumber(event)" onkeyup="rowTotal(' . $i . '), billUpyog()" id="otherexpense-'.$i.'" value="' . $row['other_expense'] . '">
                                           </td>
                                           <td class="hidden">
                                             <input type="text" class="form-control req amnt" name="product_qty[]" id="amount-' . $i . '"
@@ -240,7 +244,7 @@
                                               <strong><span class="ttlText" id="result-' . $i . '">' . edit_amountExchange_s($row['subtotal'], $invoice['multi'], $this->aauth->get_user()->loc) . '</span></strong>
                                           </td>
                                           <td class="text-center">
-                                              <button type="button" data-rowid="' . $i . '" class="btn btn-danger removeProd" title="Remove"> <i class="fa fa-minus-square"></i> </button>
+                                              <button type="button" data-rowid="' . $i . '" class="btn btn-danger removeProd '.$hidden.'" title="Remove"> <i class="fa fa-minus-square"></i> </button>
                                           </td>
                                           <input type="hidden" name="taxa[]" id="taxa-' . $i . '" value="' . edit_amountExchange_s($row['totaltax'], $invoice['multi'], $this->aauth->get_user()->loc) . '">
                                           <input type="hidden" name="disca[]" id="disca-' . $i . '" value="' . edit_amountExchange_s($row['totaldiscount'], $invoice['multi'], $this->aauth->get_user()->loc) . '">

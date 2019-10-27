@@ -8,7 +8,7 @@ $('#addproduct').on('click', function () {
     var functionNum = "'" + cvalue + "'";
     count = $('#saman-row div').length;
 //product row
-    var data = '<tr><td class="hidden"><input type="text" class="form-control text-center" name="purchase_id[]"  value="0" id="purchaseid-' + cvalue + '"></td><td><input type="text" class="form-control text-center" name="product_name[]" placeholder="Enter Product name or Code" id="productname-' + cvalue + '"></td><td><input type="text" class="form-control text-center" name="body_number[]" placeholder="Enter Body number" id="bodynumber-' + cvalue + '"></td><td><input type="text" class="form-control text-center" name="engine_number[]" placeholder="Enter Engine number" id="enginenumber-' + cvalue + '"></td><td><input type="text" class="form-control text-center" name="plate_number[]" placeholder="Enter Plate Number" id="platenumber-' + cvalue + '"></td><td><input type="text" class="form-control text-center" name="other_expense[]" placeholder="Enter Expense" id="otherexpense-' + cvalue + '"></td><td class="hidden"><input type="text" class="form-control req amnt" name="product_qty[]" id="amount-' + cvalue + '" onkeypress="return isNumber(event)" onkeyup="rowTotal(' + functionNum + '), billUpyog()" autocomplete="off" value="1" ><input type="hidden" id="alert-' + cvalue + '" value=""  name="alert[]"> </td> <td><input type="text" class="form-control req prc" name="product_price[]" id="price-' + cvalue + '" onkeypress="return isNumber(event)" onkeyup="rowTotal(' + functionNum + '), billUpyog()" autocomplete="off"></td><td> <input type="text" class="form-control vat" name="product_tax[]" id="vat-' + cvalue + '" onkeypress="return isNumber(event)" onkeyup="rowTotal(' + functionNum + '), billUpyog()" autocomplete="off"></td> <td id="texttaxa-' + cvalue + '" class="text-center">0</td> <td><input type="text" class="form-control discount" name="product_discount[]" onkeypress="return isNumber(event)" id="discount-' + cvalue + '" onkeyup="rowTotal(' + functionNum + '), billUpyog()" autocomplete="off"></td> <td><span class="currenty">' + currency + '</span> <strong><span class=\'ttlText\' id="result-' + cvalue + '">0</span></strong></td> <td class="text-center"><button type="button" data-rowid="' + cvalue + '" class="btn btn-danger removeProd" title="Remove" > <i class="fa fa-minus-square"></i> </button> </td><input type="hidden" name="taxa[]" id="taxa-' + cvalue + '" value="0"><input type="hidden" name="disca[]" id="disca-' + cvalue + '" value="0"><input type="hidden" class="ttInput" name="product_subtotal[]" id="total-' + cvalue + '" value="0"> <input type="hidden" class="pdIn" name="pid[]" id="pid-' + cvalue + '" value="0"> <input type="hidden" name="unit[]" id="unit-' + cvalue + '" value=""> <input type="hidden" name="hsn[]" id="hsn-' + cvalue + '" value=""> </tr><tr><td colspan="12"><textarea class="form-control"  id="dpid-' + cvalue + '" name="product_description[]" placeholder="Enter Product description" autocomplete="off"></textarea><br></td></tr>';
+    var data = '<tr><td class="hidden"><input type="text" class="form-control text-center" name="purchase_id[]"  value="0" id="purchaseid-' + cvalue + '"></td><td><input type="text" class="form-control text-center" name="product_name[]" placeholder="Enter Product name or Code" id="productname-' + cvalue + '"></td><td><input type="text" class="form-control text-center" name="body_number[]" placeholder="Enter Body number" id="bodynumber-' + cvalue + '"></td><td><input type="text" class="form-control text-center" name="engine_number[]" placeholder="Enter Engine number" id="enginenumber-' + cvalue + '"></td><td><input type="text" class="form-control text-center" name="plate_number[]" placeholder="Enter Plate Number" id="platenumber-' + cvalue + '"></td><td><input type="text" class="form-control text-center" name="other_expense[]" onkeypress="return isNumber(event)" onkeyup="rowTotal(' + functionNum + '), billUpyog()" placeholder="Enter Expense" id="otherexpense-' + cvalue + '"></td><td class="hidden"><input type="text" class="form-control req amnt" name="product_qty[]" id="amount-' + cvalue + '" onkeypress="return isNumber(event)" onkeyup="rowTotal(' + functionNum + '), billUpyog()" autocomplete="off" value="1" ><input type="hidden" id="alert-' + cvalue + '" value=""  name="alert[]"> </td> <td><input type="text" class="form-control req prc" name="product_price[]" id="price-' + cvalue + '" onkeypress="return isNumber(event)" onkeyup="rowTotal(' + functionNum + '), billUpyog()" autocomplete="off"></td><td> <input type="text" class="form-control vat" name="product_tax[]" id="vat-' + cvalue + '" onkeypress="return isNumber(event)" onkeyup="rowTotal(' + functionNum + '), billUpyog()" autocomplete="off"></td> <td id="texttaxa-' + cvalue + '" class="text-center">0</td> <td><input type="text" class="form-control discount" name="product_discount[]" onkeypress="return isNumber(event)" id="discount-' + cvalue + '" onkeyup="rowTotal(' + functionNum + '), billUpyog()" autocomplete="off"></td> <td><span class="currenty">' + currency + '</span> <strong><span class=\'ttlText\' id="result-' + cvalue + '">0</span></strong></td> <td class="text-center"><button type="button" data-rowid="' + cvalue + '" class="btn btn-danger removeProd" title="Remove" > <i class="fa fa-minus-square"></i> </button> </td><input type="hidden" name="taxa[]" id="taxa-' + cvalue + '" value="0"><input type="hidden" name="disca[]" id="disca-' + cvalue + '" value="0"><input type="hidden" class="ttInput" name="product_subtotal[]" id="total-' + cvalue + '" value="0"> <input type="hidden" class="pdIn" name="pid[]" id="pid-' + cvalue + '" value="0"> <input type="hidden" name="unit[]" id="unit-' + cvalue + '" value=""> <input type="hidden" name="hsn[]" id="hsn-' + cvalue + '" value=""> </tr><tr><td colspan="12"><textarea class="form-control"  id="dpid-' + cvalue + '" name="product_description[]" placeholder="Enter Product description" autocomplete="off"></textarea><br></td></tr>';
     //ajax request
     // $('#saman-row').append(data);
     $('tr.last-item-row').before(data);
@@ -348,6 +348,13 @@ var rowTotal = function (numb) {
     var priceVal = accounting.unformat($("#price-" + numb).val(), accounting.settings.number.decimal);
     var discountVal = accounting.unformat($("#discount-" + numb).val(), accounting.settings.number.decimal);
     var vatVal = accounting.unformat($("#vat-" + numb).val(), accounting.settings.number.decimal);
+    
+    // Srieng modified 27-10-2020
+    var expense = accounting.unformat($("#otherexpense-" + numb).val(), accounting.settings.number.decimal);
+    // priceVal += expense;
+    // alert(priceVal);
+    // End
+    //alert(expense);
     var taxo = 0;
     var disco = 0;
     var totalPrice = amountVal.toFixed(two_fixed) * priceVal;
@@ -365,7 +372,7 @@ var rowTotal = function (numb) {
         if (disFormat == '%' || disFormat == 'flat') {
             //tax
             var Inpercentage = precentCalc(totalPrice, vatVal);
-            totalValue = totalPrice + Inpercentage;
+            totalValue = (totalPrice+expense) + Inpercentage;
             taxo = accounting.formatNumber(Inpercentage);
             if (disFormat == 'flat') {
                 disco = accounting.formatNumber(discountVal);
@@ -388,14 +395,14 @@ var rowTotal = function (numb) {
 
             //tax
             var Inpercentage = precentCalc(totalValue, vatVal);
-            totalValue = totalValue + Inpercentage;
+            totalValue = (totalValue+expense) + Inpercentage;
             taxo = accounting.formatNumber(Inpercentage);
         }
     } else if (tax_status == 'inclusive') {
         if (disFormat == '%' || disFormat == 'flat') {
             //tax
             var Inpercentage = (totalPrice * vatVal) / (100 + vatVal);
-            totalValue = totalPrice;
+            totalValue = totalPrice + expense;
             taxo = accounting.formatNumber(Inpercentage);
             if (disFormat == 'flat') {
                 disco = accounting.formatNumber(discountVal);
@@ -409,15 +416,15 @@ var rowTotal = function (numb) {
 //before tax
             if (disFormat == 'bflat') {
                 disco = accounting.formatNumber(discountVal);
-                totalValue = totalPrice - discountVal;
+                totalValue = (totalPrice+expense) - discountVal;
             } else if (disFormat == 'b_p') {
                 var discount = precentCalc(totalPrice, discountVal);
-                totalValue = totalPrice - discount;
+                totalValue = (totalPrice+expense) - discount;
                 disco = accounting.formatNumber(discount);
             }
             //tax
-            var Inpercentage = (totalPrice * vatVal) / (100 + vatVal);
-            totalValue = totalValue;
+            var Inpercentage = ((totalPrice) * vatVal) / (100 + vatVal);
+            totalValue = totalValue+expense;
             taxo = accounting.formatNumber(Inpercentage);
         }
     } else {
@@ -425,10 +432,10 @@ var rowTotal = function (numb) {
         if (disFormat == '%' || disFormat == 'flat') {
             if (disFormat == 'flat') {
                 disco = accounting.formatNumber(discountVal);
-                totalValue = totalPrice - discountVal;
+                totalValue = (totalPrice+expense) - discountVal;
             } else if (disFormat == '%') {
                 var discount = precentCalc(totalPrice, discountVal);
-                totalValue = totalPrice - discount;
+                totalValue = (totalPrice+expense) - discount;
                 disco = accounting.formatNumber(discount);
             }
 
@@ -436,10 +443,10 @@ var rowTotal = function (numb) {
 //before tax
             if (disFormat == 'bflat') {
                 disco = accounting.formatNumber(discountVal);
-                totalValue = totalPrice - discountVal;
+                totalValue = (totalPrice+expense) - discountVal;
             } else if (disFormat == 'b_p') {
                 var discount = precentCalc(totalPrice, discountVal);
-                totalValue = totalPrice - discount;
+                totalValue = (totalPrice+expense) - discount;
                 disco = accounting.formatNumber(discount);
             }
         }
