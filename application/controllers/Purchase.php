@@ -242,7 +242,7 @@ class Purchase extends CI_Controller
                     'engine_number' =>$engine_num[$key],
                     'plate_number' => $plate_num [$key],
                     'other_expense' => $other_expense[$key],
-                    'total' => rev_amountExchange_s($product_price[$key]+$other_expense[$key], $currency, $this->aauth->get_user()->loc),
+                    'total' => rev_amountExchange_s($product_price[$key], $currency, $this->aauth->get_user()->loc),
                     'purchase_date' => $newDate,
                     'purchase_id' => $invocieno,
                     'tax' => numberClean($product_tax[$key]),
@@ -443,6 +443,16 @@ class Purchase extends CI_Controller
         $subtotal = rev_amountExchange_s($this->input->post('subtotal'), $currency, $this->aauth->get_user()->loc);
         $shipping = rev_amountExchange_s($this->input->post('shipping'), $currency, $this->aauth->get_user()->loc);
         $shipping_tax = rev_amountExchange_s($this->input->post('ship_tax'), $currency, $this->aauth->get_user()->loc);
+        $product_id = $this->input->post('pid');
+        $product_name1 = $this->input->post('product_name', true);
+        // Srieng modified 26-10-2020
+        $purchase_id= $this->input->post('purchase_id');
+        $body_num= $this->input->post('body_number', true);
+        $engine_num= $this->input->post('engine_number', true);
+        $plate_num= $this->input->post('plate_number', true);
+        $other_expense= $this->input->post('other_expense', true);
+        
+        // End
         if ($ship_taxtype == 'incl') $shipping = $shipping - $shipping_tax;
 
         $itc = 0;
@@ -470,19 +480,57 @@ class Purchase extends CI_Controller
         $prodindex = 0;
         $stock_old_index =0;
         $stock_new_index =0;
+        //Check validation
+        foreach ($pid as $key => $value) {
+          //Check validation when user not input in product name, engine number and body number
+          if($product_name1[$key]=="") {
+            echo json_encode(array('status' => 'Error', 'message' =>
+                    "Product name require!"));
+                $transok = false;
+                exit;
+          }
+          if($body_num[$key]=="") {
+            echo json_encode(array('status' => 'Error', 'message' =>
+                    "Body number require!"));
+                $transok = false;
+                exit;
+          }
+          if($engine_num[$key]=="") {
+            echo json_encode(array('status' => 'Error', 'message' =>
+                    "Engine number require!"));
+                $transok = false;
+                exit;
+          }
+          
+        // Check validation of product exising with engine number and body number 
+          $engineno=$this->db->query("select tb_stock.engine_number from tb_stock 
+                        where tb_stock.product_id<>".$product_id[$key]." and tb_stock.engine_number='".$engine_num[$key]."' and tb_stock.body_number='".$body_num[$key]."'")->row()->engine_number;
+            if($engineno!=""){
+                    echo json_encode(array('status' => 'Error', 'message' =>
+                    "This product $product_name1[$key] and body number: $body_num[$key] and engine number: $engine_num[$key] already exist!"));
+                $transok = false;
+                exit;
+            }
+          // Check validation of plate number exising
+          if($plate_num[$key]!="") {
+              $plateno=$this->db->query("select tb_stock.plate_number from tb_stock 
+              where tb_stock.product_id<>".$product_id[$key]." and tb_stock.plate_number='".$plate_num[$key]."'")->row()->plate_number;
+              if($plateno!=""){
+                      echo json_encode(array('status' => 'Error', 'message' =>
+                      "This plate number $plate_num[$key] already exist!"));
+                  $transok = false;
+                  exit;
+              }
+          }
+        }
 
         $this->db->delete('geopos_purchase_items', array('tid' => $invocieno));
+        $this->db->delete('tb_stock', array('purchase_id' => $invocieno));
+        
         $product_id = $this->input->post('pid');
         $old_product_id = $this->input->post('old_product_id');
         $product_name1 = $this->input->post('product_name', true);
-        // Srieng modified 26-10-2020
-        $purchase_id= $this->input->post('purchase_id');
-        $body_num= $this->input->post('body_number', true);
-        $engine_num= $this->input->post('engine_number', true);
-        $plate_num= $this->input->post('plate_number', true);
-        $other_expense= $this->input->post('other_expense', true);
         
-        // End
         $product_qty = $this->input->post('product_qty');
         $old_product_qty = $this->input->post('old_product_qty');
         if ($old_product_qty == '') $old_product_qty = 0;
@@ -520,7 +568,7 @@ class Purchase extends CI_Controller
             //save data to tb_stock
             $date = str_replace('/', '-', $invoicedate );
             $newDate = date("Y-m-d", strtotime($date));
-            if($purchase_id[$key]==0) {
+            //if($purchase_id[$key]==0) {
               $data_stock_new = array(
                 'product_id' => $product_id[$key],
                 'warehouse_id' => $s_warehouse,
@@ -528,7 +576,7 @@ class Purchase extends CI_Controller
                 'engine_number' =>$engine_num[$key],
                 'plate_number' => $plate_num [$key],
                 'other_expense' => $other_expense[$key],
-                'total' => rev_amountExchange_s($product_price[$key]+$other_expense[$key], $currency, $this->aauth->get_user()->loc),
+                'total' => rev_amountExchange_s($product_price[$key], $currency, $this->aauth->get_user()->loc),
                 'purchase_date' => $newDate,
                 'purchase_id' => $invocieno,
                 'tax' => numberClean($product_tax[$key]),
@@ -541,31 +589,31 @@ class Purchase extends CI_Controller
               );
               // $stock_new_index++;
               $stocklist_new[$stock_new_index] = $data_stock_new;
-              $stock_new_index++;
-            } else {
-                $data_stock_edit = array(
-                'id' => $purchase_id[$key],
-                'product_id' => $old_product_id[$key],
-                'warehouse_id' => $s_warehouse,
-                'body_number'  => $body_num[$key],
-                'engine_number' =>$engine_num[$key],
-                'plate_number' => $plate_num [$key],
-                'other_expense' => $other_expense[$key],
-                'total' => rev_amountExchange_s($product_price[$key]+$other_expense[$key], $currency, $this->aauth->get_user()->loc),
-                'purchase_date' => $newDate,
-                'purchase_id' => $invocieno,
-                'tax' => numberClean($product_tax[$key]),
-                'discount' => numberClean($product_discount[$key]),
-                'subtotal' => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc),
-                'totaltax' => rev_amountExchange_s($ptotal_tax[$key], $currency, $this->aauth->get_user()->loc),
-                'totaldiscount' => rev_amountExchange_s($ptotal_disc[$key], $currency, $this->aauth->get_user()->loc),
-                'product_des' => $product_des[$key],
-                'unit' => $product_unit[$key]
-              );
-              $stocklist_update[$stock_old_index] = $data_stock_edit;
-              $stock_old_index++;
-              print_r($data_stock_edit);
-            }
+              
+            // } else {
+            //     $data_stock_edit = array(
+            //     'id' => $purchase_id[$key],
+            //     'product_id' => $old_product_id[$key],
+            //     'warehouse_id' => $s_warehouse,
+            //     'body_number'  => $body_num[$key],
+            //     'engine_number' =>$engine_num[$key],
+            //     'plate_number' => $plate_num [$key],
+            //     'other_expense' => $other_expense[$key],
+            //     'total' => rev_amountExchange_s($product_price[$key]+$other_expense[$key], $currency, $this->aauth->get_user()->loc),
+            //     'purchase_date' => $newDate,
+            //     'purchase_id' => $invocieno,
+            //     'tax' => numberClean($product_tax[$key]),
+            //     'discount' => numberClean($product_discount[$key]),
+            //     'subtotal' => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc),
+            //     'totaltax' => rev_amountExchange_s($ptotal_tax[$key], $currency, $this->aauth->get_user()->loc),
+            //     'totaldiscount' => rev_amountExchange_s($ptotal_disc[$key], $currency, $this->aauth->get_user()->loc),
+            //     'product_des' => $product_des[$key],
+            //     'unit' => $product_unit[$key]
+            //   );
+            //   $stocklist_update[$stock_old_index] = $data_stock_edit;
+            //   $stock_old_index++;
+            //   print_r($data_stock_edit);
+            // }
             // print_r($purchase_id[$key]);
             // if($purchase_id[$key]==0) {
             //   print_r("ok");
@@ -603,9 +651,10 @@ class Purchase extends CI_Controller
             $productlist[$prodindex] = $data;
             // $stocklist_update[$stock_old_index] = $data_stock_edit;
             
-            print_r("stock new index $stock_new_index");
+            // print_r("stock new index $stock_new_index");
 
             $prodindex++;
+            $stock_new_index++;
             $amt = numberClean($product_qty[$key]);
             $itc += $amt;
 
@@ -627,12 +676,12 @@ class Purchase extends CI_Controller
         $data = array('invoicedate' => $bill_date, 'invoiceduedate' => $bill_due_date, 'subtotal' => $subtotal, 'shipping' => $shipping, 'ship_tax' => $shipping_tax, 'ship_tax_type' => $ship_taxtype, 'discount' => $total_discount, 'tax' => $total_tax, 'total' => $total, 'notes' => $notes, 'csd' => $customer_id, 'items' => $itc, 'taxstatus' => $tax, 'discstatus' => $discstatus, 'format_discount' => $discountFormat, 'refer' => $refer, 'term' => $pterms, 'multi' => $currency);
         $this->db->set($data);
         $this->db->where('id', $invocieno);
-        print_r("stock new");
+        // print_r("stock new");
         if ($flag) {
             if ($this->db->update('geopos_purchase', $data)) {
                 $this->db->insert_batch('geopos_purchase_items', $productlist);
-                $this->db->update_batch('tb_stock',$stocklist_update,'id');
-                print_r($stocklist_new);
+                //$this->db->update_batch('tb_stock',$stocklist_update,'id');
+                // print_r($stocklist_new);
                 $this->db->insert_batch('tb_stock', $stocklist_new);
                 // print_r($purchaseno);
                 // print_r("count: ".count($purchaseno));

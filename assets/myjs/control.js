@@ -730,7 +730,7 @@ function removeObject(action, action_url) {
 
 //universal create
 $("#submit-data").on("click", function (e) {
-    alert("ok");
+    // alert("ok");
     e.preventDefault();
     var o_data = $("#data_form").serialize();
     var action_url = $('#action-url').val();

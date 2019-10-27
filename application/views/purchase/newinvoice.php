@@ -219,6 +219,7 @@
                                            id='platenumber-0'>
                                 </td>
                                 <td><input type="text" class="form-control text-center" name="other_expense[]"
+                                           onkeypress="return isNumber(event)" onkeyup="rowTotal('0'), billUpyog()"
                                            placeholder="<?php echo "Other expense"//$this->lang->line('Enter Product name') ?>"
                                            id='otherexpense-0'>
                                 </td>
@@ -261,7 +262,7 @@
                                         <i class="fa fa-plus-square"></i> <?php echo $this->lang->line('Add Row') ?>
                                     </button>
                                 </td>
-                                <td colspan="7"></td>
+                                <td colspan="12"></td>
                             </tr>
 
                             <tr class="sub_c" style="display: table-row;">
