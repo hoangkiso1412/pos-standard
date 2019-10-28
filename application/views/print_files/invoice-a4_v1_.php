@@ -177,11 +177,25 @@
 <div class="invoice-box">
     <br>
     <table class="party">
+        <thead>
+        <tr class="heading">
+            <td> <?php echo $this->lang->line('Our Info') ?>:</td>
+            <td><?= $general['person'] ?>:</td>
+        </tr>
+        </thead>
+        <tbody>
         <tr>
-            <td colspan="2">
-                <?php echo 'ឈ្មោះអ្នកផ្គត់ផ្គង់(Supplier)<strong> ' . $invoice['name'] . '</strong> ';
+            <td><strong><?php $loc = location($invoice['loc']);
+                    echo $loc['cname']; ?></strong><br>
+                <?php echo
+                    $loc['address'] . '<br>' . $loc['city'] . ', ' . $loc['region'] . '<br>' . $loc['country'] . ' -  ' . $loc['postbox'] . '<br>' . $this->lang->line('Phone') . ': ' . $loc['phone'] . '<br> ' . $this->lang->line('Email') . ': ' . $loc['email'];
+                if ($loc['taxid']) echo '<br>' . $this->lang->line('Tax') . ' ID: ' . $loc['taxid'];
+                ?>
+            </td>
+            <td>
+                <?php echo '<strong>' . $invoice['name'] . '</strong><br>';
                 if ($invoice['company']) echo $invoice['company'] . '<br>';
-                echo "អាស័យដ្ឋាន(Address) ".$invoice['address'] . ' ក្រុងខេត្ត' . $invoice['city'] . ', ' . $invoice['region'] . ' ' . $invoice['country'] . '-' . $invoice['postbox'] . ' លេខទូរស័ព្ធ(Tel)' . $this->lang->line('Phone') . ': ' . $invoice['phone'] . ' អ៊ីមែល(Email): ' . $invoice['email'];
+                echo $invoice['address'] . '<br>' . $invoice['city'] . ', ' . $invoice['region'] . '<br>' . $invoice['country'] . '-' . $invoice['postbox'] . '<br>' . $this->lang->line('Phone') . ': ' . $invoice['phone'] . '<br>' . $this->lang->line('Email') . ' : ' . $invoice['email'];
                 if ($invoice['taxid']) echo '<br>' . $this->lang->line('Tax') . ' ID: ' . $invoice['taxid'];
                 if (is_array($c_custom_fields)) {
                     echo '<br>';
@@ -207,26 +221,21 @@
     <br>
     <table class="plist" cellpadding="0" cellspacing="0">
         <tr class="heading">
-            <td style="width: 3rem;text-align:center">
-                ល.រ<br>
-                No
+            <td style="width: 1rem;">
+                #
             </td>
-            <td style="width:20%;text-align:center">
-                <?php echo "បានទិញទោចក្រយានយន្ត"//$this->lang->line('Description') ?><br>
-                Bought Motocycle Model
+            <td>
+                <?php echo $this->lang->line('Description') ?>
             </td>
-            <td style="width: 15rem;text-align:center">
-                តំលៃ / ឯកតា<br>
-                <?php echo "Unit ".$this->lang->line('Price') ?>
+            <td>
+                <?php echo $this->lang->line('Price') ?>
             </td>
-            <td style="text-align:center">
-                ចំនួន<br>
+            <td>
                 <?php echo $this->lang->line('Qty') ?>
             </td>
-            <?php if ($invoice['tax'] > 0) echo '<td style="text-align:center">ឆ្នាំផលិត<br>Year</td>';
-            if ($invoice['discount'] > 0) echo '<td style="text-align:center">ព៍ណ<br>Color</td>'; ?>
+            <?php if ($invoice['tax'] > 0) echo '<td>' . $this->lang->line('Tax') . '</td>';
+            if ($invoice['discount'] > 0) echo '<td>' . $this->lang->line('Discount') . '</td>'; ?>
             <td class="t_center">
-                លេខតួនឹងលេខម៉ាស៊ីន<br>
                 <?php echo $this->lang->line('SubTotal') ?>
             </td>
         </tr>
