@@ -199,8 +199,8 @@
                             <thead>
                                 <tr class="item_header bg-gradient-directional-blue white">
                                     <th width="23%" class="text-center"><?php echo $this->lang->line('Item Name') ?></th>
-                                    <th width="10%" class="text-center"><?php echo $this->lang->line('Body Number') ?></th>
-                                    <th width="10%" class="text-center"><?php echo $this->lang->line('Machine Number') ?></th>
+                                    <th width="10%" class="text-center"><?php echo $this->lang->line('Frame Number') ?></th>
+                                    <th width="10%" class="text-center"><?php echo $this->lang->line('Engine Number') ?></th>
                                     <th width="10%" class="text-center"><?php echo $this->lang->line('Plate Number') ?></th>
                                     <th class="text-center"></th>
                                     <th width="10%" class="text-center"><?php echo $this->lang->line('Rate') ?></th>
@@ -222,12 +222,12 @@
                                                id='productname-0'>
                                         <input type="text" class="form-control req amnt hidden" name="product_qty[]" id="amount-0"
                                                onkeypress="return isNumber(event)" onkeyup="rowTotal('0'), billUpyog()"
-                                               autocomplete="off" value="1"><input type="hidden" id="alert-0" value=""
-                                               name="alert[]">
+                                               autocomplete="off" value="1">
+                                        <input type="hidden" id="alert-0" value="" name="alert[]">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control" name="product_body_num[]"
-                                               data-text='detail-item' placeholder="" id='productbodynumber-0'>
+                                                data-text='detail-item' placeholder="" id='productbodynumber-0'>
                                     </td>
                                     <td>
                                         <input type="text" class="form-control" name="product_machine_num[]"
@@ -279,7 +279,7 @@
                             </tr>
                             <tr class="last-item-row sub_c">
                                 <td class="add-row">
-                                    <button type="button" class="btn btn-success" aria-label="Left Align" id="addproductsale">
+                                    <button type="button" class="btn btn-success" aria-label="Left Align" id="addproductsale" invoice="0">
                                         <i class="fa fa-plus-square"></i> <?php echo $this->lang->line('Add Row') ?>
                                     </button>
                                 </td>
