@@ -841,6 +841,7 @@ $lang["Commune"] = "Commune";
 $lang["District"] = "District";
 $lang["Province"] = "Province";
 
-$lang["Machine Number"] = "Machine Number";
-$lang["Body Number"] = "Body Number";
+$lang["Engine Number"] = "Engine Number";
+$lang["Frame Number"] = "Frame Number";
 $lang["Plate Number"] = "Plate Number";
+$lang["New"] = "New";

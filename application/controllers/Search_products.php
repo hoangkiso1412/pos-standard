@@ -113,6 +113,7 @@ class Search_products extends CI_Controller
         $val1 = $this->input->post('val1', true);
         $val2 = $this->input->post('val2', true);
         $val3 = $this->input->post('val3', true);
+        $invoice = $this->input->post('invoice', true);
         $qw = '';
         if ($wid > 0) {
             $qw = "(tb_stock.warehouse_id='$wid') AND ";
@@ -125,8 +126,14 @@ class Search_products extends CI_Controller
             $join = 'LEFT JOIN geopos_warehouse ON geopos_warehouse.id=tb_stock.warehouse_id';
             $qw .= '(geopos_warehouse.loc=0) AND ';
         }
+        if((int)$invoice==0){
+            $qw.=" status='in-stock' and ";
+        }
+        else{
+            $qw.=" (status='in-stock' or (status='sold-out' and sale_detail_id in (select id from geopos_invoice_items where tid='".$invoice."'))) and";
+        }
         if ($name) {
-            $query = $this->db->query("SELECT distinct tb_stock.$col1 FROM tb_stock $join WHERE product_id='" . $pid . "' and (UPPER(ifnull(tb_stock.$col1,'')) LIKE '%" . strtoupper($name) . "%') and (UPPER(ifnull(tb_stock.$col2,'')) LIKE '%" . strtoupper($val2) . "%') and (UPPER(ifnull(tb_stock.$col3,'')) LIKE '%" . strtoupper($val3) . "%') and status='in-stock' LIMIT 10");
+            $query = $this->db->query("SELECT distinct tb_stock.$col1 FROM tb_stock $join WHERE " . $qw . " product_id='" . $pid . "' and (UPPER(ifnull(tb_stock.$col1,'')) LIKE '%" . strtoupper($name) . "%') and (UPPER(ifnull(tb_stock.$col2,'')) LIKE '%" . strtoupper($val2) . "%') and (UPPER(ifnull(tb_stock.$col3,'')) LIKE '%" . strtoupper($val3) . "%') LIMIT 10");
             
             $result = $query->result_array();
             foreach ($result as $row) {
@@ -146,6 +153,7 @@ class Search_products extends CI_Controller
         $body_number = $this->input->get('body_number', true);
         $engine_number = $this->input->get('engine_number', true);
         $plate_number = $this->input->get('plate_number', true);
+        $invoice = $this->input->get('invoice', true);
         $qw = '';
         if ($wid > 0) {
             $qw = "(tb_stock.warehouse_id='$wid') AND ";
@@ -158,8 +166,14 @@ class Search_products extends CI_Controller
             $join = 'LEFT JOIN geopos_warehouse ON geopos_warehouse.id=tb_stock.warehouse_id';
             $qw .= '(geopos_warehouse.loc=0) AND ';
         }
+        if((int)$invoice==0){
+            $qw.=" status='in-stock' and ";
+        }
+        else{
+            $qw.=" (status='in-stock' or (status='sold-out' and sale_detail_id in (select id from geopos_invoice_items where tid='".$invoice."'))) and";
+        }
         
-        $query = $this->db->query("SELECT tb_stock.id FROM tb_stock $join WHERE product_id='" . $pid . "' and (UPPER(ifnull(tb_stock.body_number,''))='" . strtoupper($body_number) . "') and (UPPER(ifnull(tb_stock.engine_number,''))='" . strtoupper($engine_number) . "') and (UPPER(ifnull(tb_stock.plate_number,''))='" . strtoupper($plate_number) . "') and status='in-stock' LIMIT 10");
+        $query = $this->db->query("SELECT tb_stock.id FROM tb_stock $join WHERE ".$qw." product_id='" . $pid . "' and (UPPER(ifnull(tb_stock.body_number,''))='" . strtoupper($body_number) . "') and (UPPER(ifnull(tb_stock.engine_number,''))='" . strtoupper($engine_number) . "') and (UPPER(ifnull(tb_stock.plate_number,''))='" . strtoupper($plate_number) . "') LIMIT 10");
         
         $result = $query->result_array();
         foreach ($result as $row) {

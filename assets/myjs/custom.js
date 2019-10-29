@@ -73,6 +73,7 @@ $('#addproductsale').on('click', function () {
     var nxt = parseInt(cvalue);
     $('#ganak').val(nxt);
     var functionNum = "'" + cvalue + "'";
+    var invoice = $(this).attr("invoice");
     count = $('#saman-row div').length;
 //product row
     var data = '<tr><td><input type="text" class="form-control" name="product_name[]" placeholder="Enter Product name or Code" id="productname-' + cvalue + '"><input type="text" class="form-control req amnt hidden" name="product_qty[]" id="amount-' + cvalue + '" onkeypress="return isNumber(event)" onkeyup="rowTotal(' + functionNum + '), billUpyog()" autocomplete="off" value="1" ><input type="hidden" id="alert-' + cvalue + '" value=""  name="alert[]"></td>'
@@ -172,7 +173,7 @@ $('#addproductsale').on('click', function () {
                 url: baseurl + 'search_products/search_body_num',
                 dataType: "json",
                 method: 'post',
-                data: 'name_startsWith=' + request.term + '&type=product_list&row_num=1&wid=' + $("#s_warehouses option:selected").val() + '&pid=' + $("#pid-"+tid).val() + '&col1='+col1+'&col2='+col2+'&col3='+col3+'&val2='+val2+'&val3='+val3+'&' + d_csrf,
+                data: 'name_startsWith=' + request.term + '&type=product_list&row_num=1&wid=' + $("#s_warehouses option:selected").val() + '&pid=' + $("#pid-"+tid).val() + '&col1='+col1+'&col2='+col2+'&col3='+col3+'&val2='+val2+'&val3='+val3+'&invoice='+invoice+'&' + d_csrf,
                 success: function (data) {
                     response($.map(data, function (item) {
                         var product_d = item[0];
@@ -948,6 +949,7 @@ function selectItem(tid){
     var body_number = $("#saman-row").find("#productbodynumber-"+tid).val();
     var engine_number = $("#saman-row").find("#productmachinenumber-"+tid).val();
     var plate_number = $("#saman-row").find("#productplatenumber-"+tid).val();
+    var invoice = $("#addproductsale").attr("invoice");
     $.ajax({
         url: baseurl + 'search_products/search_item_detail/',
         dataType: 'json',
@@ -956,7 +958,8 @@ function selectItem(tid){
             'pid':pid,
             'body_number':body_number,
             'engine_number':engine_number,
-            'plate_number':plate_number
+            'plate_number':plate_number,
+            'invoice':invoice
         },
         success: function (data) {
             if(data.length===1){
