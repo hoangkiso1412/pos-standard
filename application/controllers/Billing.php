@@ -312,7 +312,8 @@ class Billing extends CI_Controller
             $data['id'] = $tid;
             $data['title'] = "Invoice $tid";
             $data['invoice'] = $this->purchase->purchase_details($tid);
-            $data['products'] = $this->purchase->purchase_products($tid);
+            // $data['products'] = $this->purchase->purchase_products($tid);
+            $data['products'] = $this->purchase->purchase_product_list($tid);
             $data['employee'] = $this->purchase->employee($data['invoice']['eid']);
             $data['round_off'] = $this->custom->api_config(4);
             $data['general'] = array('title' => $this->lang->line('INVOICE'), 'person' => $this->lang->line('Supplier'), 'prefix' => prefix(2), 't_type' => 0);

@@ -176,7 +176,7 @@
 <body dir="<?= LTR ?>">
 <div class="invoice-box">
     <br>
-    <table class="party">
+    <table>
         <tr>
             <td colspan="2">
                 <?php echo 'ឈ្មោះអ្នកផ្គត់ផ្គង់(Supplier)<strong> ' . $invoice['name'] . '</strong> ';
@@ -205,29 +205,31 @@
         </tbody>
     </table>
     <br>
-    <table class="plist" cellpadding="0" cellspacing="0">
+    <table class="plist" style="font-size:12px" cellpadding="0" cellspacing="0">
         <tr class="heading">
-            <td style="width: 3rem;text-align:center">
+            <td style="text-align:center">
                 ល.រ<br>
                 No
             </td>
-            <td style="width:20%;text-align:center">
+            <td style="text-align:center">
                 <?php echo "បានទិញទោចក្រយានយន្ត"//$this->lang->line('Description') ?><br>
                 Bought Motocycle Model
-            </td>
-            <td style="width: 15rem;text-align:center">
-                តំលៃ / ឯកតា<br>
-                <?php echo "Unit ".$this->lang->line('Price') ?>
             </td>
             <td style="text-align:center">
                 ចំនួន<br>
                 <?php echo $this->lang->line('Qty') ?>
             </td>
-            <?php if ($invoice['tax'] > 0) echo '<td style="text-align:center">ឆ្នាំផលិត<br>Year</td>';
-            if ($invoice['discount'] > 0) echo '<td style="text-align:center">ព៍ណ<br>Color</td>'; ?>
-            <td class="t_center">
+            <?php 
+            if ($invoice['discount'] > 0) echo '<td style="text-align:center">ព៍ណ<br>Color</td>';
+            if ($invoice['tax'] > 0) echo '<td style="text-align:center">ឆ្នាំផលិត<br>Year</td>';
+             ?>
+            <td style="font-size:10px;text-align:center">
                 លេខតួនឹងលេខម៉ាស៊ីន<br>
                 <?php echo $this->lang->line('SubTotal') ?>
+            </td>
+            <td style="text-align:center">
+                តំលៃ / ឯកតា<br>
+                <?php echo "Unit ".$this->lang->line('Price') ?>
             </td>
         </tr>
         <?php
@@ -246,26 +248,19 @@
 
 
             echo '<tr class="item' . $flag . '">  <td>' . $n . '</td>
-                            <td>' . $row['product'] . '</td>
-							<td style="width:12%;">' . amountExchange($row['price'], $invoice['multi'], $invoice['loc']) . '</td>
-                            <td style="width:12%;" >' . +$row['qty'] . $row['unit'] . '</td>   ';
-            if ($invoice['tax'] > 0) {
-                $cols++;
-                echo '<td style="width:16%;">' . amountExchange($row['totaltax'], $invoice['multi'], $invoice['loc']) . ' <span class="tax">(' . amountFormat_s($row['tax']) . '%)</span></td>';
-            }
-            if ($invoice['discount'] > 0) {
-                $cols++;
-                echo ' <td style="width:16%;">' . amountExchange($row['totaldiscount'], $invoice['multi'], $invoice['loc']) . '</td>';
-            }
+                            <td>' . $row['product_name'] . '</td>
+                            <td style="text-align:center" >' . +$row['qty'] . $row['unit'] . '</td> 
+							<td style="width:12%;">' . $row['color'] . '</td>';
+            echo '<td style="text-align:center">' . $row['year'] . '</td>';
+            echo '<td style="text-align:center">' . $row['body_number'] .'-'. $row['engine_number'] . '</td>';
             echo '<td class="t_center">' . amountExchange($row['subtotal'], $invoice['multi'], $invoice['loc']) . '</td></tr>';
 
             if ($row['product_des']) {
                 $cc = $cols++;
 
-                echo '<tr class="item' . $flag . ' descr">  <td> </td>
-                            <td colspan="' . $cc . '">' . $row['product_des'] . '&nbsp;</td>
-							
-                        </tr>';
+              echo '<tr class="item' . $flag . ' descr">  <td> </td>
+                        <td colspan="' . $cc . '">' . $row['product_des'] . '&nbsp;</td>		
+                    </tr>';
             }
             if (CUSTOM) {
                 $p_custom_fields = $this->custom->view_fields_data($row['pid'], 4, 1);
@@ -307,15 +302,15 @@
 
         <tr>
             <td class="myco2" rowspan="<?php echo $sub_t_col ?>"><br>
-                <p><?php echo '<strong>' . $this->lang->line('Status') . ': ' . $this->lang->line(ucwords($invoice['status'])) . '</strong></p>';
+                <p><?php echo '<strong>' . 'ស្ថានភាព' . ': ' . $this->lang->line(ucwords($invoice['status'])) . '</strong></p>';
                     if (!$general['t_type']) {
-                        echo '<br><p>' . $this->lang->line('Total Amount') . ': ' . amountExchange($invoice['total'], $invoice['multi'], $invoice['loc']) . '</p><br><p>';
+                        echo '<br><p>' . 'សរុបរួម' . ': ' . amountExchange($invoice['total'], $invoice['multi'], $invoice['loc']) . '</p><br><p>';
                         if (@$round_off['other']) {
                             $final_amount = round($invoice['total'], $round_off['active'], constant($round_off['other']));
                             echo '<p>' . $this->lang->line('Round Off') . ' ' . $this->lang->line('Amount') . ': ' . amountExchange($final_amount, $invoice['multi'], $invoice['loc']) . '</p><br><p>';
                         }
 
-                        echo $this->lang->line('Paid Amount') . ': ' . amountExchange($invoice['pamnt'], $invoice['multi'], $invoice['loc']);
+                        echo 'ចំនួនដែលបានបង់' . ': ' . amountExchange($invoice['pamnt'], $invoice['multi'], $invoice['loc']);
                     }
 
                     if ($general['t_type']==1) {
@@ -323,22 +318,22 @@
                     }
                     ?></p>
             </td>
-            <td><strong><?php echo $this->lang->line('Summary') ?>:</strong></td>
+            <td><strong><?php echo "សង្ខេប"//$this->lang->line('Summary') ?>:</strong></td>
             <td>&nbsp;</td>
         </tr>
         <tr class="f_summary">
-            <td><?php echo $this->lang->line('SubTotal') ?>:</td>
+            <td><?php echo សរុបបឋម//$this->lang->line('SubTotal') ?>:</td>
             <td><?php echo amountExchange($sub_t, $invoice['multi'], $invoice['loc']); ?></td>
         </tr>
         <?php if ($invoice['tax'] > 0) {
             echo '<tr>
-            <td> ' . $this->lang->line('Total Tax') . ' :</td>
+            <td> ' . សរុបពន្ធ .':</td>
             <td>' . amountExchange($invoice['tax'], $invoice['multi'], $invoice['loc']) . '</td>
         </tr>';
         }
         if ($invoice['discount'] > 0) {
             echo '<tr>
-            <td>' . $this->lang->line('Total Discount') . ':</td>
+            <td>' . សរុបបញ្ចុះតំលៃ . ':</td>
             <td>' . amountExchange($invoice['discount'], $invoice['multi'], $invoice['loc']) . '</td>
         </tr>';
         }
@@ -350,7 +345,7 @@
         }
         ?>
         <tr>
-            <td><?php echo $this->lang->line('Balance Due') ?>:</td>
+            <td><?php echo "សរុបរួម"//$this->lang->line('Balance Due') ?>:</td>
             <td><strong><?php $rming = $invoice['total'] - $invoice['pamnt'];
     if ($rming < 0) {
         $rming = 0;
@@ -361,9 +356,15 @@
     echo amountExchange($rming, $invoice['multi'], $invoice['loc']);
     echo '</strong></td>
 		</tr>
-		</table><br><div class="sign">' . $this->lang->line('Authorized person') . '</div><div class="sign1"><img src="' . FCPATH . 'userfiles/employee_sign/' . $employee['sign'] . '" width="160" height="50" border="0" alt=""></div><div class="sign2">(' . $employee['name'] . ')</div><div class="terms">' . $invoice['notes'] . '<hr><strong>' . $this->lang->line('Terms') . ':</strong><br>';
-
-    echo '<strong>' . $invoice['termtit'] . '</strong><br>' . $invoice['terms'];
+    </table>
+    <br>
+    <table>
+        <tr>
+            <td style="text-align:center"><div class="sign">' . 'ហត្ថលេខខាអ្នកទិញ<br>Customer signature' . '</div></td>
+            <td style="width:40%"></td>
+            <td style="text-align:center"><div class="sign">' . 'ហត្ថលេខខា រឺ ត្រាអ្នកលក់<br>Seller signature or Stamp' . '</div></td>
+        </tr>
+    </table>';
     ?></div>
 </div>
 </body>
