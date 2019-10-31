@@ -826,3 +826,22 @@ $lang['Bulk Payment'] = "Bulk Payment";
 $lang['Bulk Payment Invoices'] = "Bulk Payment Invoices";
 $lang['Bulk Payment Info'] = "It will make Payment for all invoices between these dates, remaining extra payment will be discarded.";
 $lang['Supplier Bulk Payment Info'] = "It will make Payment for all invoices between these dates, remaining extra payment will be avoided with an alert.";
+
+$lang["Client Info"] = "Client Info";
+$lang["Customer's Name"] = "Customer's Name";
+$lang["Gender"] = "Gender";
+$lang["Age"] = "Age";
+$lang["ID Card"] = "ID Card";
+$lang["Phone Number"] = "Phone Number";
+$lang["House Number"] = "House Number";
+$lang["Street"] = "Street";
+$lang["Group"] = "Group";
+$lang["Village"] = "Village";
+$lang["Commune"] = "Commune";
+$lang["District"] = "District";
+$lang["Province"] = "Province";
+
+$lang["Engine Number"] = "Engine Number";
+$lang["Frame Number"] = "Frame Number";
+$lang["Plate Number"] = "Plate Number";
+$lang["New"] = "New";

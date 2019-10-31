@@ -45,21 +45,20 @@ class Invoices_model extends CI_Model
         }
     }
 
-
+    
     public function invoice_details($id, $eid = '')
     {
-        $this->db->select('geopos_invoices.*,SUM(geopos_invoices.shipping + geopos_invoices.ship_tax) AS shipping,geopos_customers.*,geopos_invoices.loc as loc,geopos_invoices.id AS iid,geopos_customers.id AS cid,geopos_terms.id AS termid,geopos_terms.title AS termtit,geopos_terms.terms AS terms');
+        $this->db->select('geopos_invoices.*,(geopos_invoices.shipping + geopos_invoices.ship_tax) AS shipping,geopos_invoices.loc as loc,geopos_invoices.id AS iid,geopos_terms.id AS termid,geopos_terms.title AS termtit,geopos_terms.terms AS terms');
         $this->db->from($this->table);
         $this->db->where('geopos_invoices.id', $id);
         if ($eid) {
             $this->db->where('geopos_invoices.eid', $eid);
         }
-              if ($this->aauth->get_user()->loc) {
+        if ($this->aauth->get_user()->loc) {
             $this->db->where('geopos_invoices.loc', $this->aauth->get_user()->loc);
         } elseif (!BDATA) {
             $this->db->where('geopos_invoices.loc', 0);
         }
-        $this->db->join('geopos_customers', 'geopos_invoices.csd = geopos_customers.id', 'left');
         $this->db->join('geopos_terms', 'geopos_terms.id = geopos_invoices.term', 'left');
         $query = $this->db->get();
         return $query->row_array();
@@ -71,6 +70,16 @@ class Invoices_model extends CI_Model
         $this->db->select('*');
         $this->db->from('geopos_invoice_items');
         $this->db->where('tid', $id);
+        $query = $this->db->get();
+        return $query->result_array();
+
+    }
+    public function invoice_products_stock($id)
+    {
+        $this->db->select('geopos_invoice_items.*,tb_stock.body_number,tb_stock.engine_number,tb_stock.plate_number');
+        $this->db->from('geopos_invoice_items');
+        $this->db->join('tb_stock', 'geopos_invoice_items.id = tb_stock.sale_detail_id and geopos_invoice_items.product_stock_id = tb_stock.id');
+        $this->db->where('geopos_invoice_items.tid', $id);
         $query = $this->db->get();
         return $query->result_array();
 

@@ -68,7 +68,155 @@ $('#addproduct').on('click', function () {
     });
 
 });
+$('#addproductsale').on('click', function () {
+    var cvalue = parseInt($('#ganak').val()) + 1;
+    var nxt = parseInt(cvalue);
+    $('#ganak').val(nxt);
+    var functionNum = "'" + cvalue + "'";
+    var invoice = $(this).attr("invoice");
+    count = $('#saman-row div').length;
+//product row
+    var data = '<tr><td><input type="text" class="form-control" name="product_name[]" placeholder="Enter Product name or Code" id="productname-' + cvalue + '"><input type="text" class="form-control req amnt hidden" name="product_qty[]" id="amount-' + cvalue + '" onkeypress="return isNumber(event)" onkeyup="rowTotal(' + functionNum + '), billUpyog()" autocomplete="off" value="1" ><input type="hidden" id="alert-' + cvalue + '" value=""  name="alert[]"></td>'
+            +'<td><input type="text" class="form-control" name="product_body_num[]" data-text="detail-item" placeholder="" id="productbodynumber-' + cvalue + '" ></td>'
+            +'<td><input type="text" class="form-control" name="product_machine_num[]" data-text="detail-item" placeholder="" id="productmachinenumber-' + cvalue + '" ></td>'
+            +'<td><input type="text" class="form-control" name="product_plate_num[]" data-text="detail-item" placeholder="" id="productplatenumber-' + cvalue + '" ></td>'
+            +'<td><i id="product_check-' + cvalue + '" class="icon-close text-danger"></i></td>'
+            +'<td><input type="text" class="form-control req prc" name="product_price[]" id="price-' + cvalue + '" onkeypress="return isNumber(event)" onkeyup="rowTotal(' + functionNum + '), billUpyog()" autocomplete="off"></td><td> <input type="text" class="form-control vat" name="product_tax[]" id="vat-' + cvalue + '" onkeypress="return isNumber(event)" onkeyup="rowTotal(' + functionNum + '), billUpyog()" autocomplete="off"></td> <td id="texttaxa-' + cvalue + '" class="text-center">0</td> <td><input type="text" class="form-control discount" name="product_discount[]" onkeypress="return isNumber(event)" id="discount-' + cvalue + '" onkeyup="rowTotal(' + functionNum + '), billUpyog()" autocomplete="off"></td> <td><span class="currenty">' + currency + '</span> <strong><span class=\'ttlText\' id="result-' + cvalue + '">0</span></strong></td> <td class="text-center"><button type="button" data-rowid="' + cvalue + '" class="btn btn-danger removeProd" title="Remove" > <i class="fa fa-minus-square"></i> </button> </td><input type="hidden" name="taxa[]" id="taxa-' + cvalue + '" value="0"><input type="hidden" name="disca[]" id="disca-' + cvalue + '" value="0"><input type="hidden" class="ttInput" name="product_subtotal[]" id="total-' + cvalue + '" value="0"> <input type="hidden" class="pdIn" name="pid[]" id="pid-' + cvalue + '" value="0"><input type="hidden" class="psIn" name="psid[]" id="psid-' + cvalue + '" value="0"><input type="hidden" name="unit[]" id="unit-' + cvalue + '" value=""> <input type="hidden" name="hsn[]" id="hsn-' + cvalue + '" value=""> </tr><tr><td colspan="11"><textarea class="form-control"  id="dpid-' + cvalue + '" name="product_description[]" placeholder="Enter Product description" autocomplete="off"></textarea><br></td></tr>';
+    //ajax request
+    // $('#saman-row').append(data);
+    $('tr.last-item-row').before(data);
 
+    row = cvalue;
+
+    $('#productname-' + cvalue).autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: baseurl + 'search_products/' + billtype,
+                dataType: "json",
+                method: 'post',
+                data: 'name_startsWith=' + request.term + '&type=product_list&row_num=' + row + '&wid=' + $("#s_warehouses option:selected").val() + '&' + d_csrf,
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        var product_d = item[0];
+                        return {
+                            label: product_d,
+                            value: product_d,
+                            data: item
+                        };
+                    }));
+                }
+            });
+        },
+        autoFocus: true,
+        minLength: 0,
+        select: function (event, ui) {
+            id_arr = $(this).attr('id');
+            id = id_arr.split("-");
+            var t_r = ui.item.data[3];
+            if ($("#taxformat option:selected").attr('data-trate')) {
+
+                t_r = $("#taxformat option:selected").attr('data-trate');
+            }
+            var discount = ui.item.data[4];
+            var custom_discount = $('#custom_discount').val();
+            if (custom_discount > 0) discount = deciFormat(custom_discount);
+
+            $('#amount-' + id[1]).val(1);
+            $('#price-' + id[1]).val(ui.item.data[1]);
+            $('#pid-' + id[1]).val(ui.item.data[2]);
+            $('#vat-' + id[1]).val(t_r);
+            $('#discount-' + id[1]).val(discount);
+            $('#dpid-' + id[1]).val(ui.item.data[5]);
+            $('#unit-' + id[1]).val(ui.item.data[6]);
+            $('#hsn-' + id[1]).val(ui.item.data[7]);
+            $('#alert-' + id[1]).val(ui.item.data[8]);
+            rowTotal(cvalue);
+            billUpyog();
+
+
+        },
+        create: function (e) {
+            $(this).prev('.ui-helper-hidden-accessible').remove();
+        }
+    });
+    $('#productbodynumber-'+cvalue+',#productmachinenumber-'+cvalue+',#productplatenumber-'+cvalue+'').autocomplete({
+        source: function (request, response) {
+            var id = this.element[0].id;
+            var tname = id.split('-')[0];
+            var tid = id.split('-')[1];
+            var col1,col2,col3,val1,val2,val3;
+            if(tname==='productbodynumber'){
+                col1='body_number';
+                col2='engine_number';
+                col3='plate_number';
+                val1=$("#productbodynumber-"+tid).val();
+                val2=$("#productmachinenumber-"+tid).val();
+                val3=$("#productplatenumber-"+tid).val();
+            }
+            else if(tname==='productmachinenumber'){
+                col1='engine_number';
+                col2='body_number';
+                col3='plate_number';
+                val1=$("#productmachinenumber-"+tid).val();
+                val2=$("#productbodynumber-"+tid).val();
+                val3=$("#productplatenumber-"+tid).val();
+            }
+            else if(tname==='productplatenumber'){
+                col1='plate_number';
+                col2='engine_number';
+                col3='body_number';
+                val1=$("#productplatenumber-"+tid).val();
+                val2=$("#productmachinenumber-"+tid).val();
+                val3=$("#productbodynumber-"+tid).val();
+            }
+            $.ajax({
+                url: baseurl + 'search_products/search_body_num',
+                dataType: "json",
+                method: 'post',
+                data: 'name_startsWith=' + request.term + '&type=product_list&row_num=1&wid=' + $("#s_warehouses option:selected").val() + '&pid=' + $("#pid-"+tid).val() + '&col1='+col1+'&col2='+col2+'&col3='+col3+'&val2='+val2+'&val3='+val3+'&invoice='+invoice+'&' + d_csrf,
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        var product_d = item[0];
+                        return {
+                            label: product_d,
+                            value: product_d,
+                            data: item
+                        };
+                    }));
+                }
+            });
+        },
+        autoFocus: true,
+        minLength: 0,
+        close: function (event, ui) {
+            var id = $(this).attr('id');
+            if(id.split('-')[0]==='productplatenumber'){
+                $("#price-"+id.split('-')[1]).focus();
+            }
+            selectItem(id.split('-')[1]);
+        }
+    });
+
+});
+
+$("#saman-row").on('change',"[data-text='detail-item']",function(e){
+    var id = $(this)[0].id;
+    if(id.split('-')[0]==='productname'){
+        if($("#saman-row").find("#"+id).val().trim()===''){
+            $("#saman-row").find('#pid-'+id.split('-')[1]).val(0);
+        }
+    }
+    selectItem(id.split('-')[1]);
+});
+$("#saman-row").on('keyup',"[data-text='detail-item']",function(e){
+    var id = $(this)[0].id;
+    if(id.split('-')[0]==='productplatenumber'){
+        if($("#saman-row").find("#"+id).val().trim()===''){
+            selectItem(id.split('-')[1]);
+        }
+    }
+    selectItem(id.split('-')[1]);
+});
 //caculations
 var precentCalc = function (total, percentageVal) {
     var pr = (total / 100) * percentageVal;
@@ -735,6 +883,112 @@ $('#productname-0').autocomplete({
 
     }
 });
+$('#productbodynumber-0,#productmachinenumber-0,#productplatenumber-0').autocomplete({
+    source: function (request, response) {
+        var id = this.element[0].id;
+        var tname = id.split('-')[0];
+        var tid = id.split('-')[1];
+        var col1,col2,col3,val1,val2,val3;
+        if(tname==='productbodynumber'){
+            col1='body_number';
+            col2='engine_number';
+            col3='plate_number';
+            val1=$("#productbodynumber-"+tid).val();
+            val2=$("#productmachinenumber-"+tid).val();
+            val3=$("#productplatenumber-"+tid).val();
+        }
+        else if(tname==='productmachinenumber'){
+            col1='engine_number';
+            col2='body_number';
+            col3='plate_number';
+            val1=$("#productmachinenumber-"+tid).val();
+            val2=$("#productbodynumber-"+tid).val();
+            val3=$("#productplatenumber-"+tid).val();
+        }
+        else if(tname==='productplatenumber'){
+            col1='plate_number';
+            col2='engine_number';
+            col3='body_number';
+            val1=$("#productplatenumber-"+tid).val();
+            val2=$("#productmachinenumber-"+tid).val();
+            val3=$("#productbodynumber-"+tid).val();
+        }
+        $.ajax({
+            url: baseurl + 'search_products/search_body_num',
+            dataType: "json",
+            method: 'post',
+            data: 'name_startsWith=' + request.term + '&type=product_list&row_num=1&wid=' + $("#s_warehouses option:selected").val() + '&pid=' + $("#pid-"+tid).val() + '&col1='+col1+'&col2='+col2+'&col3='+col3+'&val2='+val2+'&val3='+val3+'&' + d_csrf,
+            success: function (data) {
+                response($.map(data, function (item) {
+                    var product_d = item[0];
+                    return {
+                        label: product_d,
+                        value: product_d,
+                        data: item
+                    };
+                }));
+            }
+        });
+    },
+    autoFocus: true,
+    minLength: 0,
+    close: function (event, ui) {
+        var id = $(this).attr('id');
+        if(id.split('-')[0]==='productplatenumber'){
+            $("#price-"+id.split('-')[1]).focus();
+        }
+        selectItem(id.split('-')[1]);
+    }
+});
+
+function selectItem(tid){
+    /////i pause here
+    //'wid='+$("#s_warehouses option:selected").val()+'&pid='+$("#pid-"+tid).val()+'&body_number='+$("#productbodynumber-"+tid).val()+'&engine_number='+$("#productmachinenumber-"+tid).val()+'&plate_number='+$("#productplatenumber-"+tid).val(),
+    var wid = $("#s_warehouses option:selected").val();
+    var pid = $("#saman-row").find("#pid-"+tid).val();
+    var body_number = $("#saman-row").find("#productbodynumber-"+tid).val();
+    var engine_number = $("#saman-row").find("#productmachinenumber-"+tid).val();
+    var plate_number = $("#saman-row").find("#productplatenumber-"+tid).val();
+    var invoice = $("#addproductsale").attr("invoice");
+    $.ajax({
+        url: baseurl + 'search_products/search_item_detail/',
+        dataType: 'json',
+        data: {
+            'wid':wid,
+            'pid':pid,
+            'body_number':body_number,
+            'engine_number':engine_number,
+            'plate_number':plate_number,
+            'invoice':invoice
+        },
+        success: function (data) {
+            if(data.length===1){
+                $("#saman-row").find("#psid-"+tid).val(data[0]);
+            }
+            else{
+                $("#saman-row").find("#psid-"+tid).val(0);
+            }
+            
+            if(parseInt($("#saman-row").find("#psid-"+tid).val())!==0&&parseInt(pid)!==0){
+                var row = $("#saman-row").find("input[name^='psid'][value='"+data[0]+"']").length;
+                if(row<2){
+                    $("#saman-row").find("#product_check-"+tid).removeClass("text-danger").removeClass("icon-close");
+                    $("#saman-row").find("#product_check-"+tid).addClass("text-success").addClass("icon-check");
+                }
+                else{
+                    $("#saman-row").find("#product_check-"+tid).removeClass("text-success").removeClass("icon-check");
+                    $("#saman-row").find("#product_check-"+tid).addClass("text-danger").addClass("icon-close");
+                }
+            }
+            else{
+                $("#saman-row").find("#product_check-"+tid).removeClass("text-success").removeClass("icon-check");
+                $("#saman-row").find("#product_check-"+tid).addClass("text-danger").addClass("icon-close");
+            }
+            
+        }
+    });
+}
+
 $(document).on('click', ".select_pos_item", function (e) {
     var pid = $(this).attr('data-pid');
     var stock = accounting.unformat($(this).attr('data-stock'), accounting.settings.number.decimal);

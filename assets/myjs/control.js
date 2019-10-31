@@ -737,6 +737,24 @@ $("#submit-data").on("click", function (e) {
     // alert(action_url);
     addObject(o_data, action_url);
 });
+$("#sale-submit-data").on("click", function (e) {
+    e.preventDefault();
+    var row = $("#saman-row").find("i[id^='product_check-']");
+    var cross = false;
+    $(row).each(function(){
+        if($(this).hasClass("text-danger")){
+            cross = true;
+        }
+    });
+    if(cross){
+        alert("Please check your product list, some product are invalid.");
+    }
+    else{
+        var o_data = $("#data_form").serialize();
+        var action_url = $('#action-url').val();
+        addObject(o_data, action_url);
+    }
+});
 $("#submit-data2").on("click", function (e) {
     e.preventDefault();
     var o_data = $("#data_form2").serialize();
