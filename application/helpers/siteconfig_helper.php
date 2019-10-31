@@ -525,3 +525,19 @@ function accounting($loc = 0)
 var two_fixed=$decimal_after; </script>";
 
 }
+
+function employees()
+{
+    $ci =& get_instance();
+    $ci->load->database();
+    $query2 = $ci->db->query("SELECT * FROM geopos_employees");
+    return $query2->result_array();
+}
+
+function warehouse()
+{
+    $ci =& get_instance();
+    $ci->load->database();
+    $query2 = $ci->db->query("SELECT * FROM geopos_warehouse");
+    return $query2->result_array();
+}
