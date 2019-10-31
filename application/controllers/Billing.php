@@ -214,7 +214,10 @@ class Billing extends CI_Controller
             }
             $data['general'] = array('title' => $this->lang->line('Invoice'), 'person' => $this->lang->line('Customer'), 'prefix' => $pref, 't_type' => 0);
             ini_set('memory_limit', '64M');
-            if ($data['invoice']['taxstatus'] == 'cgst' || $data['invoice']['taxstatus'] == 'igst') {
+            if((double)$data['invoice']['tax']>0){
+                $html = $this->load->view('print_files/invoice-a4-vat-custom', $data, true);
+            }
+            elseif ($data['invoice']['taxstatus'] == 'cgst' || $data['invoice']['taxstatus'] == 'igst') {
                 $html = $this->load->view('print_files/invoice-a4-gst_v' . INVV, $data, true);
             } else {
                 $html = $this->load->view('print_files/invoice-a4_v' . INVV, $data, true);

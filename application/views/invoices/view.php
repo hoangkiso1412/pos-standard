@@ -557,7 +557,7 @@
 
 <!-- Modal HTML -->
 <div id="part_payment" class="modal fade">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
 
@@ -568,42 +568,78 @@
             <div class="modal-body">
                 <form class="payment">
                     <div class="row">
-                        <div class="col">
-                            <fieldset class="form-group position-relative has-icon-left">
-                                <input type="text" class="form-control" placeholder="Total Amount" name="amount"
-                                       id="rmpay"
-                                       value="<?= amountExchange_s($rming, 0, $this->aauth->get_user()->loc) ?>">
-                                <div class="form-control-position">
-                                    <?php echo $this->config->item('currency') ?>
-                                </div>
-
-                            </fieldset>
-
-
-                        </div>
-                        <div class="col">
-                            <fieldset class="form-group position-relative has-icon-left">
-                                <input type="text" class="form-control required"
-                                       placeholder="Billing Date" name="paydate"
-                                       data-toggle="datepicker">
-                                <div class="form-control-position">
-                                    <span class="fa fa-calendar"
-                                          aria-hidden="true"></span>
-                                </div>
-
-                            </fieldset>
-
-
+                        <div class="table-responsive col-sm-12">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <?php
+                                    $pid = 0;
+                                    foreach ($products as $row) {
+                                    ?>
+                                    <tr>
+                                        <td colspan="4">
+                                            <?php echo $row['product'] ?>"
+                                            <input type="hidden" class="form-control required" id="psid-<?php echo $pid?>"
+                                                       name="psid[]" value="<?php echo $row["product_stock_id"] ?>">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <fieldset class="form-group position-relative has-icon-left">
+                                                <input type="text" class="form-control required" id="paydate-<?php echo $pid?>"
+                                                       placeholder="Billing Date" name="paydate[]"
+                                                       data-toggle="datepicker">
+                                                <div class="form-control-position">
+                                                    <span class="fa fa-calendar"
+                                                          aria-hidden="true"></span>
+                                                </div>
+                                            </fieldset>
+                                        </td>
+                                        <td>
+                                            <fieldset class="form-group position-relative has-icon-left">
+                                                <input type="text" class="form-control" placeholder="Total Amount" name="totalamount[]"
+                                                       id="tamount-<?php echo $pid?>" readonly 
+                                                       value="<?= amountExchange_s($row['selling_price'], 0, $this->aauth->get_user()->loc) ?>">
+                                                <div class="form-control-position">
+                                                    <?php echo $this->config->item('currency') ?>
+                                                </div>
+                                            </fieldset>
+                                        </td>
+                                        <td>
+                                            <fieldset class="form-group position-relative has-icon-left">
+                                                <input type="text" class="form-control" placeholder="Paid Amount" name="totalpaid[]"
+                                                       id="tpaid-<?php echo $pid?>" readonly 
+                                                       value="<?= amountExchange_s($row['paid_amount'], 0, $this->aauth->get_user()->loc) ?>">
+                                                <div class="form-control-position">
+                                                    <?php echo $this->config->item('currency') ?>
+                                                </div>
+                                            </fieldset>
+                                        </td>
+                                        <td>
+                                            <fieldset class="form-group position-relative has-icon-left">
+                                                <input type="text" class="form-control" placeholder="Pay Amount" name="payamount[]"
+                                                       id="tpay-<?php echo $pid?>" onkeypress="return isNumber(event)" min="0" 
+                                                       value="<?= amountExchange_s(0, 0, $this->aauth->get_user()->loc) ?>">
+                                                <div class="form-control-position">
+                                                    <?php echo $this->config->item('currency') ?>
+                                                </div>
+                                            </fieldset>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                    $pid++;
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col mb-1"><label
                                 for="pmethod"><?php echo $this->lang->line('Payment Method') ?></label>
                             <select name="pmethod" class="form-control mb-1">
                                 <option value="Cash"><?php echo $this->lang->line('Cash') ?></option>
                                 <option value="Card"><?php echo $this->lang->line('Card') ?></option>
-                                <option value="Balance"><?php echo $this->lang->line('Client Balance') ?></option>
+                                <option class="hidden" value="Balance"><?php echo $this->lang->line('Client Balance') ?></option>
                                 <option value="Bank"><?php echo $this->lang->line('Bank') ?></option>
                             </select><label for="account"><?php echo $this->lang->line('Account') ?></label>
 
@@ -613,23 +649,19 @@
                                     echo '<option value="' . $row['id'] . '">' . $row['holder'] . ' / ' . $row['acn'] . '</option>';
                                 }
                                 ?>
-                            </select></div>
-                    </div>
-                    <div class="row">
-                        <div class="col mb-1"><label
-                                for="shortnote"><?php echo $this->lang->line('Note') ?></label>
-                            <input type="text" class="form-control"
-                                   name="shortnote" placeholder="Short note"
-                                   value="Payment for invoice #<?php echo $invoice['tid'] ?>"></div>
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
+                        <input type="hidden" class="form-control"
+                            name="shortnote" placeholder="Short note"
+                            value="Payment for invoice #<?php echo $invoice['tid'] ?>"></div>
                         <input type="hidden" class="form-control required"
-                               name="tid" id="invoiceid" value="<?php echo $invoice['iid'] ?>">
+                            name="tid" id="invoiceid" value="<?php echo $invoice['iid'] ?>">
                         <button type="button" class="btn btn-default"
-                                data-dismiss="modal"><?php echo $this->lang->line('Close') ?></button>
-                        <input type="hidden" name="cid" value="<?php echo $invoice['cid'] ?>"><input type="hidden"
-                                                                                                     name="cname"
-                                                                                                     value="<?php echo $invoice['name'] ?>">
+                            data-dismiss="modal"><?php echo $this->lang->line('Close') ?></button>
+                        <input type="hidden" name="cid" value="0">
+                        <input type="hidden" name="cname" value="<?php echo $customer_info[0] ?>">
                         <button type="button" class="btn btn-primary"
                                 id="submitpayment"><?php echo $this->lang->line('Make Payment'); ?></button>
                     </div>
@@ -877,6 +909,17 @@
 
             sendBill($('.summernote').summernote('code'));
 
+        });
+        
+        $("input[name='payamount[]']").on("keypress",function(e){
+            var id = $(this).attr("id").split("-")[1];
+            var tamount = parseFloat($("#tamount-"+id).val());
+            var tpaid = parseFloat($("#tpaid-"+id).val());
+            var tpay = parseFloat($("#tpay-"+id).val());
+            var ev = e.originalEvent.code.replace("Numpad","").replace("Digit","");
+            if(tamount-tpaid<parseFloat(tpay+''+ev)){
+                return false;
+            }
         });
 
 

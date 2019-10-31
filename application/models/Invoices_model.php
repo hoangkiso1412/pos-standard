@@ -76,7 +76,7 @@ class Invoices_model extends CI_Model
     }
     public function invoice_products_stock($id)
     {
-        $this->db->select('geopos_invoice_items.*,tb_stock.body_number,tb_stock.engine_number,tb_stock.plate_number');
+        $this->db->select('geopos_invoice_items.*,tb_stock.body_number,tb_stock.engine_number,tb_stock.plate_number,tb_stock.selling_price,tb_stock.paid_amount,tb_stock.remain_amount');
         $this->db->from('geopos_invoice_items');
         $this->db->join('tb_stock', 'geopos_invoice_items.id = tb_stock.sale_detail_id and geopos_invoice_items.product_stock_id = tb_stock.id');
         $this->db->where('geopos_invoice_items.tid', $id);
