@@ -90,6 +90,9 @@ class Purchase_model extends CI_Model
         $query=$this->db->query("select
                           tb_stock.id as stock_id,
                           CONCAT(geopos_products.product_name,' Color: ',IFNULL(geopos_products.color,''),'Year: ',IFNULL(geopos_products.year,'')) as product,
+                          geopos_products.color,
+                          geopos_products.year,
+                          geopos_products.product_name,
                           tb_stock.product_id as pid,
                           tb_stock.warehouse_id,
                           1 as qty,

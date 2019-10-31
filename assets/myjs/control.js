@@ -297,6 +297,9 @@ function payInvoice(pyurl) {
                     $('#rmpay').val(data.amt);
                     $('#paymade').text(data.ttlpaid);
                     $('#paydue').text(data.amt);
+                    if(data.activity==="refresh"){
+                        window.location.reload(true);
+                    }
 
                 } else {
                     $("#notify .message").html("<strong>" + data.status + "</strong>: " + data.message);

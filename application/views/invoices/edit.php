@@ -437,7 +437,7 @@
                         </table>
                     </div>
                     <input type="hidden" value="invoices/editaction" id="action-url">
-                    <input type="hidden" value="search" id="billtype">
+                    <input type="hidden" value="search_color_year" id="billtype">
                     <input type="hidden" value="<?php echo $i; ?>" name="counter" id="ganak">
                     <input type="hidden" value="<?php echo $this->config->item('currency'); ?>" name="currency">
                     <input type="hidden" value="<?= $this->common->taxhandle_edit($invoice['taxstatus']) ?>"
