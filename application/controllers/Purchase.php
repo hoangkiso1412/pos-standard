@@ -53,6 +53,8 @@ class Purchase extends CI_Controller
         $head['title'] = "New Purchase";
         $head['usernm'] = $this->aauth->get_user()->username;
         $data['warehouse'] = $this->purchase->warehouses();
+        $this->load->model('employee_model', 'employees');
+        $data['purchaser'] = $this->employees->get_employee_all();
         $data['taxdetails'] = $this->common->taxdetail();
         $this->load->view('fixed/header', $head);
         $this->load->view('purchase/newinvoice', $data);
@@ -67,7 +69,10 @@ class Purchase extends CI_Controller
         $data['id'] = $tid;
         $data['title'] = "Purchase Order $tid";
         $this->load->model('customers_model', 'customers');
+        $this->load->model('employee_model', 'employees');
         $data['customergrouplist'] = $this->customers->group_list();
+        $data['purchaser_s'] = $this->employees->get_employee_s($tid);
+        $data['purchaser'] = $this->employees->get_employee_all();
         $data['terms'] = $this->purchase->billingterms();
         $data['invoice'] = $this->purchase->purchase_details($tid);
         // $data['products'] = $this->purchase->purchase_products($tid);
@@ -99,7 +104,10 @@ class Purchase extends CI_Controller
     //action
     public function action()
     {
+        
         $s_warehouse = $this->input->post("s_warehouses");
+        $s_purchaser = $this->input->post("s_purchaser");
+        $receive_amount = $this->input->post("receive_amount");
         $currency = $this->input->post('mcurrency');
         $customer_id = $this->input->post('customer_id');
         $invocieno = $this->input->post('invocieno');
@@ -136,7 +144,7 @@ class Purchase extends CI_Controller
         //Invoice Data
         $bill_date = datefordatabase($invoicedate);
         $bill_due_date = datefordatabase($invocieduedate);
-        $data = array('tid' => $invocieno, 'invoicedate' => $bill_date, 'invoiceduedate' => $bill_due_date, 'subtotal' => $subtotal, 'shipping' => $shipping, 'ship_tax' => $shipping_tax, 'ship_tax_type' => $ship_taxtype, 'total' => $total, 'notes' => $notes, 'csd' => $customer_id, 'eid' => $this->aauth->get_user()->id, 'taxstatus' => $tax, 'discstatus' => $discstatus, 'format_discount' => $discountFormat, 'refer' => $refer, 'term' => $pterms, 'loc' => $this->aauth->get_user()->loc, 'multi' => $currency);
+        $data = array('tid' => $invocieno, 'invoicedate' => $bill_date, 'invoiceduedate' => $bill_due_date, 'subtotal' => $subtotal, 'shipping' => $shipping, 'ship_tax' => $shipping_tax, 'ship_tax_type' => $ship_taxtype, 'total' => $total, 'notes' => $notes, 'csd' => $customer_id, 'eid' => $this->aauth->get_user()->id, 'taxstatus' => $tax, 'discstatus' => $discstatus, 'format_discount' => $discountFormat, 'refer' => $refer, 'term' => $pterms, 'loc' => $this->aauth->get_user()->loc, 'multi' => $currency,'purchaser_id'=>$s_purchaser,'pamnt'=>$receive_amount);
 
 
         
@@ -426,6 +434,8 @@ class Purchase extends CI_Controller
     // Srieng modified save to data to tb_stock 26-10-2020
     public function editaction()
     {
+        $s_purchaser = $this->input->post("s_purchaser");
+        $receive_amount = $this->input->post("receive_amount");
         $s_warehouse = $this->input->post("s_warehouses");
         $currency = $this->input->post('mcurrency');
         $customer_id = $this->input->post('customer_id');
@@ -674,7 +684,7 @@ class Purchase extends CI_Controller
         $total_discount = rev_amountExchange_s(amountFormat_general($total_discount), $currency, $this->aauth->get_user()->loc);
         $total_tax = rev_amountExchange_s(amountFormat_general($total_tax), $currency, $this->aauth->get_user()->loc);
 
-        $data = array('invoicedate' => $bill_date, 'invoiceduedate' => $bill_due_date, 'subtotal' => $subtotal, 'shipping' => $shipping, 'ship_tax' => $shipping_tax, 'ship_tax_type' => $ship_taxtype, 'discount' => $total_discount, 'tax' => $total_tax, 'total' => $total, 'notes' => $notes, 'csd' => $customer_id, 'items' => $itc, 'taxstatus' => $tax, 'discstatus' => $discstatus, 'format_discount' => $discountFormat, 'refer' => $refer, 'term' => $pterms, 'multi' => $currency);
+        $data = array('invoicedate' => $bill_date, 'invoiceduedate' => $bill_due_date, 'subtotal' => $subtotal, 'shipping' => $shipping, 'ship_tax' => $shipping_tax, 'ship_tax_type' => $ship_taxtype, 'discount' => $total_discount, 'tax' => $total_tax, 'total' => $total, 'notes' => $notes, 'csd' => $customer_id, 'items' => $itc, 'taxstatus' => $tax, 'discstatus' => $discstatus, 'format_discount' => $discountFormat, 'refer' => $refer, 'term' => $pterms, 'multi' => $currency,'purchaser_id'=>$s_purchaser, 'pamnt'=>$receive_amount);
         $this->db->set($data);
         $this->db->where('id', $invocieno);
         // print_r("stock new");

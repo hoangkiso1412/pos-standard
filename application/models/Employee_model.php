@@ -30,7 +30,18 @@ class Employee_model extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
-
+    //Modified by Srieng 31-10-2019
+    public function get_employee_all() {
+      $this->db->select('geopos_employees.name,geopos_employees.id');
+      $this->db->from('geopos_employees');
+      $query = $this->db->get();
+      return $query->result_array();
+    }
+    public function get_employee_s($id) {
+      $query = $this->db->query("SELECT e.id,e.name FROM geopos_purchase AS p LEFT JOIN geopos_employees AS e ON p.purchaser_id=e.id WHERE
+      p.id='$id'");
+      return $query->row_array();
+    }
     public function list_project_employee($id)
     {
         $this->db->select('geopos_employees.*');
