@@ -66,6 +66,123 @@ class Search_products extends CI_Controller
         }
 
     }
+	
+	public function search_color_year()
+    {
+        $result = array();
+        $out = array();
+        $row_num = $this->input->post('row_num', true);
+        $name = $this->input->post('name_startsWith', true);
+        $wid = $this->input->post('wid', true);
+        $qw = '';
+        if ($wid > 0) {
+            $qw = "(geopos_products.warehouse='$wid') AND ";
+        }
+        $join = '';
+        if ($this->aauth->get_user()->loc) {
+            $join = 'LEFT JOIN geopos_warehouse ON geopos_warehouse.id=geopos_products.warehouse';
+            if (BDATA) $qw .= '(geopos_warehouse.loc=' . $this->aauth->get_user()->loc . ' OR geopos_warehouse.loc=0) AND '; else $qw .= '(geopos_warehouse.loc=' . $this->aauth->get_user()->loc . ' ) AND ';
+        } elseif (!BDATA) {
+            $join = 'LEFT JOIN geopos_warehouse ON geopos_warehouse.id=geopos_products.warehouse';
+            $qw .= '(geopos_warehouse.loc=0) AND ';
+        }
+        if ($name) {
+            $query = $this->db->query("SELECT geopos_products.pid,concat(geopos_products.product_name,' ',ifnull(geopos_products.year,''),' ',ifnull(geopos_products.color,'')) as product_name,geopos_products.product_price,geopos_products.product_code,geopos_products.taxrate,geopos_products.disrate,geopos_products.product_des,geopos_products.qty,geopos_products.unit  FROM geopos_products $join WHERE " . $qw . "(UPPER(concat(geopos_products.product_name,' ',ifnull(geopos_products.year,''),' ',ifnull(geopos_products.color,''))) LIKE '%" . strtoupper($name) . "%') OR (UPPER(geopos_products.product_code) LIKE '" . strtoupper($name) . "%') LIMIT 6");
+
+            $result = $query->result_array();
+            foreach ($result as $row) {
+                $name = array($row['product_name'], amountExchange_s($row['product_price'], 0, $this->aauth->get_user()->loc), $row['pid'], amountFormat_general($row['taxrate']), amountFormat_general($row['disrate']), $row['product_des'], $row['unit'], $row['product_code'], amountFormat_general($row['qty']), $row_num);
+                array_push($out, $name);
+            }
+            echo json_encode($out);
+        }
+
+    }
+    
+    public function search_body_num()
+    {
+        $result = array();
+        $out = array();
+        $row_num = $this->input->post('row_num', true);
+        $name = $this->input->post('name_startsWith', true);
+        $wid = $this->input->post('wid', true);
+        $pid = $this->input->post('pid', true);
+        $col1 = $this->input->post('col1', true);
+        $col2 = $this->input->post('col2', true);
+        $col3 = $this->input->post('col3', true);
+        $val1 = $this->input->post('val1', true);
+        $val2 = $this->input->post('val2', true);
+        $val3 = $this->input->post('val3', true);
+        $invoice = $this->input->post('invoice', true);
+        $qw = '';
+        if ($wid > 0) {
+            $qw = "(tb_stock.warehouse_id='$wid') AND ";
+        }
+        $join = '';
+        if ($this->aauth->get_user()->loc) {
+            $join = 'LEFT JOIN geopos_warehouse ON geopos_warehouse.id=tb_stock.warehouse_id';
+            if (BDATA) $qw .= '(geopos_warehouse.loc=' . $this->aauth->get_user()->loc . ' OR geopos_warehouse.loc=0) AND '; else $qw .= '(geopos_warehouse.loc=' . $this->aauth->get_user()->loc . ' ) AND ';
+        } elseif (!BDATA) {
+            $join = 'LEFT JOIN geopos_warehouse ON geopos_warehouse.id=tb_stock.warehouse_id';
+            $qw .= '(geopos_warehouse.loc=0) AND ';
+        }
+        if((int)$invoice==0){
+            $qw.=" status='in-stock' and ";
+        }
+        else{
+            $qw.=" (status='in-stock' or (status='sold-out' and sale_detail_id in (select id from geopos_invoice_items where tid='".$invoice."'))) and";
+        }
+        if ($name) {
+            $query = $this->db->query("SELECT distinct tb_stock.$col1 FROM tb_stock $join WHERE " . $qw . " product_id='" . $pid . "' and (UPPER(ifnull(tb_stock.$col1,'')) LIKE '%" . strtoupper($name) . "%') and (UPPER(ifnull(tb_stock.$col2,'')) LIKE '%" . strtoupper($val2) . "%') and (UPPER(ifnull(tb_stock.$col3,'')) LIKE '%" . strtoupper($val3) . "%') LIMIT 10");
+            
+            $result = $query->result_array();
+            foreach ($result as $row) {
+                $name = array($row["$col1"], $row_num);
+                array_push($out, $name);
+            }
+            echo json_encode($out);
+        }
+
+    }
+    
+    public function search_item_detail()
+    {
+        $out = array();
+        $wid = $this->input->get('wid', true);
+        $pid = $this->input->get('pid', true);
+        $body_number = $this->input->get('body_number', true);
+        $engine_number = $this->input->get('engine_number', true);
+        $plate_number = $this->input->get('plate_number', true);
+        $invoice = $this->input->get('invoice', true);
+        $qw = '';
+        if ($wid > 0) {
+            $qw = "(tb_stock.warehouse_id='$wid') AND ";
+        }
+        $join = '';
+        if ($this->aauth->get_user()->loc) {
+            $join = 'LEFT JOIN geopos_warehouse ON geopos_warehouse.id=tb_stock.warehouse_id';
+            if (BDATA) $qw .= '(geopos_warehouse.loc=' . $this->aauth->get_user()->loc . ' OR geopos_warehouse.loc=0) AND '; else $qw .= '(geopos_warehouse.loc=' . $this->aauth->get_user()->loc . ' ) AND ';
+        } elseif (!BDATA) {
+            $join = 'LEFT JOIN geopos_warehouse ON geopos_warehouse.id=tb_stock.warehouse_id';
+            $qw .= '(geopos_warehouse.loc=0) AND ';
+        }
+        if((int)$invoice==0){
+            $qw.=" status='in-stock' and ";
+        }
+        else{
+            $qw.=" (status='in-stock' or (status='sold-out' and sale_detail_id in (select id from geopos_invoice_items where tid='".$invoice."'))) and";
+        }
+        
+        $query = $this->db->query("SELECT tb_stock.id FROM tb_stock $join WHERE ".$qw." product_id='" . $pid . "' and (UPPER(ifnull(tb_stock.body_number,''))='" . strtoupper($body_number) . "') and (UPPER(ifnull(tb_stock.engine_number,''))='" . strtoupper($engine_number) . "') and (UPPER(ifnull(tb_stock.plate_number,''))='" . strtoupper($plate_number) . "') LIMIT 10");
+        
+        $result = $query->result_array();
+        foreach ($result as $row) {
+            $name = array($row["id"]);
+            array_push($out, $name);
+        }
+        echo json_encode($out);
+
+    }
 
     public function puchase_search()
     {

@@ -58,9 +58,9 @@ class Common
         $row1 = $query->row_array();
         $disclist = '<option value="' . $row1['key1'] . '">--' . $row1['other'] . '--</option> ';
         $disclist .= '<option value="%">' . $this->PI->lang->line('% Discount') . ' ' . $this->PI->lang->line('After TAX') . '</option>
-                                                <option value="flat">' . $this->PI->lang->line('Flat Discount') . ' ' . $this->PI->lang->line('After TAX') . '</option>
-                                                  <option value="b_p">' . $this->PI->lang->line('% Discount') . ' ' . $this->PI->lang->line('Before TAX') . '</option>
-                                                <option value="bflat">' . $this->PI->lang->line('Flat Discount') . ' ' . $this->PI->lang->line('Before TAX') . '</option> ';
+                    <option value="flat">' . $this->PI->lang->line('Flat Discount') . ' ' . $this->PI->lang->line('After TAX') . '</option>
+                    <option value="b_p">' . $this->PI->lang->line('% Discount') . ' ' . $this->PI->lang->line('Before TAX') . '</option>
+                    <option value="bflat">' . $this->PI->lang->line('Flat Discount') . ' ' . $this->PI->lang->line('Before TAX') . '</option> ';
 
 
         return $disclist;

@@ -79,7 +79,7 @@ class Invoices extends CI_Controller
         $data['terms'] = $this->invocies->billingterms();
         $data['currency'] = $this->invocies->currencies();
         $data['invoice'] = $this->invocies->invoice_details($tid, $this->limited);
-        if ($data['invoice']['id']) $data['products'] = $this->invocies->invoice_products($tid);
+        if ($data['invoice']['id']) $data['products'] = $this->invocies->invoice_products_stock($tid);
         $head['title'] = "Edit Invoice #$tid";
         $head['usernm'] = $this->aauth->get_user()->username;
         $data['warehouse'] = $this->invocies->warehouses();
@@ -110,6 +110,33 @@ class Invoices extends CI_Controller
     {
         $currency = $this->input->post('mcurrency');
         $customer_id = $this->input->post('customer_id');
+        $customer_id = 0;
+        //custom customer info
+        $customername = $this->input->post('customername');
+        $customergender = $this->input->post('customergender');
+        $customerage = $this->input->post('customerage');
+        $customeridcard = $this->input->post('customeridcard');
+        $customerphone = $this->input->post('customerphone');
+        $customerhouse = $this->input->post('customerhouse');
+        $customerstreet = $this->input->post('customerstreet');
+        $customergroup = $this->input->post('customergroup');
+        $customervillage = $this->input->post('customervillage');
+        $customercommune = $this->input->post('customercommune');
+        $customerdistrict = $this->input->post('customerdistrict');
+        $customercity = $this->input->post('customercity');
+        $customer_info = $customername
+                ."*:*".$customergender
+                ."*:*".$customerage
+                ."*:*".$customeridcard
+                ."*:*".$customerphone
+                ."*:*".$customerhouse
+                ."*:*".$customerstreet
+                ."*:*".$customergroup
+                ."*:*".$customervillage
+                ."*:*".$customercommune
+                ."*:*".$customerdistrict
+                ."*:*".$customercity;
+        //--------------------        
         $invocieno = $this->input->post('invocieno');
         $invoicedate = $this->input->post('invoicedate');
         $invocieduedate = $this->input->post('invocieduedate');
@@ -134,9 +161,9 @@ class Invoices extends CI_Controller
         } else {
             $discstatus = 1;
         }
-        if ($customer_id == 0) {
+        if (trim($customername) == '') {
             echo json_encode(array('status' => 'Error', 'message' =>
-                $this->lang->line('Please add a new client')));
+                $this->lang->line("Please input a client's name")));
             exit;
         }
         $transok = true;
@@ -146,7 +173,7 @@ class Invoices extends CI_Controller
         //Invoice Data
         $bill_date = datefordatabase($invoicedate);
         $bill_due_date = datefordatabase($invocieduedate);
-        $data = array('tid' => $invocieno, 'invoicedate' => $bill_date, 'invoiceduedate' => $bill_due_date, 'subtotal' => $subtotal, 'shipping' => $shipping, 'ship_tax' => $shipping_tax, 'ship_tax_type' => $ship_taxtype, 'discount_rate' => $disc_val, 'total' => $total, 'notes' => $notes, 'csd' => $customer_id, 'eid' => $this->aauth->get_user()->id, 'taxstatus' => $tax, 'discstatus' => $discstatus, 'format_discount' => $discountFormat, 'refer' => $refer, 'term' => $pterms, 'multi' => $currency, 'loc' => $this->aauth->get_user()->loc);
+        $data = array('tid' => $invocieno, 'invoicedate' => $bill_date, 'invoiceduedate' => $bill_due_date, 'subtotal' => $subtotal, 'shipping' => $shipping, 'ship_tax' => $shipping_tax, 'ship_tax_type' => $ship_taxtype, 'discount_rate' => $disc_val, 'total' => $total, 'notes' => $notes, 'customer_info' => $customer_info, 'eid' => $this->aauth->get_user()->id, 'taxstatus' => $tax, 'discstatus' => $discstatus, 'format_discount' => $discountFormat, 'refer' => $refer, 'term' => $pterms, 'multi' => $currency, 'loc' => $this->aauth->get_user()->loc);
         $invocieno2 = $invocieno;
         if ($this->db->insert('geopos_invoices', $data)) {
             $invocieno = $this->db->insert_id();
@@ -156,6 +183,7 @@ class Invoices extends CI_Controller
             $prodindex = 0;
             $itc = 0;
             $product_id = $this->input->post('pid');
+            $product_stock_id = $this->input->post('psid');
             $product_name1 = $this->input->post('product_name', true);
             $product_qty = $this->input->post('product_qty');
             $product_price = $this->input->post('product_price');
@@ -184,30 +212,46 @@ class Invoices extends CI_Controller
                     'totaltax' => rev_amountExchange_s($ptotal_tax[$key], $currency, $this->aauth->get_user()->loc),
                     'totaldiscount' => rev_amountExchange_s($ptotal_disc[$key], $currency, $this->aauth->get_user()->loc),
                     'product_des' => $product_des[$key],
-                    'unit' => $product_unit[$key]
+                    'unit' => $product_unit[$key],
+                    'product_stock_id' => $product_stock_id[$key]
                 );
 
                 $productlist[$prodindex] = $data;
                 $i++;
                 $prodindex++;
                 $amt = numberClean($product_qty[$key]);
-                if ($product_id[$key] > 0) {
-                    $this->db->set('qty', "qty-$amt", FALSE);
-                    $this->db->where('pid', $product_id[$key]);
-                    $this->db->update('geopos_products');
-                    if ((numberClean($product_alert[$key]) - $amt) < 0 AND $st_c == 0 AND $this->common->zero_stock()) {
-                        echo json_encode(array('status' => 'Error', 'message' => 'Product - <strong>' . $product_name1[$key] . "</strong> - Low quantity. Available stock is  " . $product_alert[$key]));
-                        $transok = false;
-                        $st_c = 1;
-                    }
-                }
+//                if ($product_id[$key] > 0) {
+//                    $this->db->set('qty', "qty-$amt", FALSE);
+//                    $this->db->where('pid', $product_id[$key]);
+//                    $this->db->update('geopos_products');
+//                    if ((numberClean($product_alert[$key]) - $amt) < 0 AND $st_c == 0 AND $this->common->zero_stock()) {
+//                        echo json_encode(array('status' => 'Error', 'message' => 'Product - <strong>' . $product_name1[$key] . "</strong> - Low quantity. Available stock is  " . $product_alert[$key]));
+//                        $transok = false;
+//                        $st_c = 1;
+//                    }
+//                }
                 $itc += $amt;
             }
+            
             if ($prodindex > 0) {
                 $this->db->insert_batch('geopos_invoice_items', $productlist);
                 $this->db->set(array('discount' => rev_amountExchange_s(amountFormat_general($total_discount), $currency, $this->aauth->get_user()->loc), 'tax' => rev_amountExchange_s(amountFormat_general($total_tax), $currency, $this->aauth->get_user()->loc), 'items' => $itc));
                 $this->db->where('id', $invocieno);
                 $this->db->update('geopos_invoices');
+                $invoice_product = $this->invocies->invoice_products($invocieno);
+                $updateStockArray = array();
+                foreach ($invoice_product as $row) {
+                    $updateStockArray[] = array(
+                        'sold_date'=>$bill_date,
+                        'sale_detail_id'=>$row['id'],
+                        'selling_price' => $row['subtotal'],
+                        'paid_amount' => 0,
+                        'remain_amount' => $row['subtotal'],
+                        'status' => 'sold-out',
+                        'id' => $row['product_stock_id']
+                    );
+                }  
+                $this->db->update_batch('tb_stock',$updateStockArray, 'id');
             } else {
                 echo json_encode(array('status' => 'Error', 'message' =>
                     "Please choose product from product list. Go to Item manager section if you have not added the products."));
@@ -298,8 +342,7 @@ class Invoices extends CI_Controller
         }
 
     }
-
-
+    
     public function ajax_list()
     {
         $list = $this->invocies->get_datatables($this->limited);
@@ -335,11 +378,10 @@ class Invoices extends CI_Controller
         $tid = $this->input->get('id');
         $data['invoice'] = $this->invocies->invoice_details($tid, $this->limited);
         $data['attach'] = $this->invocies->attach($tid);
-        $data['c_custom_fields'] = $this->custom->view_fields_data($data['invoice']['cid'], 1);
         $head['usernm'] = $this->aauth->get_user()->username;
         $head['title'] = "Invoice " . $data['invoice']['tid'];
         $this->load->view('fixed/header', $head);
-        $data['products'] = $this->invocies->invoice_products($tid);
+        $data['products'] = $this->invocies->invoice_products_stock($tid);
         if ($data['invoice']['id']) $data['activity'] = $this->invocies->invoice_transactions($tid);
         $data['employee'] = $this->invocies->employee($data['invoice']['eid']);
         if ($data['invoice']['id']) {
@@ -412,6 +454,33 @@ class Invoices extends CI_Controller
     public function editaction()
     {
         $customer_id = $this->input->post('customer_id');
+        $customer_id = 0;
+        //custom customer info
+        $customername = $this->input->post('customername');
+        $customergender = $this->input->post('customergender');
+        $customerage = $this->input->post('customerage');
+        $customeridcard = $this->input->post('customeridcard');
+        $customerphone = $this->input->post('customerphone');
+        $customerhouse = $this->input->post('customerhouse');
+        $customerstreet = $this->input->post('customerstreet');
+        $customergroup = $this->input->post('customergroup');
+        $customervillage = $this->input->post('customervillage');
+        $customercommune = $this->input->post('customercommune');
+        $customerdistrict = $this->input->post('customerdistrict');
+        $customercity = $this->input->post('customercity');
+        $customer_info = $customername
+                ."*:*".$customergender
+                ."*:*".$customerage
+                ."*:*".$customeridcard
+                ."*:*".$customerphone
+                ."*:*".$customerhouse
+                ."*:*".$customerstreet
+                ."*:*".$customergroup
+                ."*:*".$customervillage
+                ."*:*".$customercommune
+                ."*:*".$customerdistrict
+                ."*:*".$customercity;
+        //--------------------
         $invocieno = $this->input->post('invocieno');
         $iid = $this->input->post('iid');
         $invoicedate = $this->input->post('invoicedate');
@@ -429,6 +498,7 @@ class Invoices extends CI_Controller
         if ($ship_taxtype == 'incl') $shipping = $shipping - $shipping_tax;
         $refer = $this->input->post('refer', true);
         $total = rev_amountExchange_s($this->input->post('total'), $currency, $this->aauth->get_user()->loc);
+        $total_old = rev_amountExchange_s($this->input->post('total_old'), $currency, $this->aauth->get_user()->loc);
         $disc_val = numberClean($this->input->post('disc_val'));
         $total_discount = rev_amountExchange_s($this->input->post('after_disc'), $currency, $this->aauth->get_user()->loc);
         $i = 0;
@@ -442,28 +512,31 @@ class Invoices extends CI_Controller
             $discstatus = 1;
         }
 
-        if ($customer_id == 0) {
+        if (trim($customername) == '') {
             echo json_encode(array('status' => 'Error', 'message' =>
-                $this->lang->line('Please add a new client')));
+                $this->lang->line("Please input a client's name")));
             exit;
         }
         $this->db->trans_start();
         $transok = true;
         $bill_date = datefordatabase($invoicedate);
         $bill_due_date = datefordatabase($invocieduedate);
-        $data = array('invoicedate' => $bill_date, 'invoiceduedate' => $bill_due_date, 'subtotal' => $subtotal, 'shipping' => $shipping, 'ship_tax' => $shipping_tax, 'ship_tax_type' => $ship_taxtype, 'discount_rate' => $disc_val, 'discount' => $total_discount, 'tax' => $total_tax, 'total' => $total, 'notes' => $notes, 'csd' => $customer_id, 'items' => 0, 'taxstatus' => $tax, 'discstatus' => $discstatus, 'format_discount' => $discountFormat, 'refer' => $refer, 'term' => $pterms, 'multi' => $currency);
+        $data = array('invoicedate' => $bill_date, 'invoiceduedate' => $bill_due_date, 'subtotal' => $subtotal, 'shipping' => $shipping, 'ship_tax' => $shipping_tax, 'ship_tax_type' => $ship_taxtype, 'discount_rate' => $disc_val, 'discount' => $total_discount, 'tax' => $total_tax, 'total' => $total, 'notes' => $notes, 'customer_info' => $customer_info, 'csd' => $customer_id, 'items' => 0, 'taxstatus' => $tax, 'discstatus' => $discstatus, 'format_discount' => $discountFormat, 'refer' => $refer, 'term' => $pterms, 'multi' => $currency);
         $this->db->set($data);
         $this->db->where('id', $iid);
 
 
-        if ($this->db->update('geopos_invoices', $data)) {
+        if ($this->db->update('geopos_invoices', $data))
+        {
             //Product Data
             $pid = $this->input->post('pid');
             $productlist = array();
             $prodindex = 0;
             $itc = 0;
+            $this->db->query("update tb_stock set sold_date='0000-00-00', sale_detail_id=0, selling_price=0, paid_amount=0, remain_amount=0, status='in-stock' where sale_detail_id in (select id from geopos_invoice_items where tid='".$iid."')");
             $this->db->delete('geopos_invoice_items', array('tid' => $iid));
             $product_id = $this->input->post('pid');
+            $product_stock_id = $this->input->post('psid');
             $product_name1 = $this->input->post('product_name', true);
             $product_qty = $this->input->post('product_qty');
             $old_product_qty = $this->input->post('old_product_qty');
@@ -495,7 +568,8 @@ class Invoices extends CI_Controller
                     'totaltax' => rev_amountExchange_s($ptotal_tax[$key], $currency, $this->aauth->get_user()->loc),
                     'totaldiscount' => rev_amountExchange_s($ptotal_disc[$key], $currency, $this->aauth->get_user()->loc),
                     'product_des' => $product_des[$key],
-                    'unit' => $product_unit[$key]
+                    'unit' => $product_unit[$key],
+                    'product_stock_id' => $product_stock_id[$key]
                 );
                 $productlist[$prodindex] = $data;
                 $i++;
@@ -514,26 +588,62 @@ class Invoices extends CI_Controller
                 $this->db->set(array('discount' => rev_amountExchange_s(amountFormat_general($total_discount), $currency, $this->aauth->get_user()->loc), 'tax' => rev_amountExchange_s(amountFormat_general($total_tax), $currency, $this->aauth->get_user()->loc), 'items' => $itc));
                 $this->db->where('id', $iid);
                 $this->db->update('geopos_invoices');
+                $invoice_product = $this->invocies->invoice_products($iid);
+                $updateStockArray = array();
+                foreach ($invoice_product as $row) {
+                    $updateStockArray[] = array(
+                        'sold_date'=>$bill_date,
+                        'sale_detail_id'=>$row['id'],
+                        'selling_price' => $row['subtotal'],
+                        'paid_amount' => 0,
+                        'remain_amount' => $row['subtotal'],
+                        'status' => 'sold-out',
+                        'id' => $row['product_stock_id']
+                    );
+                }
+                $this->db->update_batch('tb_stock',$updateStockArray, 'id');
+                $restockcount = 0;
+                if ($this->input->post('restock')) {
+                    foreach ($this->input->post('restock') as $key => $value) {
+                        $myArray = explode('-', $value);
+                        $prid = $myArray[0];
+                        $dqty = numberClean($myArray[1]);
+                        if ($prid > 0) {
+                            $this->db->set('qty', "qty+$dqty", FALSE);
+                            $this->db->where('pid', $prid);
+                            $this->db->update('geopos_products');
+                            $restockcount++;
+                        }
+                    }
+                }
+                if($restockcount>0||$total!=$total_old){
+                    $this->db->set('pamnt', "0.00", FALSE);
+                    $this->db->set('status', 'due');
+                    $this->db->where('id', $iid);
+                    $this->db->update('geopos_invoices');
+                }
+                //reverse
+                $this->db->select('credit,debit,acid');
+                $this->db->from('geopos_transactions');
+                $this->db->where('tid', $iid);
+                $query = $this->db->get();
+                $revresult = $query->result_array();
+                foreach ($revresult as $trans) {
+                    $amt = $trans['credit'] - $trans['debit'];
+                    $this->db->set('lastbal', "lastbal-$amt", FALSE);
+                    $this->db->where('id', $trans['acid']);
+                $this->db->update('geopos_accounts');
+                }
+                $this->db->delete('geopos_transactions', array('tid' => $iid));
+        
                 echo json_encode(array('status' => 'Success', 'message' => $this->lang->line('Invoice has  been updated') . " <a href='view?id=$iid' class='btn btn-info btn-lg'><span class='fa fa-eye' aria-hidden='true'></span> " . $this->lang->line('View') . " </a> "));
             } else {
                 echo json_encode(array('status' => 'Error', 'message' =>
                     $this->lang->line('ERROR')));
                 $transok = false;
             }
-
-            if ($this->input->post('restock')) {
-                foreach ($this->input->post('restock') as $key => $value) {
-                    $myArray = explode('-', $value);
-                    $prid = $myArray[0];
-                    $dqty = numberClean($myArray[1]);
-                    if ($prid > 0) {
-                        $this->db->set('qty', "qty+$dqty", FALSE);
-                        $this->db->where('pid', $prid);
-                        $this->db->update('geopos_products');
-                    }
-                }
-            }
-        } else {
+        } 
+        else {
             echo json_encode(array('status' => 'Error', 'message' =>
                 "Please add at least one product in invoice"));
             $transok = false;
