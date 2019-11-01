@@ -368,4 +368,161 @@ class Invoices_model extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
+    
+    public function convertNumberToEnWord($num = false)
+    {
+        $num = str_replace(array(',', ' '), '' , trim($num));
+        if(! $num) {
+            return false;
+        }
+        $num = explode(".",$num);
+        $val1 = (int) $num[0];
+        $val2 = (int) $num[1];
+        $words = array();
+        $list1 = array('', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven',
+            'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'
+        );
+        $list2 = array('', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety', 'hundred');
+        $list3 = array('', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion', 'septillion',
+            'octillion', 'nonillion', 'decillion', 'undecillion', 'duodecillion', 'tredecillion', 'quattuordecillion',
+            'quindecillion', 'sexdecillion', 'septendecillion', 'octodecillion', 'novemdecillion', 'vigintillion'
+        );
+        $num_length = strlen($val1);
+        $levels = (int) (($num_length + 2) / 3);
+        $max_length = $levels * 3;
+        $val1 = substr('00' . $val1, -$max_length);
+        $num_levels = str_split($val1, 3);
+        for ($i = 0; $i < count($num_levels); $i++) {
+            $levels--;
+            $hundreds = (int) ($num_levels[$i] / 100);
+            $hundreds = ($hundreds ? ' ' . $list1[$hundreds] . ' hundred' . ' ' : '');
+            $tens = (int) ($num_levels[$i] % 100);
+            $singles = '';
+            if ( $tens < 20 ) {
+                $tens = ($tens ? ' ' . $list1[$tens] . ' ' : '' );
+            } else {
+                $tens = (int)($tens / 10);
+                $tens = ' ' . $list2[$tens] . ' ';
+                $singles = (int) ($num_levels[$i] % 10);
+                $singles = ' ' . $list1[$singles] . ' ';
+            }
+            $words[] = $hundreds . $tens . $singles . ( ( $levels && ( int ) ( $num_levels[$i] ) ) ? ' ' . $list3[$levels] . ' ' : '' );
+        } //end for loop
+        
+        $cent = "";
+        $dollar = " USD only";
+        $word_cent = array();
+        if($val2){
+            $cent = "cents";
+            $dollar = " USD and ";
+            $num_length = strlen($val2);
+            $levels = (int) (($num_length + 2) / 3);
+            $max_length = $levels * 3;
+            $val2 = substr('00' . $val2, -$max_length);
+            $num_levels = str_split($val2, 3);
+            for ($i = 0; $i < count($num_levels); $i++) {
+                $levels--;
+                $hundreds = (int) ($num_levels[$i] / 100);
+                $hundreds = ($hundreds ? ' ' . $list1[$hundreds] . ' hundred' . ' ' : '');
+                $tens = (int) ($num_levels[$i] % 100);
+                $singles = '';
+                if ( $tens < 20 ) {
+                    $tens = ($tens ? ' ' . $list1[$tens] . ' ' : '' );
+                } else {
+                    $tens = (int)($tens / 10);
+                    $tens = ' ' . $list2[$tens] . ' ';
+                    $singles = (int) ($num_levels[$i] % 10);
+                    $singles = ' ' . $list1[$singles] . ' ';
+                }
+                $word_cent[] = $hundreds . $tens . $singles . ( ( $levels && ( int ) ( $num_levels[$i] ) ) ? ' ' . $list3[$levels] . ' ' : '' );
+            } //end for loop
+        }
+        $commas = count($words);
+        if ($commas > 1) {
+            $commas = $commas - 1;
+        }
+        $commas = count($word_cent);
+        if ($commas > 1) {
+            $commas = $commas - 1;
+        }
+        return implode(' ', $words).$dollar.implode(' ', $word_cent).$cent;
+    }
+    public function convertNumberToKhWord($num = false)
+    {
+        $num = str_replace(array(',', ' '), '' , trim($num));
+        if(! $num) {
+            return false;
+        }
+        $num = explode(".",$num);
+        $val1 = (int) $num[0];
+        $val2 = (int) $num[1];
+        $words = array();
+        $list1 = array('', 'មួយ', 'ពីរ', 'បី', 'បួន', 'ប្រាំ', 'ប្រាំមួយ', 'ប្រាំពីរ', 'ប្រាំបី', 'ប្រាំបួន', 'ដប់', 'ដប់មួយ',
+            'ដប់ពីរ', 'ដប់បី', 'ដប់បួន', 'ដប់ប្រាំ', 'ដប់ប្រាំមួយ', 'ដប់ប្រាំពីរ', 'ដប់ប្រាំបី', 'ដប់ប្រាំបួន'
+        );
+        $list2 = array('', 'ដប់', 'ម្ភៃ', 'សាមសិប', 'សែសិប', 'ហាសិប', 'ហុកសិប', 'ចិតសិប', 'ប៉ែតសិប', 'កៅសិប', 'មួយរយ');
+        $list3 = array('', 'ពាន់', 'លាន', 'ប៊ីលាន', 'ទ្រីលាន', 'quadrillion', 'quintillion', 'sextillion', 'septillion',
+            'octillion', 'nonillion', 'decillion', 'undecillion', 'duodecillion', 'tredecillion', 'quattuordecillion',
+            'quindecillion', 'sexdecillion', 'septendecillion', 'octodecillion', 'novemdecillion', 'vigintillion'
+        );
+        $num_length = strlen($val1);
+        $levels = (int) (($num_length + 2) / 3);
+        $max_length = $levels * 3;
+        $val1 = substr('00' . $val1, -$max_length);
+        $num_levels = str_split($val1, 3);
+        for ($i = 0; $i < count($num_levels); $i++) {
+            $levels--;
+            $hundreds = (int) ($num_levels[$i] / 100);
+            $hundreds = ($hundreds ? ' ' . $list1[$hundreds] . ' រយ' . ' ' : '');
+            $tens = (int) ($num_levels[$i] % 100);
+            $singles = '';
+            if ( $tens < 20 ) {
+                $tens = ($tens ? ' ' . $list1[$tens] . ' ' : '' );
+            } else {
+                $tens = (int)($tens / 10);
+                $tens = ' ' . $list2[$tens] . ' ';
+                $singles = (int) ($num_levels[$i] % 10);
+                $singles = ' ' . $list1[$singles] . ' ';
+            }
+            $words[] = $hundreds . $tens . $singles . ( ( $levels && ( int ) ( $num_levels[$i] ) ) ? ' ' . $list3[$levels] . ' ' : '' );
+        } //end for loop
+        
+        $cent = "";
+        $dollar = " ដុល្លាគត់";
+        $word_cent = array();
+        if($val2){
+            $cent = "សេន";
+            $dollar = " ដុល្លានិង ";
+            $num_length = strlen($val2);
+            $levels = (int) (($num_length + 2) / 3);
+            $max_length = $levels * 3;
+            $val2 = substr('00' . $val2, -$max_length);
+            $num_levels = str_split($val2, 3);
+            for ($i = 0; $i < count($num_levels); $i++) {
+                $levels--;
+                $hundreds = (int) ($num_levels[$i] / 100);
+                $hundreds = ($hundreds ? ' ' . $list1[$hundreds] . ' រយ' . ' ' : '');
+                $tens = (int) ($num_levels[$i] % 100);
+                $singles = '';
+                if ( $tens < 20 ) {
+                    $tens = ($tens ? ' ' . $list1[$tens] . ' ' : '' );
+                } else {
+                    $tens = (int)($tens / 10);
+                    $tens = ' ' . $list2[$tens] . ' ';
+                    $singles = (int) ($num_levels[$i] % 10);
+                    $singles = ' ' . $list1[$singles] . ' ';
+                }
+                $word_cent[] = $hundreds . $tens . $singles . ( ( $levels && ( int ) ( $num_levels[$i] ) ) ? ' ' . $list3[$levels] . ' ' : '' );
+            } //end for loop
+        }
+        $commas = count($words);
+        if ($commas > 1) {
+            $commas = $commas - 1;
+        }
+        $commas = count($word_cent);
+        if ($commas > 1) {
+            $commas = $commas - 1;
+        }
+        return str_replace(" ","",implode(' ', $words).$dollar.implode(' ', $word_cent).$cent);
+    }
 }
