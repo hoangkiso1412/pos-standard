@@ -109,7 +109,8 @@ class Purchase_model extends CI_Model
                           tb_stock.totaltax,
                           tb_stock.product_des,
                           tb_stock.unit,
-                          tb_stock.status
+                          tb_stock.status,
+                          tb_stock.purchase_paid_amount
                           from tb_stock 
                           inner join geopos_products on tb_stock.product_id = geopos_products.pid where tb_stock.purchase_id=$id")->result_array();
           return $query;

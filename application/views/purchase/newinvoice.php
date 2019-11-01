@@ -205,6 +205,7 @@
                                     <?php echo $this->lang->line('Amount') ?>
                                     (<?php echo $this->config->item('currency'); ?>)
                                 </th>
+                                <th width="5%" class="text-center"><?php echo "Paid Amount"//$this->lang->line('Discount') ?></th>
                                 <th width="5%" class="text-center"><?php echo $this->lang->line('Action') ?></th>
                             </tr>
                             </thead>
@@ -246,6 +247,7 @@
                                            onkeyup="rowTotal('0'), billUpyog()" autocomplete="off"></td>
                                 <td><span class="currenty"><?php echo $this->config->item('currency'); ?></span>
                                     <strong><span class='ttlText' id="result-0">0</span></strong></td>
+                                <td><input type="text" class="form-control discount" name="purchase_paid_amount[]" onkeypress="return isNumber(event)" id="purchasepaidamount-0" autocomplete="off"></td>
                                 <td class="text-center">
 
                                 </td>
@@ -310,7 +312,7 @@
 
                                 </td>
                             </tr>
-                            <tr class="sub_c" style="display: table-row;">
+                            <tr class="sub_c hidden" style="display: table-row;">
                                 <td colspan="6" align="right">
                                     <strong><?php echo "Receive Amount"//$this->lang->line('Shipping') ?></strong></td>
                                 <td align="left" colspan="2"><input type="text" class="form-control shipVal"

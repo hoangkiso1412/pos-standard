@@ -165,6 +165,7 @@ class Purchase extends CI_Controller
             $engine_num= $this->input->post('engine_number', true);
             $plate_num= $this->input->post('plate_number', true);
             $other_expense= $this->input->post('other_expense', true);
+            $purchase_paidamount = $this->input->post("purchase_paid_amount");
             
             // End
             $product_qty = $this->input->post('product_qty');
@@ -259,7 +260,10 @@ class Purchase extends CI_Controller
                     'totaltax' => rev_amountExchange_s($ptotal_tax[$key], $currency, $this->aauth->get_user()->loc),
                     'totaldiscount' => rev_amountExchange_s($ptotal_disc[$key], $currency, $this->aauth->get_user()->loc),
                     'product_des' => $product_des[$key],
-                    'unit' => $product_unit[$key]
+                    'unit' => $product_unit[$key],
+                    'purchase_paid_amount' => $purchase_paidamount[$key],
+                    'purchase_remain_amount' => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc)-$purchase_paidamount[$key],
+                    'purchase_qty' =>1
                     );
 
                 $flag = true;
@@ -462,7 +466,7 @@ class Purchase extends CI_Controller
         $engine_num= $this->input->post('engine_number', true);
         $plate_num= $this->input->post('plate_number', true);
         $other_expense= $this->input->post('other_expense', true);
-        
+        $purchase_paidamount = $this->input->post("purchase_paid_amount");
         // End
         if ($ship_taxtype == 'incl') $shipping = $shipping - $shipping_tax;
 
@@ -554,6 +558,7 @@ class Purchase extends CI_Controller
         $product_des = $this->input->post('product_description', true);
         $product_unit = $this->input->post('unit');
         $product_hsn = $this->input->post('hsn');
+        $purchase_paidamount = $this->input->post("purchase_paid_amount");
 
         // $purchaseno=array();
         foreach ($pid as $key => $value) {
@@ -596,7 +601,9 @@ class Purchase extends CI_Controller
                 'totaltax' => rev_amountExchange_s($ptotal_tax[$key], $currency, $this->aauth->get_user()->loc),
                 'totaldiscount' => rev_amountExchange_s($ptotal_disc[$key], $currency, $this->aauth->get_user()->loc),
                 'product_des' => $product_des[$key],
-                'unit' => $product_unit[$key]
+                'unit' => $product_unit[$key],
+                'purchase_remain_amount' => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc)-$purchase_paidamount[$key],
+                'purchase_paid_amount' => $purchase_paidamount[$key],
               );
               // $stock_new_index++;
               $stocklist_new[$stock_new_index] = $data_stock_new;
