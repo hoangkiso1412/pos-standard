@@ -845,3 +845,6 @@ $lang["Engine Number"] = "Engine Number";
 $lang["Frame Number"] = "Frame Number";
 $lang["Plate Number"] = "Plate Number";
 $lang["New"] = "New";
+$lang["Purchase Detail Listing"] = "Purchase Detail Listing";
+$lang["Select Stock"] = "Select Stock";
+
