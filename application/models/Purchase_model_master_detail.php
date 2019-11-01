@@ -32,18 +32,24 @@ class Purchase_model_master_detail extends CI_Model
 
     private function _get_datatables_query()
     {
-        $this->db->select('v_purchase_detail.invoicedate,v_purchase_detail.title,v_purchase_detail.product_type,v_purchase_detail.product_name,v_purchase_detail.items,v_purchase_detail.color,v_purchase_detail.year,v_purchase_detail.conditions_plateNumber,v_purchase_detail.body_number,v_purchase_detail.engine_number,v_purchase_detail.Seller,v_purchase_detail.total,v_purchase_detail.remain_amount,v_purchase_detail.paid_amount,v_purchase_detail.notes');
+        $this->db->select('v_purchase_detail.invoicedate,v_purchase_detail.title,v_purchase_detail.product_type,v_purchase_detail.product_name,v_purchase_detail.items,v_purchase_detail.color,v_purchase_detail.year,v_purchase_detail.conditions_plateNumber,v_purchase_detail.body_number,v_purchase_detail.engine_number,v_purchase_detail.Seller,v_purchase_detail.total,v_purchase_detail.remain_amount,v_purchase_detail.paid_amount,v_purchase_detail.notes,stock_id,paid_date');
         $this->db->from($this->table);
         
             if ($this->aauth->get_user()->loc) {
             $this->db->where('v_purchase_detail.loc', $this->aauth->get_user()->loc);
         }
         elseif(!BDATA) { $this->db->where('v_purchase_detail.loc', 0); }
-                    if ($this->input->post('start_date') && $this->input->post('end_date')) // if datatable send POST for search
+                    if ($this->input->post('start_date') && $this->input->post('end_date') && $this->input->post('stock')) // if datatable send POST for search
         {
             $this->db->where('DATE(v_purchase_detail.invoicedate) >=', datefordatabase($this->input->post('start_date')));
             $this->db->where('DATE(v_purchase_detail.invoicedate) <=', datefordatabase($this->input->post('end_date')));
+            $this->db->where('v_purchase_detail.stock_id = ', $this->input->post('stock'));
+
+        }elseif($this->input->post('start_date') && $this->input->post('end_date')){
+            $this->db->where('DATE(v_purchase_detail.invoicedate) >=', datefordatabase($this->input->post('start_date')));
+            $this->db->where('DATE(v_purchase_detail.invoicedate) <=', datefordatabase($this->input->post('end_date')));
         }
+
         $i = 0;
         foreach ($this->column_search as $item) // loop column
         {

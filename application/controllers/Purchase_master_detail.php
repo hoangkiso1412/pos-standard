@@ -74,9 +74,10 @@ class Purchase_master_detail extends CI_Controller
             $row[] = amountExchange($invoices->total, 0, $this->aauth->get_user()->loc);
             $row[] = amountExchange($invoices->remain_amount, 0, $this->aauth->get_user()->loc);
             $row[] = amountExchange($invoices->paid_amount, 0, $this->aauth->get_user()->loc);
+            $row[] = $invoices->paid_date;
             $row[] = $invoices->notes;
             $row[] = amountExchange($invoices->total, 0, $this->aauth->get_user()->loc);
-            
+
             $data[] = $row;
         }
 
@@ -90,8 +91,6 @@ class Purchase_master_detail extends CI_Controller
         echo json_encode($output);
 
     }
-
-
 
     public function file_handling()
     {

@@ -1,5 +1,5 @@
 <?php 
-$lang['Date'] = "ថ្ងៃទី";
+$lang['Date'] = "Date";
 $lang['Edit'] = "Edit";
 $lang['employee_login_panel'] = "Employee Login Panel";
 $lang['remember_me'] = "Remember Me";
@@ -845,6 +845,6 @@ $lang["Engine Number"] = "Engine Number";
 $lang["Frame Number"] = "Frame Number";
 $lang["Plate Number"] = "Plate Number";
 $lang["New"] = "New";
-$lang["Purchase Detail Listing"] = "របាយការណ៍ទិញចូល សំរាយ";
-$lang["Select Stock"] = "ជ្រើសរើស ស្តុក";
+$lang["Purchase Detail Listing"] = "Purchase Detail Listing";
+$lang["Select Stock"] = "Select Stock";
 
