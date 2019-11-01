@@ -69,14 +69,22 @@
 
                                         <div type="text" id="customer_phone"></div>
                                     </div>
-                                    <hr><?php echo $this->lang->line('Warehouse') ?> <select id="s_warehouses" name="s_warehouses"
-                                                                                             class="selectpicker form-control">
+                                    <hr>
+                                      <?php echo $this->lang->line('Warehouse') ?> 
+                                        <select id="s_warehouses" name="s_warehouses" class="selectpicker form-control">
                                         <?php echo $this->common->default_warehouse();
                                         echo '<option value="0">' . $this->lang->line('All') ?></option><?php foreach ($warehouse as $row) {
                                             echo '<option value="' . $row['id'] . '">' . $row['title'] . '</option>';
                                         } ?>
-
-                                    </select>
+                                      </select>
+                                      <hr>
+                                      <?php echo $this->lang->line('Warehouse') ?> 
+                                        <select id="s_purchaser" name="s_purchaser" class="selectpicker form-control">
+                                        <?php //echo $this->common->default_warehouse();
+                                        echo '<option value="0">' . $this->lang->line('All') ?></option><?php foreach ($purchaser as $row) {
+                                            echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
+                                        } ?>
+                                      </select>
                                 </div>
 
 
@@ -300,6 +308,15 @@
                                 <td align="left" colspan="2"><input type="text" name="total" class="form-control"
                                                                     id="invoiceyoghtml" readonly="">
 
+                                </td>
+                            </tr>
+                            <tr class="sub_c" style="display: table-row;">
+                                <td colspan="6" align="right">
+                                    <strong><?php echo "Receive Amount"//$this->lang->line('Shipping') ?></strong></td>
+                                <td align="left" colspan="2"><input type="text" class="form-control shipVal"
+                                                                    onkeypress="return isNumber(event)"
+                                                                    placeholder="Value"
+                                                                    name="receive_amount" id="receive_amount" autocomplete="off">
                                 </td>
                             </tr>
                             <!-- End -->

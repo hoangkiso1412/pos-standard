@@ -62,6 +62,16 @@
                                             } ?>
 
                                         </select>
+                                        <hr>
+                                      <?php echo "Purchaser"//$this->lang->line('Warehouse') ?> 
+                                        <select id="s_purchaser" name="s_purchaser" class="selectpicker form-control">
+                                        <?php 
+                                        echo '<option value="' . $purchaser_s['id'] . '">' . $purchaser_s['name'] . ' (S)</option>';
+                                        echo '<option value="0">' . $this->lang->line('All') ?></option>
+                                        <?php foreach ($purchaser as $row) {
+                                            echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
+                                        } ?>
+                                      </select>
                                     </div>
 
 
@@ -311,6 +321,15 @@
                                                                         value="<?= edit_amountExchange_s($invoice['total'], $invoice['multi'], $this->aauth->get_user()->loc); ?>"
                                                                         readonly="">
 
+                                    </td>
+                                </tr>
+                                <tr class="sub_c" style="display: table-row;">
+                                    <td colspan="6" align="right">
+                                        <strong><?php echo "Receive Amount"//$this->lang->line('Shipping') ?></strong></td>
+                                    <td align="left" colspan="2"><input type="text" class="form-control shipVal"
+                                                                        onkeypress="return isNumber(event)"
+                                                                        placeholder="Value"
+                                                                        name="receive_amount" id="receive_amount" autocomplete="off" value="<?php echo $invoice['pamnt']  ?>">
                                     </td>
                                 </tr>
                                 <tr class="sub_c hidden" style="display: table-row;">
