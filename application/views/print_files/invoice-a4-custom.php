@@ -370,7 +370,7 @@
                 ?>
                     <tr>
                         <td rowspan="2" class="b-top b-right"><u>ជាអក្សរ</u><br>In Word</td>
-                        <td rowspan="2" class="b-top b-right"><?php echo $this->invocies->convertNumberToKhWord($subtotal); ?></td>
+                        <td rowspan="2" class="b-top b-right"></td>
                         <td colspan="2" class="b-top b-right">បញ្ចុះតម្លៃ<br>Discount</td>
                         <td class="text-right b-top v-middle"><?php echo amountExchange($discount, $invoice['multi'], $invoice['loc']) ?></td>
                     </tr>
