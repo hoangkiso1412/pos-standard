@@ -78,16 +78,14 @@
                                         } ?>
                                       </select>
                                       <hr>
-                                      <?php echo $this->lang->line('Warehouse') ?> 
-                                        <select id="s_purchaser" name="s_purchaser" class="selectpicker form-control">
+                                      <?php echo "Purchaser"//$this->lang->line('Warehouse') ?> 
+                                        <select id="s_purchaser" name="s_purchaser" class="selectpicker form-control" style="margin-bottom:20px;">
                                         <?php //echo $this->common->default_warehouse();
                                         echo '<option value="0">' . $this->lang->line('All') ?></option><?php foreach ($purchaser as $row) {
                                             echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
                                         } ?>
                                       </select>
                                 </div>
-
-
                             </div>
                         </div>
                         <div class="col-sm-6 cmp-pnl">
