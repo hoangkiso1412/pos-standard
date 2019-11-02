@@ -223,17 +223,9 @@
             if ($invoice['discount'] > 0) echo '<td style="text-align:center">ព៍ណ<br>Color</td>';
             if ($invoice['tax'] > 0) echo '<td style="text-align:center">ឆ្នាំផលិត<br>Year</td>';
              ?>
-            <td style="text-align:center">
-                ព័ណ<br>
-                <?php echo "Colour"//$this->lang->line('SubTotal') ?>
-            </td>
-            <td style="text-align:center">
-                ឆ្នាំផលិត<br>
-                <?php echo "Pro. Year"//"Unit ".$this->lang->line('Price') ?>
-            </td>
-            <td style="text-align:center">
-                លេខតួ និង លេខម៉ាស៊ីន<br>
-                <?php echo "Engine and Frame No"//"Unit ".$this->lang->line('Price') ?>
+            <td style="font-size:10px;text-align:center">
+                លេខតួនឹងលេខម៉ាស៊ីន<br>
+                <?php echo $this->lang->line('SubTotal') ?>
             </td>
             <td style="text-align:center">
                 តំលៃ / ឯកតា<br>
@@ -241,11 +233,10 @@
             </td>
         </tr>
         <?php
-        $fill       = true;
-        $sub_t      = 0;
-        $sub_t_col  = 3;
-        $n          = 1;
-        $paid_amount= 0;
+        $fill = true;
+        $sub_t = 0;
+        $sub_t_col = 3;
+        $n = 1;
         foreach ($products as $row) {
             $cols = 4;
             if ($fill == true) {
@@ -253,7 +244,6 @@
             } else {
                 $flag = '';
             }
-            $paid_amount+=$row['purchase_paid_amount'];
             $sub_t += $row['price'] * $row['qty'];
 
 
@@ -320,7 +310,7 @@
                             echo '<p>' . $this->lang->line('Round Off') . ' ' . $this->lang->line('Amount') . ': ' . amountExchange($final_amount, $invoice['multi'], $invoice['loc']) . '</p><br><p>';
                         }
 
-                        echo 'ចំនួនដែលបានបង់' . ': ' . amountExchange($paid_amount, $invoice['multi'], $invoice['loc']);
+                        echo 'ចំនួនដែលបានបង់' . ': ' . amountExchange($invoice['pamnt'], $invoice['multi'], $invoice['loc']);
                     }
 
                     if ($general['t_type']==1) {

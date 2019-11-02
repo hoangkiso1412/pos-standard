@@ -242,14 +242,14 @@ class Common
             $query = $this->PI->db->get();
             $out = $query->row_array();
         }
-        $lang = '<option value="' . $out['lang'] . '">--' . $out['lang'] . '--</option><option value="english">English</option> <option value="arabic">Arabic</option><option value="bengali">Bengali</option>
+        $lang = '<option value="' . $out['lang'] . '">--' . $out['lang'] . '--</option><option value="khmer">Khmer</option><option value="english">English</option> <option value="arabic">Arabic</option><option value="bengali">Bengali</option>
                        <option value="czech">Czech</option><option value="chinese-simplified">Chinese-simplified</option> <option value="chinese-traditional">Chinese-traditional</option> <option value="dutch">Dutch</option><option value="french">French</option><option value="german">German</option><option value="greek">Greek</option><option value="hindi">Hindi</option><option value="indonesian">Indonesian</option>  <option value="italian">Italian</option><option value="japanese">Japanese</option><option value="korean">Korean</option><option value="latin">Latin</option> <option value="polish">Polish</option><option value="portuguese">Portuguese</option> <option value="russian">Russian</option> <option value="swedish">Swedish</option><option value="spanish">Spanish</option><option value="turkish">Turkish</option><option value="urdu">Urdu</option>';
         return $lang;
     }
 
     function current_language($lang = '')
     {
-        $lang = '<option value="' . $lang . '">--' . $lang . '--</option><option value="english">English</option> <option value="arabic">Arabic</option><option value="bengali">Bengali</option>
+        $lang = '<option value="' . $lang . '">--' . $lang . '--</option><option value="khmer">Khmer</option><option value="english">English</option> <option value="arabic">Arabic</option><option value="bengali">Bengali</option>
                        <option value="czech">Czech</option><option value="chinese-simplified">Chinese-simplified</option> <option value="chinese-traditional">Chinese-traditional</option> <option value="dutch">Dutch</option><option value="french">French</option><option value="german">German</option><option value="greek">Greek</option><option value="hindi">Hindi</option><option value="indonesian">Indonesian</option>  <option value="italian">Italian</option><option value="japanese">Japanese</option><option value="korean">Korean</option><option value="latin">Latin</option> <option value="polish">Polish</option><option value="portuguese">Portuguese</option> <option value="russian">Russian</option> <option value="swedish">Swedish</option><option value="spanish">Spanish</option><option value="turkish">Turkish</option><option value="urdu">Urdu</option>';
         return $lang;
 

@@ -181,7 +181,7 @@
                         </div>
 
 
-                        <div id="saman-row">
+                        <div id="saman-row" style="padding-top:5px">
                             <table class="table-responsive tfr my_stripe">
                                 <thead>
                                     <tr class="item_header bg-gradient-directional-amber">
