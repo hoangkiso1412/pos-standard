@@ -1,7 +1,7 @@
 <div class="content-body">
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title"><?php echo $this->lang->line('Purchase Detail Listing') ?>
+            <h4 class="card-title"><?php echo 'របាយការណ៍ស្តុកទាំងអស់' //$this->lang->line('Purchase Detail Listing') ?>
             <div class="heading-elements">
                 <ul class="list-inline mb-0">
                     <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
@@ -64,6 +64,7 @@
                         <th>ស្តុចូល</th>
                         <th>ស្តុកចេញ</th>
                         <th>ស្តុកសល់</th>
+                        <th>ថ្ងៃលក់</th>
                         <th>ផ្សេងៗ</th>
                     </tr>
                     </thead>
@@ -71,6 +72,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>

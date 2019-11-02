@@ -75,6 +75,7 @@ class Warehouse extends CI_Controller
             $row[] = $invoices->purchase_qty;
             $row[] = $invoices->sold_out_qty;
             $row[] = $invoices->available_qty;
+            $row[] = $invoices->sold_date;
             $row[] = $invoices->product_des;
             $row[] = amountExchange($invoices->total, 0, $this->aauth->get_user()->loc);
 
