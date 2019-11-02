@@ -8,7 +8,8 @@ $hostname ='localhost:8889';
 $username ='root';
 $password ='123';
 $database ='standard-pos';	
-	
+
+
 
 $db['default'] = array(
 	'dsn'	=> '',

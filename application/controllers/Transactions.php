@@ -95,14 +95,19 @@ class Transactions extends CI_Controller
         }
         $amount2 = 0;
         $tid = $this->input->post('tid');
-        $amount = rev_amountExchange_s($this->input->post('amount', true), 0, $this->aauth->get_user()->loc);
+        
+        //array post
+        $psid = $this->input->post("psid");
+        $amount = $this->input->post("payamount");
         $paydate = $this->input->post('paydate', true);
+        //end array post
+        
         $note = $this->input->post('shortnote', true);
         $pmethod = $this->input->post('pmethod', true);
         $acid = $this->input->post('account', true);
         $cid = $this->input->post('cid', true);
         $cname = $this->input->post('cname', true);
-        $paydate = datefordatabase($paydate);
+        
 
         $this->db->select('holder');
         $this->db->from('geopos_accounts');
@@ -110,40 +115,59 @@ class Transactions extends CI_Controller
         $query = $this->db->get();
         $account = $query->row_array();
 
-        if ($pmethod == 'Balance') {
-
-            $customer = $this->transactions->check_balance($cid);
-            if (rev_amountExchange_s($customer['balance'], 0, $this->aauth->get_user()->loc) >= $amount) {
-
-                $this->db->set('balance', "balance-$amount", FALSE);
-                $this->db->where('id', $cid);
-                $this->db->update('geopos_customers');
-            } else {
-
-                $amount = rev_amountExchange_s($customer['balance'], 0, $this->aauth->get_user()->loc);
-                $this->db->set('balance', 0, FALSE);
-                $this->db->where('id', $cid);
-                $this->db->update('geopos_customers');
+        $productlist = array();
+        $prodindex = 0;
+        $totalpayamount = 0;
+        $updateQuery = "";
+        foreach ($psid as $key => $value) {
+            $totalpayamount += numberClean($amount[$key]);
+            if((double)numberClean($amount[$key])>0){
+                $pamount = numberClean($amount[$key]);
+                $data = array(
+                    'acid' => $acid,
+                    'account' => $account['holder'],
+                    'type' => 'Income',
+                    'cat' => 'Sales',
+                    'credit' => rev_amountExchange_s($amount[$key], 0, $this->aauth->get_user()->loc),
+                    'payer' => $cname,
+                    'payerid' => $cid,
+                    'method' => $pmethod,
+                    'date' => datefordatabase($paydate[$key]),
+                    'eid' => $this->aauth->get_user()->id,
+                    'tid' => $tid,
+                    'other_id' => $psid[$key],
+                    'note' => $note,
+                    'loc' => $this->aauth->get_user()->loc
+                );
+                $productlist[$prodindex] = $data;
+                $prodindex++;
+                
+                $this->db->set('paid_amount', "`paid_amount`+ $pamount", FALSE);
+                $this->db->set('remain_amount', "`remain_amount`- $pamount", FALSE);
+                $this->db->where('id', $psid[$key]);
+                $this->db->update('tb_stock');
             }
         }
-
-        $data = array(
-            'acid' => $acid,
-            'account' => $account['holder'],
-            'type' => 'Income',
-            'cat' => 'Sales',
-            'credit' => $amount,
-            'payer' => $cname,
-            'payerid' => $cid,
-            'method' => $pmethod,
-            'date' => $paydate,
-            'eid' => $this->aauth->get_user()->id,
-            'tid' => $tid,
-            'note' => $note,
-            'loc' => $this->aauth->get_user()->loc
-        );
-
-        $this->db->insert('geopos_transactions', $data);
+        if($prodindex>0){
+            $this->db->insert_batch('geopos_transactions', $productlist);
+        }
+//        if ($pmethod == 'Balance') {
+//
+//            $customer = $this->transactions->check_balance($cid);
+//            if (rev_amountExchange_s($customer['balance'], 0, $this->aauth->get_user()->loc) >= $totalpayamount) {
+//
+//                $this->db->set('balance', "balance-$totalpayamount", FALSE);
+//                $this->db->where('id', $cid);
+//                $this->db->update('geopos_customers');
+//            } else {
+//                $amount = rev_amountExchange_s($customer['balance'], 0, $this->aauth->get_user()->loc);
+//                $this->db->set('balance', 0, FALSE);
+//                $this->db->where('id', $cid);
+//                $this->db->update('geopos_customers');
+//            }
+//        }
+//        
+//        $this->db->insert('geopos_transactions', $data);
         $tttid = $this->db->insert_id();
 
         $this->db->select('total,csd,pamnt');
@@ -154,9 +178,9 @@ class Transactions extends CI_Controller
 
         $totalrm = $invresult->total - $invresult->pamnt;
 
-        if ($totalrm > $amount) {
+        if ($totalrm > $totalpayamount) {
             $this->db->set('pmethod', $pmethod);
-            $this->db->set('pamnt', "pamnt+$amount", FALSE);
+            $this->db->set('pamnt', "pamnt+$totalpayamount", FALSE);
 
             $this->db->set('status', 'partial');
             $this->db->where('id', $tid);
@@ -164,18 +188,18 @@ class Transactions extends CI_Controller
 
 
             //account update
-            $this->db->set('lastbal', "lastbal+$amount", FALSE);
+            $this->db->set('lastbal', "lastbal+$totalpayamount", FALSE);
             $this->db->where('id', $acid);
             $this->db->update('geopos_accounts');
-            $paid_amount = $invresult->pamnt + $amount;
+            $paid_amount = $invresult->pamnt + $totalpayamount;
             $status = 'Partial';
-            $totalrm = $totalrm - $amount;
+            $totalrm = $totalrm - $totalpayamount;
         } else {
-            if ($totalrm < $amount) {
-                $diff = $totalrm - $amount;
+            if ($totalrm < $totalpayamount) {
+                $diff = $totalrm - $totalpayamount;
                 $diff = abs($diff);
-                $amount2 = $amount;
-                $amount = $totalrm;
+                $amount2 = $totalpayamount;
+                $totalpayamount = $totalrm;
                 $this->db->set('balance', "balance+$diff", FALSE);
                 $this->db->where('id', $cid);
                 $this->db->update('geopos_customers');
@@ -193,9 +217,9 @@ class Transactions extends CI_Controller
             $totalrm = 0;
             $status = 'Paid';
         }
-        $amount += $amount2;
+        $totalpayamount += $amount2;
 
-        $activitym = "<tr><td>" . '<a href="' . base_url('invoices') . '/view_payslip?id=' . $tttid . '&inv=' . $tid . '" class="btn btn-blue btn-sm"><span class="fa fa-print" aria-hidden="true"></span></a> ' . substr($paydate, 0, 10) . "</td><td>$pmethod</td><td>" . amountExchange_s($amount, 0, $this->aauth->get_user()->loc) . "</td><td>$note</td></tr>";
+        $activitym = "refresh";
         $dual = $this->custom->api_config(65);
         if ($dual['key1']) {
 
@@ -206,7 +230,7 @@ class Transactions extends CI_Controller
             $account = $query->row_array();
 
             $data['credit'] = 0;
-            $data['debit'] = $amount;
+            $data['debit'] = $totalpayamount;
             $data['type'] = 'Expense';
             $data['acid'] = $dual['key2'];
             $data['account'] = $account['holder'];
@@ -215,12 +239,12 @@ class Transactions extends CI_Controller
             $this->db->insert('geopos_transactions', $data);
 
             //account update
-            $this->db->set('lastbal', "lastbal-$amount", FALSE);
+            $this->db->set('lastbal', "lastbal-$totalpayamount", FALSE);
             $this->db->where('id', $dual['key2']);
             $this->db->update('geopos_accounts');
         }
         echo json_encode(array('status' => 'Success', 'message' =>
-            $this->lang->line('Transaction has been added'), 'pstatus' => $this->lang->line($status), 'activity' => $activitym, 'amt' => $totalrm, 'ttlpaid' => amountExchange_s($amount, 0, $this->aauth->get_user()->loc)));
+            $this->lang->line('Transaction has been added'), 'pstatus' => $this->lang->line($status), 'activity' => $activitym, 'amt' => $totalrm, 'ttlpaid' => amountExchange_s($totalpayamount, 0, $this->aauth->get_user()->loc)));
     }
 
     public function paypurchase()
