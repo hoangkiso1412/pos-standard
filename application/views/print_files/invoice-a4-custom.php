@@ -223,7 +223,7 @@
         $customer_info = explode('*:*', $invoice['customer_info']);
         ?>
         <div>
-            <span class="bold"><?php echo $loc['cname']; ?></span><br>
+            <span class="bold font12"><?php echo $loc['cname']; ?></span><br>
             <span><?php echo $this->lang->line('Address') . ": " . $loc['address'] . "," . $loc['city'] ?></span><br>
             <span><?php echo $this->lang->line('Phone') . ": " . $loc['phone'] ?></span><br>
             <span><?php echo $this->lang->line('TAX ID') . ": " . $loc['taxid'] ?></span><br>

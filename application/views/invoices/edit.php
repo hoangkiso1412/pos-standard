@@ -182,7 +182,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row hidden">
                                     <div class="col-sm-6">
                                         <label for="taxformat" class="caption"><?php echo $this->lang->line('Tax') ?></label>
                                         <div class="input-group">
@@ -339,7 +339,7 @@
                                     <span id="discs" class="lightMode"><?php echo edit_amountExchange_s($invoice['discount'], $invoice['multi'], $this->aauth->get_user()->loc) ?></span>
                                 </td>
                             </tr>
-                            <tr class="sub_c" style="display: table-row;">
+                            <tr class="sub_c hidden" sstyle="display: table-row;">
                                 <td colspan="9" class="reverse_align">
                                     <strong><?php echo $this->lang->line('Shipping') ?></strong>
                                 </td>
@@ -359,7 +359,7 @@
                                     )
                                 </td>
                             </tr>
-                            <tr class="sub_c" style="display: table-row;">
+                            <tr class="sub_c hidden" sstyle="display: table-row;">
                                 <td colspan="9" class="reverse_align">
                                     <strong> <?php echo $this->lang->line('Extra') . ' ' . $this->lang->line('Discount') ?></strong>
                                 </td>

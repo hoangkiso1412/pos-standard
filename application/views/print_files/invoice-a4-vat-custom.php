@@ -8,159 +8,160 @@
                 color: #2B2000;
                 font-family: 'Helvetica';
             }
-
+                
             .bold{
                 font-weight: bold;
             }
-
+                
             .invoice-box {
                 width: 210mm;
                 height: 297mm;
                 margin: auto;
                 border: 0;
                 font-size: 12pt;
-                line-height: 14pt;
+                line-height: 16pt;
                 color: #000;
             }
-
+                
             table {
                 width: 100%;
-                line-height: 16pt;
+                /*line-height: 16pt;*/
                 text-align: left;
                 border-collapse: collapse;
             }
-
+                
             .plist tr td {
                 line-height: 12pt;
             }
-
+                
             .subtotal {
                 page-break-inside: avoid;
             }
-
+                
             .subtotal tr td {
                 line-height: 10pt;
                 padding: 6pt;
             }
-
+                
             .subtotal tr td {
                 border: 1px solid #ddd;
             }
-
+                
             .sign {
                 text-align: right;
                 font-size: 10pt;
                 margin-right: 110pt;
             }
-
+                
             .sign1 {
                 text-align: right;
                 font-size: 10pt;
                 margin-right: 90pt;
             }
-
+                
             .sign2 {
                 text-align: right;
                 font-size: 10pt;
                 margin-right: 115pt;
             }
-
+                
             .sign3 {
                 text-align: right;
                 font-size: 10pt;
                 margin-right: 115pt;
             }
-
+                
             .terms {
                 font-size: 9pt;
                 line-height: 16pt;
                 margin-right: 20pt;
             }
-
+                
             .invoice-box table td {
-                padding: 3pt;
+                padding: 6pt 5pt;
                 vertical-align: top;
+                border:1px solid black;
             }
-
+                
             .invoice-box table.top_sum td {
                 padding: 0;
                 font-size: 12pt;
             }
-
-            
+                
+                
             .invoice-box table tr.top table td {
                 padding-bottom: 20pt;
             }
-
+                
             table tr.top table td.title {
                 font-size: 45pt;
                 line-height: 45pt;
                 color: #555;
             }
-
+                
             table tr.information table td {
                 padding-bottom: 20pt;
             }
-
+                
             table tr.heading td {
                 background: #515151;
                 color: #FFF;
                 padding: 6pt;
             }
-
+                
             table tr.details td {
                 padding-bottom: 20pt;
             }
-
+                
             .invoice-box table tr.item td {
                 border: 1px solid #ddd;
             }
-
+                
             table tr.b_class td {
                 border-bottom: 1px solid #ddd;
             }
-
+                
             table tr.b_class.last td {
                 border-bottom: none;
             }
-
+                
             table tr.total td:nth-child(4) {
                 border-top: 2px solid #fff;
                 font-weight: bold;
             }
-
+                
             .myco {
                 width: 400pt;
             }
-
+                
             .myco2 {
                 width: 200pt;
             }
-
+                
             .myw {
                 width: 300pt;
                 font-size: 14pt;
                 line-height: 14pt;
             }
-
+                
             .mfill {
                 background-color: #eee;
             }
-
+                
             .descr {
                 font-size: 10pt;
                 color: #515151;
             }
-
+                
             .tax {
                 font-size: 10px;
                 color: #515151;
             }
-
+                
             .t_center {
                 text-align: right;
             }
-
+                
             .party {
                 border: #2B2000 1px solid;
             }
@@ -170,8 +171,8 @@
             .text-right{
                 text-align:right;
             }
-            
-
+                
+                
             .top_logo {
                 max-height: 180px;
                 max-width: 250px;
@@ -215,6 +216,21 @@
             .v-middle{
                 vertical-align: middle !important;
             }
+            .table-box{
+                
+            }
+            .table-box td{
+                font-size:14pt;
+                padding:4px 5px;
+            }
+            .table-box .padding-table td{
+                font-size:14pt;
+                padding:2px 5px;
+            }
+            .table-box .invoice-row td{
+                font-size:13pt;
+                padding:5px 4px;
+            }
         </style>
     </head>
     <body dir="<?= LTR ?>">
@@ -222,165 +238,145 @@
         $loc = location($invoice['loc']);
         $customer_info = explode('*:*', $invoice['customer_info']);
         ?>
-        <div>
-            <span class="bold"><?php echo $loc['cname']; ?></span><br>
-            <span><?php echo $this->lang->line('Address') . ": " . $loc['address'] . "," . $loc['city'] ?></span><br>
-            <span><?php echo $this->lang->line('Phone') . ": " . $loc['phone'] ?></span><br>
-            <span><?php echo $this->lang->line('TAX ID') . ": " . $loc['taxid'] ?></span><br>
-        </div>
-        <br><br>
-        <table class="font9" cellspacing="0" cellpadding="0" style="padding:0 !important; margin:0 !important">
-            <tbody>
+        <br><br><br><br><br><br><br><br><br><br><br>
+        <div class="table-box">
+            <table>
                 <tr>
-                    <td class="font12" align="center" colspan="3">វិក្កយបត្រ INVOICE</td>
+                    <td width="82%"></td>
+                    <td>
+                        <?php echo $invoice["tid"] ?>
+                    </td>
                 </tr>
-                <tr class="font9">
-                    <td></td>
-                    <td>លេខរៀងវិក្កយបត្រ: </td>
-                    <td><?php echo $invoice["tid"] ?></td>
-                </tr>
-                <tr class="font9">
-                    <td></td>
-                    <td>Invoice No</td>
-                    <td></td>
-                </tr>
-                <tr class="font9">
-                    <td></td>
-                    <td>កាលបរិច្ឆេទ: </td>
-                    <td><?php echo dateformat($invoice["invoicedate"]) ?></td>
-                </tr>
-                <tr >
-                    <td></td>
-                    <td>Date</td>
-                    <td>DD-MM-YYYY</td>
-                </tr>
-                <tr class="font9">
-                    <td width="65%">ឈ្មោះក្រុមហ៊ុនឫអតិថិជន: <?php echo $customer_info[0] ?></td>
-                    <td>ឯកសារយោង: </td>
-                    <td><?php echo $invoice['refer'] ?></td>
-                </tr>
-                <tr class="font9">
-                    <td>Company Name / Customer</td>
-                    <td>Ref No.</td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="font9" width="100%">
-            <tr>
-                <td>អាសយដ្ឋានផ្ទះលេខ <?php echo $customer_info[5] ?><br>Address House No.</td>
-                <td>ផ្លូវ <?php echo $customer_info[6] ?><br>Street</td>
-                <td>ឃុំ/សង្កាត់ <?php echo $customer_info[9] ?><br>Commune/Sangkat</td>
-                <td>ក្រុង/ស្រុក/ខ័ណ្ឌ <?php echo $customer_info[10] ?><br>Town/District/Khan</td>
-                <td>ខេត្ត/រាជធានី <?php echo $customer_info[11] ?><br>Province/City</td>
-            </tr>
-            <tr>
-                <td>ទូរស័ព្ទលេខ: <?php echo $customer_info[4] ?><br>Telephone No.</td>
-                <td colspan="3"></td>
-            </tr>
-        </table>
-        <table class="font9" width="100%">
-            <tr>
-                <td>ល័ក្ខខ័ណ្ឌនៃការទូទាត់: <br>Payment Terms and Condition:</td>
-                <td><span class="box">aa</span> សាច់ប្រាក់<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by Cash</td>
-                <td><span class="box">aa</span> មូលប្បទានប័ត្រ<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by Cheque</td>
-                <td><span class="box">aa</span> មូលប្បទានប័ត្រលេខ...............................<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cheque No.</td>
-                <td><span class="box">aa</span> ធនាគារ<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by Bank</td>
-            </tr>
-        </table>
-        <div class="invoice-box">
-            <table class="party font9" cellpadding="0" cellspacing="0" style="padding:0 !important; margin:0 !important">
+            </table>
+            <table>
                 <tr>
-                    <td class="text-center b-right b-bottom"​ width="9%">
-                        លេខរៀង<br>#
-                    </td>
-                    <td class="text-center b-right b-bottom">
-                        បរិយាមុខទំនិញ<br>Description of Goods
-                    </td>
-                    <td class="text-center b-right b-bottom" width="12%">
-                        ចំនួន<br>Quantity
-                    </td>
-                    <td class="text-center b-right b-bottom" width="15%">
-                        តម្លៃឯកតា<br>Unit Price
-                    </td>
-                    <td class="text-center b-right b-bottom" width="15%">
-                        សរុប<br>Amount
+                    <td width="80%"></td>
+                    <td>
+                        <?php echo dateformat($invoice["invoicedate"]) ?>
                     </td>
                 </tr>
-                <?php
-                $no = 0;
-                $discount = 0;
-                $subtotal = 0;
-                foreach ($products as $row) {
-                    $no++;
-                    $discount += $row['totaldiscount'];
-                    $subtotal += $row['subtotal'];
-                    ?>
-                    <tr>
-                        <td class="text-center b-right">
-                            <?php echo $no ?>
-                        </td>
-                        <td class="b-right">
-                            <?php
-                            echo $row["product"];
-                            if ($row["body_number"] || $row["engine_number"] || $row["plate_number"]) {
-                                echo "<br>";
-                                echo $row["body_number"] ? $row["body_number"] : "";
-                                echo $row["engine_number"] ? " | " . $row["engine_number"] : "";
-                                echo $row["plate_number"] ? " | " . $row["plate_number"] : "";
-                            }
-                            ?>
-                        </td>
-                        <td class="b-right text-right">
-                            1 UN
-                        </td>
-                        <td class="b-right text-right">
-                            <?php echo amountExchange($row['subtotal']+$row['totaldiscount'], $invoice['multi'], $invoice['loc']) ?>
-                        </td>
-                        <td class=" text-right">
-                            <?php echo amountExchange($row['subtotal']+$row['totaldiscount'], $invoice['multi'], $invoice['loc']) ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-center b-right">
-                        </td>
-                        <td class="b-right">
-                        </td>
-                        <td class="b-right text-right">
-                        </td>
-                        <td class="b-right text-right">
-                        </td>
-                        <td class=" text-right">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-center b-right">
-                        </td>
-                        <td class="b-right">
-                        </td>
-                        <td class="b-right text-right">
-                        </td>
-                        <td class="b-right text-right">
-                        </td>
-                        <td class=" text-right">
-                        </td>
-                    </tr>
-                    <?php
+            </table>
+            <table>
+                <tr>
+                    <td width="80%" style=""></td>
+                    <td>
+                        <?php echo $loc['taxid'] ?>
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td style="padding:2px !important"></td>
+                    <td style="color:white;padding:2px !important">
+                        .
+                    </td>
+                </tr>
+            </table>
+            <table class="padding-table">
+                <tr>
+                    <td width="31%"></td>
+                    <td width="26%"><?php echo $customer_info[0] ?></td>
+                    <td width="8.5%"></td>
+                    <td width="8.5%"><?php echo $customer_info[1] ?></td>
+                    <td width="8.5%"></td>
+                    <td width="8.5%"><?php echo $customer_info[2] ?></td>
+                    <td width="9%"></td>
+                </tr>
+            </table>
+            <table class="padding-table">
+                <tr>
+                    <td width="37%"></td>
+                    <td width="21%"><?php echo $customer_info[3] ?></td>
+                    <td width="13%"></td>
+                    <td width="29%"><?php echo $customer_info[4] ?></td>
+                </tr>
+            </table>
+            <table class="padding-table">
+                <tr>
+                    <td width="30%"></td>
+                    <td width="10%"><?php echo $customer_info[5] ?></td>
+                    <td width="3%"></td>
+                    <td width="17%"><?php echo $customer_info[6] ?></td>
+                    <td width="3%"></td>
+                    <td width="6%"><?php echo $customer_info[7] ?></td>
+                    <td width="5%"></td>
+                    <td width="29%"><?php echo $customer_info[8] ?></td>
+                </tr>
+            </table>
+            <table class="padding-table">
+                <tr>
+                    <td width="12%"></td>
+                    <td width="24%"><?php echo $customer_info[9] ?></td>
+                    <td width="9%"></td>
+                    <td width="25%"><?php echo $customer_info[10] ?></td>
+                    <td width="6%"></td>
+                    <td width="24%"><?php echo $customer_info[11] ?></td>
+                </tr>
+            </table>
+            <br><br><br>
+            <table class="invoice-row">
+            <?php
+            $no = 0;
+            $discount = 0;
+            $subtotal = 0;
+            foreach ($products as $row) {
+                $no++;
+                $discount += $row['totaldiscount'];
+                $subtotal += $row['subtotal'];
+                $pname = explode(" ស៊េរី",$row["product"]);
+                if(!$pname[1]){
+                    $pname = explode(" Year ",$row["product"]);
+                }
+                $pro_name = $pname[0];
+                $year = "";
+                $color = "";
+                if($pname[1]){
+                    $yc = explode(" ពណ៌",$pname[1]);
+                    if(!$yc[1]){
+                        $yc = explode(" Color ",$pname[1]);
+                    }
+                    $year = $yc[0];
+                    $color = $yc[1];
                 }
                 ?>
-                    <tr>
-                        <td rowspan="2" class="b-top b-right"><u>ជាអក្សរ</u><br>In Word</td>
-                        <td rowspan="2" class="b-top b-right"><?php echo $this->invocies->convertNumberToKhWord($subtotal); ?></td>
-                        <td colspan="2" class="b-top b-right">បញ្ចុះតម្លៃ<br>Discount</td>
-                        <td class="text-right b-top v-middle"><?php echo amountExchange($discount, $invoice['multi'], $invoice['loc']) ?></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="b-top b-right">សរុប(បូកបញ្ចូលទាំងអារករ)<br>Total(VAT Included)</td>
-                        <td class="text-right b-top v-middle"><?php echo amountExchange($subtotal, $invoice['multi'], $invoice['loc']) ?></td>
-                    </tr>
+                <tr>
+                    <td width="7%" class="text-center"><?php echo $no ?></td>
+                    <td width="25%"><?php echo $pro_name ?></td>
+                    <td width="10%" class="text-right"><?php echo 1 ?></td>
+                    <td width="10%"><?php echo $color ?></td>
+                    <td width="10%"><?php echo $year ?></td>
+                    <td width="25%"><?php echo $row["engine_number"]." | ".$row["body_number"] ?></td>
+                    <td width="13%" class="text-right"><?php echo amountExchange($row['subtotal'], $invoice['multi'], $invoice['loc']) ?></td>
+                </tr>
+            <?php
+            }
+            for($i=0;$i<8-$no;$i++){
+            ?>
+                <tr>
+                    <td class="text-center" style="color: white">.</td>
+                    <td></td>
+                    <td class="text-right"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right"></td>
+                </tr>
+            <?php
+            }
+            ?>
+                <tr>
+                    <td colspan="6"></td>
+                    <td class="text-right"><?php echo amountExchange($subtotal, $invoice['multi'], $invoice['loc']) ?></td>
+                </tr>
+                <tr>
+                    <td colspan="6"></td>
+                    <td class="text-right"><?php echo amountExchange($invoice["pamnt"], $invoice['multi'], $invoice['loc']) ?></td>
+                </tr>
+                <tr>
+                    <td colspan="6"></td>
+                    <td class="text-right"><?php echo amountExchange($subtotal-$invoice["pamnt"], $invoice['multi'], $invoice['loc']) ?></td>
+                </tr>
             </table>
-            <br>
         </div>
-    </div>
-</body>
+    </body>
 </html>

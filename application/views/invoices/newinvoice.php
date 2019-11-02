@@ -71,7 +71,7 @@
                                     <div class="col-sm-3">
                                         <label for="customervillage" class="caption"><?php echo $this->lang->line("Village") ?></label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="ID Card" name="customervillage" value="">
+                                            <input type="text" class="form-control" placeholder="Village" name="customervillage" value="">
                                         </div>
                                     </div>
                                 </div>
@@ -163,7 +163,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row hidden">
                                     <div class="col-sm-6">
                                         <label for="taxformat" class="caption"><?php echo $this->lang->line('Tax') ?></label>
                                         <div class="input-group">
@@ -311,7 +311,7 @@
                                     <span id="discs" class="lightMode">0</span>
                                 </td>
                             </tr>
-                            <tr class="sub_c" style="display: table-row;">
+                            <tr class="sub_c hidden" sstyle="display: table-row;">
                                 <td colspan="9" class="reverse_align">
                                     <strong><?php echo $this->lang->line('Shipping') ?></strong>
                                 </td>
@@ -325,7 +325,7 @@
                                     <span id="ship_final">0</span> )
                                 </td>
                             </tr>
-                            <tr class="sub_c" style="display: table-row;">
+                            <tr class="sub_c hidden" sstyle="display: table-row;">
                                 <td colspan="9" class="reverse_align">
                                     <strong> <?php echo $this->lang->line('Extra') . ' ' . $this->lang->line('Discount') ?></strong>
                                 </td>
