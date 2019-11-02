@@ -127,10 +127,10 @@ class Search_products extends CI_Controller
             $qw .= '(geopos_warehouse.loc=0) AND ';
         }
         if((int)$invoice==0){
-            $qw.=" status='in-stock' and ";
+            $qw.=" ifnull(status,'in-stock')='in-stock' and ";
         }
         else{
-            $qw.=" (status='in-stock' or (status='sold-out' and sale_detail_id in (select id from geopos_invoice_items where tid='".$invoice."'))) and";
+            $qw.=" (ifnull(status,'in-stock')='in-stock' or (status='sold-out' and sale_detail_id in (select id from geopos_invoice_items where tid='".$invoice."'))) and";
         }
         if ($name) {
             $query = $this->db->query("SELECT distinct tb_stock.$col1 FROM tb_stock $join WHERE " . $qw . " product_id='" . $pid . "' and (UPPER(ifnull(tb_stock.$col1,'')) LIKE '%" . strtoupper($name) . "%') and (UPPER(ifnull(tb_stock.$col2,'')) LIKE '%" . strtoupper($val2) . "%') and (UPPER(ifnull(tb_stock.$col3,'')) LIKE '%" . strtoupper($val3) . "%') LIMIT 10");
@@ -167,10 +167,10 @@ class Search_products extends CI_Controller
             $qw .= '(geopos_warehouse.loc=0) AND ';
         }
         if((int)$invoice==0){
-            $qw.=" status='in-stock' and ";
+            $qw.=" ifnull(status,'in-stock')='in-stock' and ";
         }
         else{
-            $qw.=" (status='in-stock' or (status='sold-out' and sale_detail_id in (select id from geopos_invoice_items where tid='".$invoice."'))) and";
+            $qw.=" (ifnull(status,'in-stock')='in-stock' or (status='sold-out' and sale_detail_id in (select id from geopos_invoice_items where tid='".$invoice."'))) and";
         }
         
         $query = $this->db->query("SELECT tb_stock.id FROM tb_stock $join WHERE ".$qw." product_id='" . $pid . "' and (UPPER(ifnull(tb_stock.body_number,''))='" . strtoupper($body_number) . "') and (UPPER(ifnull(tb_stock.engine_number,''))='" . strtoupper($engine_number) . "') and (UPPER(ifnull(tb_stock.plate_number,''))='" . strtoupper($plate_number) . "') LIMIT 10");

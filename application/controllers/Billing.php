@@ -220,7 +220,7 @@ class Billing extends CI_Controller
             elseif ($data['invoice']['taxstatus'] == 'cgst' || $data['invoice']['taxstatus'] == 'igst') {
                 $html = $this->load->view('print_files/invoice-a4-gst_v' . INVV, $data, true);
             } else {
-                $html = $this->load->view('print_files/invoice-a4-custom' . INVV, $data, true);
+                $html = $this->load->view('print_files/invoice-a4-custom', $data, true);
             }
             //PDF Rendering
             $this->load->library('pdf');
