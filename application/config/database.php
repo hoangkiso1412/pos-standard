@@ -6,8 +6,8 @@ $query_builder = TRUE;
 
 $hostname ='localhost';
 $username ='root';
-$password ='123';
-$database ='standard-pos';
+$password ='123456';
+$database ='pos-standard';
 
 $db['default'] = array(
 	'dsn'	=> '',

@@ -1,7 +1,7 @@
 <div class="content-body">
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title"><?php echo 'របាយការណ៍ស្តុកទាំងអស់' //$this->lang->line('Purchase Detail Listing') ?>
+            <h4 class="card-title"><?php echo 'របាយការណ៍លក់សំរាយ';//$this->lang->line('Purchase Detail Listing') ?>
             <div class="heading-elements">
                 <ul class="list-inline mb-0">
                     <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
@@ -30,7 +30,7 @@
                     </div>
                     <div class="col-md-2">
                         <select name="stock" id="stock" class="form-control form-control-sm">
-                            <option value="0"><?php echo 'ជ្រើសរើសស្តុក';//$this->lang->line('Select Stock'); ?></option>
+                            <option value="0"><?php echo 'ជ្រើសរើសស្ដុក';//$this->lang->line('Select Stock'); ?></option>
                             <?php $loc = warehouse();
 
                             foreach ($loc as $row) {
@@ -38,21 +38,22 @@
                             }
                             ?>
                         </select>
-                    </div>
-                    
+                    </div> 
                     <div class="col-md-1">
                         <input type="button" name="search" id="search" value="Search" class="btn btn-info btn-sm"/>
                     </div>
+
                 </div>
                 <hr>
 
                 <table id="po" class="table table-striped table-bordered zero-configuration">
                     <thead>
                     <tr>
-                        <th><?php echo 'ល.រ' ?></th>
+
+                        <th><?php echo 'ល.រ'//echo $this->lang->line('No') ?></th>
                         <th>កាលបរិឆ្ឆេត​</th>
                         <th>ស្តុក</th>
-                        <th>ម៉ាក</th>
+                        <th>ប្រភេទ</th>
                         <th>ប្រភេទម៉ូតូ</th>
                         <th>ចំនួន</th>
                         <th>ពណ៌</th>
@@ -61,21 +62,18 @@
                         <th>លេខតួ</th>
                         <th>លេខម៉ាស៊ីន</th>
                         <th>អ្នកទិញ</th>
-                        <th>តម្លៃទិញ</th>
-                        <th>តម្លៃលក់</th>
-                        <th>ស្តុចូល</th>
-                        <th>ស្តុកចេញ</th>
-                        <th>ស្តុកសល់</th>
-                        <th>ថ្ងៃលក់</th>
+                        <th>តម្លៃ</th>
+                        <th>នៅខ្វះ</th>
+                        <th>សងប៉ុន្មាន</th>
+                        <th>ថ្ងៃសង</th>
                         <th>ផ្សេងៗ</th>
                     </tr>
                     </thead>
                     <tbody>
                     </tbody>
+
                     <tfoot>
                     <tr>
-                        <th></th>
-                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -101,12 +99,11 @@
 
 
     </div>
-
     <script type="text/javascript">
         $(document).ready(function () {
             draw_data();
 
-            function draw_data(start_date = '', end_date = '', stock =0) {
+            function draw_data(start_date = '', end_date = '',stock =0) {
                 $('#po').DataTable({
                     'processing': true,
                     'serverSide': true,
@@ -115,14 +112,13 @@
                     <?php datatable_lang();?>
                     'order': [],
                     'ajax': {
-                        'url': "<?php echo site_url('warehouse/ajax_list')?>",
+                        'url': "<?php echo site_url('sale_detail/ajax_list')?>",
                         'type': 'POST',
                         'data': {
                             '<?=$this->security->get_csrf_token_name()?>': crsf_hash,
                             start_date: start_date,
                             end_date: end_date,
                             stock: stock,
-                         
                         }
                     },
                     'columnDefs': [
@@ -130,14 +126,20 @@
                             'targets': [0],
                             'orderable': false,
                         },
-                    ],
+                    ],'rowCallback': function(row, data, index){
+                            if(data[13] !='$ 0.00'){
+                                $(row).find('td:eq(13)').css('backgroundColor', 'red');
+                                $(row).find('td:eq(13)').css('color', 'white');
+                                $(row).find('td:eq(13)').css('font-weight', 'bold');
+                            }
+                        },
                     dom: 'Blfrtip',
                     buttons: [
                         {
                             extend: 'excelHtml5',
                             footer: true,
                             exportOptions: {
-                                columns: [0,1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+                                columns: [0,1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16]
                             }
                         }
                     ],"footerCallback": function ( row, data, start, end, display ) {
@@ -169,8 +171,8 @@
  
             // Update footer
             $( api.column( 12 ).footer() ).html(
-                '$ '+ pageTotal + '.00'
-                //'$  '+pageTotal +'<br/> សរុប= $  '+ total
+                'សរុប = $  '+ pageTotal
+                //'$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
 
              // Total over all pages
@@ -191,8 +193,8 @@
  
             // Update footer
             $( api.column( 13 ).footer() ).html(
-                '$ '+ pageTotal + '.00'
-             //   '$  '+pageTotal +'<br/> សរុប= $  '+ total
+                'សរុប = $  '+ pageTotal
+             //   '$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
              // Total over all pages
              total = api
@@ -201,7 +203,7 @@
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-
+ 
             // Total over this page
             pageTotal = api
                 .column( 14, { page: 'current'} )
@@ -209,55 +211,13 @@
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-
+ 
             // Update footer
             $( api.column( 14 ).footer() ).html(
-                 pageTotal
-               // '$  '+pageTotal +'<br/> សរុប= $  '+ total
-            );
-             // Total over all pages
-             total = api
-                .column( 15 )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Total over this page
-            pageTotal = api
-                .column( 15, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Update footer
-            $( api.column( 15 ).footer() ).html(
-                 pageTotal
-               // '$  '+pageTotal +'<br/> សរុប= $  '+ total
-            );
-
-   // Total over all pages
-   total = api
-                .column( 16 )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Total over this page
-            pageTotal = api
-                .column( 16, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Update footer
-            $( api.column( 16 ).footer() ).html(
-                 pageTotal
+                'សរុប = $  '+ pageTotal
                // '$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
+
              // Total over all pages
              total = api
                 .column( 5 )
@@ -286,21 +246,20 @@
                 var start_date = $('#start_date').val();
                 var end_date = $('#end_date').val();
                 var stock = $('#stock').val();
-                var motor = $('#motor').val();
-
-                if (start_date != '' && end_date != '' && stock ==0) {
-
+                if (start_date != '' && end_date != '' && stock ==0 ) {
                     $('#po').DataTable().destroy();
                     draw_data(start_date, end_date);
-
                 } else if (start_date != '' && end_date != '' && stock !=0 ){
-
                     $('#po').DataTable().destroy();
                     draw_data(start_date, end_date,stock);
-
-                }else {
+                    
+                }
+                else {
                     alert("Date range is Required");
                 }
-            });
+            })
         });
+
+
+      
     </script>
