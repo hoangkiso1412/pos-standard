@@ -89,7 +89,7 @@
                                            href="<?= base_url('billing/printinvoice?id=' . $invoice['iid'] . '&h=0&token=' . $validtoken); ?>"><?php echo $this->lang->line('Print') ?></a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" target="_blank" 
-                                           href="<?= base_url('billing/printinvoice?id=' . $invoice['iid'] . '&h=1&token=' . $validtoken); ?>"><?php echo $this->lang->line('Print')." Honda Invoice" ?></a>
+                                           href="<?= base_url('billing/printinvoice?id=' . $invoice['iid'] . '&h=1&token=' . $validtoken); ?>"><?php echo $this->lang->line('Print')." VAT Invoice" ?></a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" target="_blank" 
                                            href="<?= base_url('billing/printinvoice?id=' . $invoice['iid'] . '&token=' . $validtoken); ?>&d=1"><?php echo $this->lang->line('PDF Download') ?></a>
