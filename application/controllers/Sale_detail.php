@@ -18,12 +18,12 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Warehouse extends CI_Controller
+class Sale_detail extends CI_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Warehouse_model', 'purchase');
+        $this->load->model('Sale_detail_model', 'purchase');
         $this->load->library("Aauth");
         if (!$this->aauth->is_loggedin()) {
             redirect('/user/', 'refresh');
@@ -41,10 +41,10 @@ class Warehouse extends CI_Controller
     //invoices list
     public function index()
     {
-        $head['title'] = "Warehouse";
+        $head['title'] = "Sale Detail";
         $head['usernm'] = $this->aauth->get_user()->username;
         $this->load->view('fixed/header', $head);
-        $this->load->view('warehouse/invoices');
+        $this->load->view('sale_detail/invoices');
         $this->load->view('fixed/footer');
     }
 
@@ -61,7 +61,7 @@ class Warehouse extends CI_Controller
             $row = array();
             $row[] = $no;
             $row[] = dateformat($invoices->invoicedate);
-            $row[] = $invoices->title;
+            $row[] = $invoices->stock;
             $row[] = $invoices->product_type;
             $row[] = $invoices->product_name;
             $row[] = $invoices->items;
@@ -70,15 +70,12 @@ class Warehouse extends CI_Controller
             $row[] = $invoices->conditions_plateNumber;
             $row[] = $invoices->body_number;
             $row[] = $invoices->engine_number;
-            $row[] = $invoices->purchaser;
-            $row[] = amountExchange($invoices->total, 0, $this->aauth->get_user()->loc);
-            $row[] = amountExchange($invoices->selling_price, 0, $this->aauth->get_user()->loc); 
-            $row[] = $invoices->purchase_qty;
-            $row[] = $invoices->sold_out_qty;
-            $row[] = $invoices->available_qty;
+            $row[] = $invoices->buyer;
+            $row[] = amountExchange($invoices->selling_price, 0, $this->aauth->get_user()->loc);
+            $row[] = amountExchange($invoices->remain_amount, 0, $this->aauth->get_user()->loc);
+            $row[] = amountExchange($invoices->paid_amount, 0, $this->aauth->get_user()->loc);
             $row[] = $invoices->sold_date;
-            $row[] = $invoices->product_des;
-            $row[] = amountExchange($invoices->total, 0, $this->aauth->get_user()->loc);
+            $row[] = $invoices->notes;
 
             $data[] = $row;
         }

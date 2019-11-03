@@ -24,7 +24,7 @@
                         <i class="fa fa-file-text-o text-bold-200  font-large-2 white"></i>
                     </div>
                     <div class="p-1 bg-gradient-x-primary white media-body">
-                        <h5><?php echo $this->lang->line('today') . $this->lang->line('invoices') ?></h5>
+                        <h5><?php echo  'សរុបវិក្កយបត្រថ្ងៃនេះ';//$this->lang->line('today') . $this->lang->line('invoices') ?></h5>
                         <h5 class="text-bold-400 mb-0"><i class="ft-plus"></i> <?= $todayin ?></h5>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                         <i class="icon-notebook font-large-2 white"></i>
                     </div>
                     <div class="p-1 bg-gradient-x-danger white media-body">
-                        <h5><?= $this->lang->line('this') . $this->lang->line('month') . $this->lang->line('invoices') ?></h5>
+                        <h5><?= 'សរុបវិក្កយបត្រខែនេះ';//$this->lang->line('this') . $this->lang->line('month') . $this->lang->line('invoices') ?></h5>
                         <h5 class="text-bold-400 mb-0"><i class="ft-arrow-up"></i><?= $monthin ?></h5>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                         <i class="icon-basket-loaded font-large-2 white"></i>
                     </div>
                     <div class="p-1 bg-gradient-x-warning white media-body">
-                        <h5><?= $this->lang->line('today') . $this->lang->line('sales') ?></h5>
+                        <h5><?=  'សរុបការលក់ថ្ងៃនេះ';//$this->lang->line('today') . $this->lang->line('sales') ?></h5>
                         <h5 class="text-bold-400 mb-0"><i
                                     class="ft-arrow-up"></i><?= amountExchange($todaysales, 0, $this->aauth->get_user()->loc) ?>
                         </h5>
@@ -71,7 +71,7 @@
                         <i class="icon-wallet font-large-2 white"></i>
                     </div>
                     <div class="p-1 bg-gradient-x-success white media-body">
-                        <h5><?php echo $this->lang->line('this') . $this->lang->line('month') . $this->lang->line('sales') ?></h5>
+                        <h5><?php echo 'សរុបការលក់ខែនេះ';//$this->lang->line('this') . $this->lang->line('month') . $this->lang->line('sales') ?></h5>
                         <h5 class="text-bold-400 mb-0"><i
                                     class="ft-arrow-up"></i> <?= amountExchange($monthsales, 0, $this->aauth->get_user()->loc) ?>
                         </h5>
@@ -82,7 +82,7 @@
     </div>
 </div>
 <div class="row match-height">
-    <div class="col-xl-8 col-lg-12">
+    <div class="col-xl-12 col-lg-12">
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title"><?php echo $this->lang->line('in_last _30') ?></h4>
@@ -106,7 +106,7 @@
                                     <div class="media">
                                         <div class="media-body text-left w-100">
                                             <h3 class="primary"><?= amountExchange($todayinexp['credit'], 0, $this->aauth->get_user()->loc) ?></h3>
-                                            <span><?php echo $this->lang->line('today') . $this->lang->line('income') ?></span>
+                                            <span><?php echo 'សរុបប្រាក់ចំណូលថ្ងៃនេះ';//echo $this->lang->line('today') . $this->lang->line('income') ?></span>
                                         </div>
 
                                     </div>
@@ -125,7 +125,7 @@
                                     <div class="media">
                                         <div class="media-body text-left w-100">
                                             <h3 class="danger"><?= amountExchange($todayinexp['debit'], 0, $this->aauth->get_user()->loc) ?></h3>
-                                            <span><?php echo $this->lang->line('today') . $this->lang->line('expenses') ?></span>
+                                            <span><?php echo 'សរុបប្រាប់ចំណាយថ្ងៃនេះ';//$this->lang->line('today') . $this->lang->line('expenses') ?></span>
                                         </div>
 
                                     </div>
@@ -144,7 +144,7 @@
                                     <div class="media">
                                         <div class="media-body text-left w-100">
                                             <h3 class="success"><?= amountExchange($todayprofit, 0, $this->aauth->get_user()->loc) ?></h3>
-                                            <span><?php echo $this->lang->line('today') . $this->lang->line('Profit') ?></span>
+                                            <span><?php echo 'សរុបប្រាប់ចំណេញថ្ងៃនេះ';//$this->lang->line('today') . $this->lang->line('Profit') ?></span>
                                         </div>
 
                                     </div>
@@ -163,7 +163,7 @@
                                     <div class="media">
                                         <div class="media-body text-left w-100">
                                             <h3 class="warning"><?= amountExchange($tt_inc - $tt_exp, 0, $this->aauth->get_user()->loc) ?></h3>
-                                            <span><?php echo $this->lang->line('revenue') ?></span>
+                                            <span><?php echo 'ប្រាក់សរុប';//echo $this->lang->line('revenue') ?></span>
                                         </div>
 
                                     </div>
@@ -180,7 +180,7 @@
         </div>
     </div>
     <div class="col-xl-4 col-lg-12">
-        <div class="card">
+        <div class="card hidden">
             <div class="card-header">
                 <h4 class="card-title"><?php echo $this->lang->line('Recent Buyers') ?></h4>
                 <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
@@ -236,9 +236,7 @@
                                 <a
                                         href="<?php echo base_url() ?>invoices"
                                         class="btn btn-success btn-sm rounded"><?php echo $this->lang->line('Manage Invoices') ?></a>
-                                <a
-                                        href="<?php echo base_url() ?>pos_invoices"
-                                        class="btn btn-blue btn-sm rounded"><?php echo $this->lang->line('POS') ?></a></span>
+                               </span>
                     </p>
                 </div>
             </div>
@@ -304,7 +302,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row hidden">
     <div class="col-12">
         <div class="card-group">
             <div class="card">
@@ -391,12 +389,11 @@
     </div>
 </div>
 <div class="row match-height">
-    <div class="col-xl-7 col-lg-12">
+    <div class="col-xl-12 col-lg-12">
         <div class="card" id="transactions">
 
             <div class="card-body">
                 <h4><?php echo $this->lang->line('cashflow') ?></h4>
-                <p><?php echo $this->lang->line('graphical_presentation') ?></p>
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a class="nav-link active" id="base-tab1" data-toggle="tab" aria-controls="tab1"
@@ -425,7 +422,7 @@
         </div>
     </div>
     <div class="col-xl-5 col-lg-12">
-        <div class="card">
+        <div class="card hidden">
             <div class="card-header">
                 <h4 class="card-title"><?php echo $this->lang->line('task_manager') . ' ' ?> <a
                             href="<?php echo base_url() ?>manager/todo"><i
@@ -476,12 +473,10 @@
     </div>
 </div>
 <div class="row match-height">
-    <div class="col-xl-8 col-lg-12">
+    <div class="col-xl-12 col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title"><?php echo $this->lang->line('recent') ?> <a
-                            href="<?php echo base_url() ?>transactions"
-                            class="btn btn-primary btn-sm rounded"><?php echo $this->lang->line('Transactions') ?></a>
+                <h4 class="card-title"><?php echo 'ប្រតិបត្តិការណ៍ថ្មីៗ';//$this->lang->line('recent') ?> 
                 </h4>
                 <a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
                 <div class="heading-elements">
@@ -498,11 +493,11 @@
                         <thead>
                         <tr>
                             <th><?php echo $this->lang->line('Date') ?>#</th>
-                            <th><?php echo $this->lang->line('Account') ?></th>
-                            <th><?php echo $this->lang->line('Debit') ?></th>
-                            <th><?php echo $this->lang->line('Credit') ?></th>
+                            <th><?php echo 'ប្រភេទ Account​';//$this->lang->line('Account') ?></th>
+                            <th><?php echo 'ចំណាយ';//$this->lang->line('Debit') ?></th>
+                            <th><?php echo 'ចំណូល';//$this->lang->line('Credit') ?></th>
 
-                            <th><?php echo $this->lang->line('Method') ?></th>
+                            <th><?php echo 'បង់ជា';//$this->lang->line('Method') ?></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -527,7 +522,7 @@
         </div>
     </div>
     <div class="col-xl-4 col-lg-12">
-        <div class="card">
+        <div class="card hidden">
             <div class="card-header ">
                 <h4 class="card-title"><?php echo $this->lang->line('Stock Alert') ?></h4>
 
