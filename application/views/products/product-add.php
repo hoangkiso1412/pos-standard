@@ -149,8 +149,7 @@
                 </div>
                 <hr>
                 <div class="form-group row">
-
-
+                <label class="col-sm-2 col-form-label"><?php echo $this->lang->line('Default TAX Rate') ?></label>
                     <div class="col-sm-4">
                         <div class="input-group">
 
@@ -161,22 +160,23 @@
                                     class="input-group-addon">%</span>
                         </div>
                     </div>
-
-
                     <div class="col-sm-4">
+                        <small><?php echo $this->lang->line('Tax rate during') ?></small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                <label class="col-sm-2 col-form-label"><?php echo $this->lang->line('Default Discount Rate') ?></label>
+                  <div class="col-sm-4">
                         <div class="input-group">
-
                             <input type="text" name="product_disc" class="form-control"
                                    placeholder="<?php echo $this->lang->line('Default Discount Rate') ?>"
                                    aria-describedby="sizing-addon1"
                                    onkeypress="return isNumber(event)"><span
-                                    class="input-group-addon">%</span>
+                                   class="input-group-addon">%</span>
                         </div>
-                    </div>
-                    <div class="col-sm-4">
+                  </div>
+                  <div class="col-sm-4">
                         <small><?php echo $this->lang->line('Discount rate during') ?></small>
-
-                        <small><?php echo $this->lang->line('Tax rate during') ?></small>
                     </div>
                 </div>
                 <div class="form-group row hidden">
