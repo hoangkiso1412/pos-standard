@@ -77,7 +77,7 @@
                     <div class="form-group row">
 
                         <div class="col-sm-6"><label class="col-form-label"
-                                                     for="product_cat"><?php echo "Year"//$this->lang->line('Product Category') ?>
+                                                     for="product_cat"><?php echo $this->lang->line('Year') ?>
                                 *</label>
                                 <select name="product_year" id="product_year" class="form-control">
                                     <?php
@@ -93,7 +93,7 @@
 
 
                         <div class="col-sm-6"><label class="col-form-label"
-                                                     for="sub_cat"><?php echo "Color"//$this->lang->line('Sub') ?><?php //echo $this->lang->line('Category') ?></label>
+                                                     for="sub_cat"><?php echo $this->lang->line('Color') ?><?php //echo $this->lang->line('Category') ?></label>
                           <select name="product_color" id="product_color" class="form-control">
                               <?php
                               echo '<option value="' . $color_select['name'] . '">' . $color_select['name'] . ' (S)</option>';
