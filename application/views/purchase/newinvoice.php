@@ -7,51 +7,34 @@
             </div>
             <div class="card-body">
                 <form method="post" id="data_form">
-
-
                     <div class="row">
-
-                        <div class="col-sm-4">
-
-                        </div>
-
+                        <div class="col-sm-4"></div>
                         <div class="col-sm-3"></div>
-
                         <div class="col-sm-2"></div>
-
                         <div class="col-sm-3">
-
                         </div>
-
                     </div>
-
                     <div class="row">
-
-
                         <div class="col-sm-6 cmp-pnl">
                             <div id="customerpanel" class="inner-cmp-pnl">
                                 <div class="form-group row">
                                     <div class="fcol-sm-12">
                                         <h3 class="title">
-                                            <?php echo $this->lang->line('Bill From') ?> <a href='#'
-                                                                                            class="btn btn-primary btn-sm rounded"
-                                                                                            data-toggle="modal"
-                                                                                            data-target="#addCustomer">
-                                                <?php echo $this->lang->line('Add Supplier') ?>
-                                            </a>
+                                          <?php 
+                                              echo $this->lang->line('Bill From') ?> 
+                                              <a href='#' class="btn btn-primary btn-sm rounded" data-toggle="modal" data-target="#addCustomer">
+                                              <?php echo $this->lang->line('Add Supplier') ?>
+                                          </a>
                                     </div>
                                 </div>
-
                                 <div class="form-group row">
-                                    <div class="frmSearch col-sm-12"><label for="cst"
-                                                                            class="caption"><?php echo $this->lang->line('Search Supplier') ?> </label>
+                                    <div class="frmSearch col-sm-12">
+                                      <label for="cst" class="caption"><?php echo $this->lang->line('Search Supplier') ?> </label>
                                         <input type="text" class="form-control" name="cst" id="supplier-box"
                                                placeholder="Enter Supplier Name or Mobile Number to search"
                                                autocomplete="off"/>
-
                                         <div id="supplier-box-result"></div>
                                     </div>
-
                                 </div>
                                 <div id="customer">
                                     <div class="clientinfo">
@@ -61,13 +44,10 @@
                                         <div id="customer_name"></div>
                                     </div>
                                     <div class="clientinfo">
-
-                                        <div id="customer_address1"></div>
+                                      <div id="customer_address1"></div>
                                     </div>
-
                                     <div class="clientinfo">
-
-                                        <div type="text" id="customer_phone"></div>
+                                      <div type="text" id="customer_phone"></div>
                                     </div>
                                     <hr>
                                       <?php echo $this->lang->line('Warehouse') ?> 
@@ -90,46 +70,35 @@
                         </div>
                         <div class="col-sm-6 cmp-pnl">
                             <div class="inner-cmp-pnl">
-
-
                                 <div class="form-group row">
-
-                                    <div class="col-sm-12"><h3
-                                                class="title"><?php echo $this->lang->line('Purchase Order') ?> </h3>
+                                    <div class="col-sm-12">
+                                      <h3 class="title"><?php echo $this->lang->line('Purchase Order') ?> </h3>
                                     </div>
-
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-6"><label for="invocieno"
-                                                                 class="caption"><?php echo $this->lang->line('Order Number') ?> </label>
-
+                                    <div class="col-sm-6">
+                                      <label for="invocieno" class="caption"><?php echo $this->lang->line('Order Number') ?> </label>
                                         <div class="input-group">
-                                            <div class="input-group-addon"><span class="icon-file-text-o"
-                                                                                 aria-hidden="true"></span></div>
-                                            <input type="text" class="form-control" placeholder="Invoice #"
-                                                   name="invocieno"
-                                                   value="<?php echo $lastinvoice + 1 ?>">
+                                            <div class="input-group-addon">
+                                            <span class="icon-file-text-o" ria-hidden="true"></span></div>
+                                            <input type="text" class="form-control" placeholder="Invoice #" name="invocieno" value="<?php echo $lastinvoice + 1 ?>">
                                         </div>
                                     </div>
-                                    <div class="col-sm-6"><label for="invocieno"
-                                                                 class="caption"><?php echo $this->lang->line('Reference') ?> </label>
-
+                                    <div class="col-sm-6">
+                                      <label for="invocieno" class="caption"><?php echo $this->lang->line('Reference') ?> </label>
                                         <div class="input-group">
-                                            <div class="input-group-addon"><span class="icon-bookmark-o"
-                                                                                 aria-hidden="true"></span></div>
-                                            <input type="text" class="form-control" placeholder="Reference #"
-                                                   name="refer">
+                                            <div class="input-group-addon">
+                                            <span class="icon-bookmark-o" aria-hidden="true"></span></div>
+                                            <input type="text" class="form-control" placeholder="Reference #" name="refer">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-
-                                    <div class="col-sm-6"><label for="invociedate"
-                                                                 class="caption"><?php echo $this->lang->line('Order Date') ?> </label>
-
+                                    <div class="col-sm-6">
+                                      <label for="invociedate" class="caption"><?php echo $this->lang->line('Order Date') ?> </label>
                                         <div class="input-group">
-                                            <div class="input-group-addon"><span class="icon-calendar4"
-                                                                                 aria-hidden="true"></span></div>
+                                            <div class="input-group-addon">
+                                            <span class="icon-calendar4" aria-hidden="true"></span></div>
                                             <input type="text" class="form-control required"
                                                    placeholder="Billing Date" name="invoicedate"
                                                    data-toggle="datepicker"
@@ -177,20 +146,15 @@
                                                class="caption"><?php echo $this->lang->line('Order Note') ?> </label>
                                         <textarea class="form-control" name="notes" rows="2"></textarea></div>
                                 </div>
-
                             </div>
                         </div>
-
                     </div>
-
-
                     <div id="saman-row">
                         <table class="table-responsive tfr my_stripe">
                             <thead>
-
-                            <tr class="item_header bg-gradient-directional-amber">
+                              <tr class="item_header bg-gradient-directional-amber">
                                 <th width="15%" class="text-center"><?php echo $this->lang->line('Item Name') ?></th>
-                                <th width="10%" class="text-center"><?php echo "Body Number"//echo $this->lang->line('Item Name') ?></th>
+                                <th width="10%" class="text-center"><?php echo "Frame Number"//echo $this->lang->line('Item Name') ?></th>
                                 <th width="10%" class="text-center"><?php echo "Engine Number"//echo $this->lang->line('Item Name') ?></th>
                                 <th width="10%" class="text-center"><?php echo "Plate Number"//echo $this->lang->line('Item Name') ?></th>
                                 <th width="10%" class="text-center"><?php echo "Other expense"//echo $this->lang->line('Item Name') ?></th>
@@ -203,9 +167,9 @@
                                     <?php echo $this->lang->line('Amount') ?>
                                     (<?php echo $this->config->item('currency'); ?>)
                                 </th>
-                                <th width="5%" class="text-center"><?php echo "Paid Amount"//$this->lang->line('Discount') ?></th>
+                                <th width="5%" class="text-center hidden"><?php echo "Paid Amount"//$this->lang->line('Discount') ?></th>
                                 <th width="5%" class="text-center"><?php echo $this->lang->line('Action') ?></th>
-                            </tr>
+                              </tr>
                             </thead>
                             <tbody>
                             <tr>
@@ -243,49 +207,46 @@
                                 <td><input type="text" class="form-control discount" name="product_discount[]"
                                            onkeypress="return isNumber(event)" id="discount-0"
                                            onkeyup="rowTotal('0'), billUpyog()" autocomplete="off"></td>
-                                <td><span class="currenty"><?php echo $this->config->item('currency'); ?></span>
+                                <td>
+                                    <span class="currenty"><?php echo $this->config->item('currency'); ?></span>
                                     <strong><span class='ttlText' id="result-0">0</span></strong></td>
-                                <td><input type="text" class="form-control discount" name="purchase_paid_amount[]" onkeypress="return isNumber(event)" id="purchasepaidamount-0" autocomplete="off"></td>
-                                <td class="text-center">
-
-                                </td>
+                                <td class="hidden">
+                                  <input type="text" class="form-control discount" name="purchase_paid_amount[]" onkeypress="return isNumber(event)" id="purchasepaidamount-0" autocomplete="off"></td>
+                                <td class="text-center"></td>
                                 <input type="hidden" name="taxa[]" id="taxa-0" value="0">
                                 <input type="hidden" name="disca[]" id="disca-0" value="0">
                                 <input type="hidden" class="ttInput" name="product_subtotal[]" id="total-0" value="0">
                                 <input type="hidden" class="pdIn" name="pid[]" id="pid-0" value="0">
-                                <input type="hidden" name="unit[]" id="unit-0" value=""><input type="hidden"
-                                                                                               name="hsn[]" id="hsn-0"
-                                                                                               value="">
+                                <input type="hidden" name="unit[]" id="unit-0" value="">
+                                <input type="hidden" name="hsn[]" id="hsn-0" value="">
                             </tr>
                             <tr>
-                                <td colspan="12"><textarea id="dpid-0" class="form-control" name="product_description[]"
-                                                          placeholder="<?php echo $this->lang->line('Enter Product description'); ?>"
-                                                          autocomplete="off"></textarea><br></td>
+                                <td colspan="12">
+                                  <textarea id="dpid-0" class="form-control" name="product_description[]" placeholder="<?php echo $this->lang->line('Enter Product description'); ?>" autocomplete="off"></textarea><br>
+                                </td>
                             </tr>
-
                             <tr class="last-item-row">
                                 <td class="add-row">
-                                    <button type="button" class="btn btn-success" aria-label="Left Align"
-                                            id="addproduct">
+                                    <button type="button" class="btn btn-success" aria-label="Left Align" id="addproduct">
                                         <i class="fa fa-plus-square"></i> <?php echo $this->lang->line('Add Row') ?>
                                     </button>
                                 </td>
                                 <td colspan="12"></td>
                             </tr>
-
                             <tr class="sub_c" style="display: table-row;">
-                                <td colspan="6" align="right"><input type="hidden" value="0" id="subttlform"
-                                                                     name="subtotal"><strong><?php echo $this->lang->line('Total Tax') ?></strong>
+                                <td colspan="6" align="right">
+                                  <input type="hidden" value="0" id="subttlform" name="subtotal"><strong><?php echo $this->lang->line('Total Tax') ?></strong>
                                 </td>
-                                <td align="left" colspan="2"><span
-                                            class="currenty lightMode"><?php echo $this->config->item('currency'); ?></span>
-                                    <span id="taxr" class="lightMode">0</span></td>
+                                <td align="left" colspan="2">
+                                    <span class="currenty lightMode"><?php echo $this->config->item('currency'); ?></span>
+                                    <span id="taxr" class="lightMode">0</span>
+                                </td>
                             </tr>
                             <tr class="sub_c" style="display: table-row;">
                                 <td colspan="6" align="right">
                                     <strong><?php echo $this->lang->line('Total Discount') ?></strong></td>
-                                <td align="left" colspan="2"><span
-                                            class="currenty lightMode"><?php echo $this->config->item('currency'); ?></span>
+                                <td align="left" colspan="2">
+                                    <span class="currenty lightMode"><?php echo $this->config->item('currency'); ?></span>
                                     <span id="discs" class="lightMode">0</span></td>
                             </tr>
 

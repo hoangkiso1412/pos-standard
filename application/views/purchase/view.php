@@ -3,7 +3,6 @@
         <div class="card-content">
             <div id="notify" class="alert alert-success" style="display:none;">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
-
                 <div class="message"></div>
             </div>
             <div id="invoice-template" class="card-body">
@@ -23,20 +22,13 @@
                             ><span class="fa fa-money"></span> <?php echo $this->lang->line('Make Payment') ?> </a>
 
                             <div class="btn-group">
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                            <span
-                                    class="fa fa-envelope-o"></span> <?php echo $this->lang->line('Send') ?>
+                                <button type="button" class="btn btn-primary dropdown-toggle hidden" data-toggle="dropdown"aria-haspopup="true" aria-expanded="false">
+                                  <span class="fa fa-envelope-o"></span> <?php echo $this->lang->line('Send') ?>
                                 </button>
-                                <div class="dropdown-menu"><a href="#sendEmail" data-toggle="modal"
-                                                              data-remote="false" class="dropdown-item sendbill"
-                                                              data-type="purchase"><?php echo $this->lang->line('Purchase Request') ?></a>
-
-
+                                <div class="dropdown-menu">
+                                  <a href="#sendEmail" data-toggle="modal" data-remote="false" class="dropdown-item sendbill"data-type="purchase"><?php echo $this->lang->line('Purchase Request') ?></a>
                                 </div>
-
                             </div>
-
                             <div class="btn-group ">
                                 <button type="button" class="btn btn-success btn-min-width dropdown-toggle"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
@@ -51,13 +43,10 @@
 
                                 </div>
                             </div>
-                            <a href="<?php echo $link; ?>" class="btn btn-primary"><i
-                                        class="fa fa-globe"></i> <?php echo $this->lang->line('Public Preview') ?>
+                            <a href="<?php echo $link; ?>" class="btn btn-primary hidden">
+                              <i class="fa fa-globe"></i> <?php echo $this->lang->line('Public Preview') ?>
                             </a>
-
-                            <a href="#pop_model" data-toggle="modal" data-remote="false"
-                               class="btn btn-large btn-success" title="Change Status"
-                            ><span class="fa fa-retweet"></span> <?php echo $this->lang->line('Change Status') ?></a>
+                            <a href="#pop_model" data-toggle="modal" data-remote="false" class="btn btn-large btn-success hidden" title="Change Status" ><span class="fa fa-retweet"></span> <?php echo $this->lang->line('Change Status') ?></a>
                             <a href="#cancel-bill" class="btn btn-danger" id="cancel-bill_p"><i
                                         class="fa fa-minus-circle"> </i> <?php echo $this->lang->line('Cancel') ?>
                             </a>
@@ -125,7 +114,7 @@
                                 <?php if ($invoice['taxstatus'] == 'cgst'){ ?>
 
                                 <tr>
-                                    <th>ssss#</th>
+                                    <th>#</th>
                                     <th><?php echo $this->lang->line('Description') ?></th>
                                     <th class="text-xs-left"><?php echo $this->lang->line('HSN') ?></th>
                                     <th class="text-xs-left"><?php echo $this->lang->line('Rate') ?></th>
@@ -172,33 +161,28 @@
                                         <th class="text-xs-left"><?php echo $this->lang->line('Qty') ?></th>
                                         <th class="text-xs-left"><?php echo $this->lang->line('Discount') ?></th>
                                         <th class="text-xs-left"><?php echo $this->lang->line('IGST') ?></th>
-
                                         <th class="text-xs-left"><?php echo $this->lang->line('Amount') ?></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <?php $c = 1;
-                                    $sub_t = 0;
-
-                                    foreach ($products as $row) {
+                                      $sub_t = 0;
+                                      foreach ($products as $row) {
                                         $sub_t += $row['price'] * $row['qty'];
-
                                         echo '<tr>
-<th scope="row">' . $c . '</th>
-                            <td>' . $row['product'] . '</td> 
-                            <td>' . $row['code'] . '</td>                          
-                            <td>' . amountExchange($row['price'], 0, $this->aauth->get_user()->loc) . '</td>
-                             <td>' . amountFormat_general($row['qty']) . $row['unit'] . '</td>
-                              <td>' . amountExchange($row['totaldiscount'], 0, $this->aauth->get_user()->loc) . ' (' . amountFormat_s($row['discount']) . $this->lang->line($invoice['format_discount']) . ')</td>
-                            <td>' . amountExchange($row['totaltax'], 0, $this->aauth->get_user()->loc) . ' (' . amountFormat_s($row['tax']) . '%)</td>
-                                            
-                            <td>' . amountExchange($row['subtotal'], 0, $this->aauth->get_user()->loc) . '</td>
-                        </tr>';
-
+                                                  <th scope="row">' . $c . '</th>
+                                                  <td>' . $row['product'] . '</td> 
+                                                  <td>' . $row['code'] . '</td>                          
+                                                  <td>' . amountExchange($row['price'], 0, $this->aauth->get_user()->loc) . '</td>
+                                                  <td>' . amountFormat_general($row['qty']) . $row['unit'] . '</td>
+                                                  <td>' . amountExchange($row['totaldiscount'], 0, $this->aauth->get_user()->loc) . ' (' . amountFormat_s($row['discount']) . $this->lang->line($invoice['format_discount']) . ')</td>
+                                                  <td>' . amountExchange($row['totaltax'], 0, $this->aauth->get_user()->loc) . ' (' . amountFormat_s($row['tax']) . '%)</td>            
+                                                  <td>' . amountExchange($row['subtotal'], 0, $this->aauth->get_user()->loc) . '</td>
+                                              </tr>';
                                         echo '<tr><td colspan=5>' . $row['product_des'] . '</td></tr>';
                                         $c++;
-                                    } ?>
-
+                                      } 
+                                    ?>
                                     </tbody>
                                     <?php
                                 } else {
@@ -208,13 +192,15 @@
                                         <th><?php echo $this->lang->line('Description') ?></th>
                                         <th><?php echo "Color"//$this->lang->line('Description') ?></th>
                                         <th><?php echo "Year"//$this->lang->line('Description') ?></th>
+                                        <th><?php echo "Frame number"//$this->lang->line('Description') ?></th>
+                                        <th><?php echo "Engine number"//$this->lang->line('Description') ?></th>
                                         <th><?php echo "Plate number"//$this->lang->line('Description') ?></th>
                                         <th><?php echo "Other expense"//$this->lang->line('Description') ?></th>
-                                        <th class="text-xs-left"><?php echo $this->lang->line('Rate') ?></th>
-                                        <th class="text-xs-left"><?php echo $this->lang->line('Qty') ?></th>
-                                        <th class="text-xs-left"><?php echo $this->lang->line('Tax') ?></th>
-                                        <th class="text-xs-left"><?php echo $this->lang->line('Discount') ?></th>
-                                        <th class="text-xs-left"><?php echo $this->lang->line('Amount') ?></th>
+                                        <th><?php echo $this->lang->line('Rate') ?></th>
+                                        <th><?php echo $this->lang->line('Qty') ?></th>
+                                        <th><?php echo $this->lang->line('Tax') ?></th>
+                                        <th><?php echo $this->lang->line('Discount') ?></th>
+                                        <th><?php echo $this->lang->line('Amount') ?></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -228,6 +214,8 @@
                                                 <td>' . $row['product_name'] . '</td>  
                                                 <td>' . $row['color'] . '</td>          
                                                 <td>' . $row['year'] . '</td>  
+                                                <td>' . $row['body_number'] . '</td>  
+                                                <td>' . $row['engine_number'] . '</td>  
                                                 <td>' . $row['plate_number'] . '</td>   
                                                 <td>' . $row['other_expense'] . '</td>                  
                                                 <td>' . amountExchange($row['price'], 0, $this->aauth->get_user()->loc) . '</td>
@@ -458,71 +446,99 @@
 </script>
 <!-- Modal HTML -->
 <div id="part_payment" class="modal fade">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-
                 <h4 class="modal-title"><?php echo $this->lang->line('Debit Payment Confirmation') ?></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-
             <div class="modal-body">
-                <form class="payment">
-                    <div class="row">
-                        <div class="col">
-                            <div class="input-group">
-                                <div class="input-group-addon"><?php echo $this->config->item('currency') ?></div>
-                                <input type="text" class="form-control" placeholder="Total Amount" name="amount"
-                                       id="rmpay" value="<?php echo $rming ?>">
-                            </div>
-
-                        </div>
-                        <div class="col">
-                            <div class="input-group">
-                                <div class="input-group-addon"><span class="icon-calendar4"
-                                                                     aria-hidden="true"></span></div>
-                                <input type="text" class="form-control required" id="tsn_date"
-                                       placeholder="Billing Date" name="paydate"
-                                       value="<?php echo dateformat($this->config->item('date')); ?>">
-                            </div>
-                        </div>
+              <form class="payment">
+                  <div class="row">
+                  <div class="table-responsive col-sm-12">
+                      <table class="table table-striped">
+                          <tbody>
+                              <?php
+                              $pid = 0;
+                              foreach ($products as $row) {
+                              ?>
+                              <tr>
+                                  <td colspan="4">
+                                      <?php echo $row['product'] ?><input type="hidden" class="form-control required" id="psid-<?php echo $pid?>" name="psid[]" value="<?php echo $row["product_stock_id"] ?>">
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <fieldset class="form-group position-relative has-icon-left">
+                                        <input type="text" class="form-control required" id="paydate-<?php echo $pid?>" placeholder="Billing Date" name="paydate[]" data-toggle="datepicker">
+                                        <div class="form-control-position">
+                                          <span class="fa fa-calendar" aria-hidden="true"></span>
+                                        </div>
+                                      </fieldset>
+                                  </td>
+                                  <td>
+                                      <fieldset class="form-group position-relative has-icon-left">
+                                        <input type="text" class="form-control" placeholder="Total Amount" name="totalamount[]" id="tamount-<?php echo $pid?>" readonly value="<?= amountExchange_s($row['subtotal'], $this->aauth->get_user()->loc) ?>">
+                                        <div class="form-control-position">
+                                          <?php echo $this->config->item('currency') ?>
+                                        </div>
+                                      </fieldset>
+                                  </td>
+                                  <td>
+                                      <fieldset class="form-group position-relative has-icon-left">
+                                          <input type="text" class="form-control" placeholder="Paid Amount" name="totalpaid[]" id="tpaid-<?php echo $pid?>" readonly value="<?= amountExchange_s($row['purchase_paid_amount'], 0, $this->aauth->get_user()->loc) ?>">
+                                          <div class="form-control-position">
+                                            <?php echo $this->config->item('currency') ?>
+                                          </div>
+                                      </fieldset>
+                                  </td>
+                                  <td>
+                                      <fieldset class="form-group position-relative has-icon-left">
+                                        <input type="text" class="form-control" placeholder="Pay Amount" name="payamount[]" id="tpay-<?php echo $pid?>" onkeypress="return isNumber(event)" min="0" value="<?= amountExchange_s(0, 0, $this->aauth->get_user()->loc) ?>">
+                                        <div class="form-control-position">
+                                          <?php echo $this->config->item('currency') ?>
+                                        </div>
+                                      </fieldset>
+                                  </td>
+                              </tr>
+                              <?php
+                              $pid++;
+                              }
+                              ?>
+                          </tbody>
+                        </table>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col mb-1"><label for="pmethod"><?php echo $this->lang->line('Payment Method') ?></label>
+                        <select name="pmethod" class="form-control mb-1">
+                          <option value="Cash"><?php echo $this->lang->line('Cash') ?></option>
+                          <option value="Card"><?php echo $this->lang->line('Card') ?></option>
+                          <option value="Bank">Bank</option>
+                        </select><label for="account"><?php echo $this->lang->line('Account') ?></label>
+                        <select name="account" class="form-control">
+                            <?php foreach ($acclist as $row) {
+                                echo '<option value="' . $row['id'] . '">' . $row['holder'] . ' / ' . $row['acn'] . '</option>';
+                              }
+                            ?>
+                        </select>
                     </div>
-
-                    <div class="row">
-                        <div class="col mb-1"><label
-                                    for="pmethod"><?php echo $this->lang->line('Payment Method') ?></label>
-                            <select name="pmethod" class="form-control mb-1">
-                                <option value="Cash"><?php echo $this->lang->line('Cash') ?></option>
-                                <option value="Card"><?php echo $this->lang->line('Card') ?></option>
-                                <option value="Bank">Bank</option>
-                            </select><label for="account"><?php echo $this->lang->line('Account') ?></label>
-
-                            <select name="account" class="form-control">
-                                <?php foreach ($acclist as $row) {
-                                    echo '<option value="' . $row['id'] . '">' . $row['holder'] . ' / ' . $row['acn'] . '</option>';
-                                }
-                                ?>
-                            </select></div>
-                    </div>
-                    <div class="row">
-                        <div class="col mb-1"><label
-                                    for="shortnote"><?php echo $this->lang->line('Note') ?></label>
-                            <input type="text" class="form-control"
-                                   name="shortnote" placeholder="Short note"
-                                   value="Payment for purchase #<?php echo $invoice['tid'] ?>"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" class="form-control required"
-                               name="tid" id="invoiceid" value="<?php echo $invoice['iid'] ?>">
-                        <button type="button" class="btn btn-default"
-                                data-dismiss="modal"><?php echo $this->lang->line('Close') ?></button>
-                        <input type="hidden" name="cid" value="<?php echo $invoice['cid'] ?>"><input type="hidden"
-                                                                                                     name="cname"
-                                                                                                     value="<?php echo $invoice['name'] ?>">
-                        <button type="button" class="btn btn-primary"
-                                id="purchasepayment"><?php echo $this->lang->line('Do Payment') ?></button>
-                    </div>
-                </form>
+                  </div>
+                  <div class="row">
+                      <div class="col mb-1"><label for="shortnote"><?php echo $this->lang->line('Note') ?></label>
+                        <input type="text" class="form-control" name="shortnote" placeholder="Short note" value="Payment for purchase #<?php echo $invoice['tid'] ?>">
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <input type="hidden" class="form-control required" name="tid" id="invoiceid" value="<?php echo $invoice['iid'] ?>">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <?php echo $this->lang->line('Close') ?>
+                      </button>
+                      <input type="hidden" name="cid" value="<?php echo $invoice['cid'] ?>">
+                      <input type="hidden" name="cname" value="<?php echo $invoice['name'] ?>">
+                      <button type="button" class="btn btn-primary" id="purchasepayment"><?php echo $this->lang->line('Do Payment') ?></button>
+                  </div>
+              </form>
             </div>
         </div>
     </div>
