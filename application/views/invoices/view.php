@@ -23,7 +23,7 @@
                                 <a href="#part_payment" data-toggle="modal" data-remote="false" data-type="reminder"
                                    class="btn btn-large btn-info mb-1" title="Partial Payment"
                                    ><span class="fa fa-money"></span> <?php echo $this->lang->line('Make Payment') ?> </a>
-                                <div class="btn-group">
+                                <div class="btn-group hidden">
                                     <button type="button" class="btn btn-facebook dropdown-toggle mb-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="fa fa-envelope-o"></span> Email
                                     </button>
@@ -49,7 +49,7 @@
                                 </div>
 
                                 <!-- SMS -->
-                                <div class="btn-group">
+                                <div class="btn-group hidden">
                                     <button type="button" class="btn btn-blue dropdown-toggle mb-1"
                                             data-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false">
@@ -85,39 +85,42 @@
                                             class="fa fa-print"></i> <?php echo $this->lang->line('Print') ?>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item"
-                                           href="<?= base_url('billing/printinvoice?id=' . $invoice['iid'] . '&token=' . $validtoken); ?>"><?php echo $this->lang->line('Print') ?></a>
+                                        <a class="dropdown-item" target="_blank" 
+                                           href="<?= base_url('billing/printinvoice?id=' . $invoice['iid'] . '&h=0&token=' . $validtoken); ?>"><?php echo $this->lang->line('Print') ?></a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item"
+                                        <a class="dropdown-item" target="_blank" 
+                                           href="<?= base_url('billing/printinvoice?id=' . $invoice['iid'] . '&h=1&token=' . $validtoken); ?>"><?php echo $this->lang->line('Print')." VAT Invoice" ?></a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" target="_blank" 
                                            href="<?= base_url('billing/printinvoice?id=' . $invoice['iid'] . '&token=' . $validtoken); ?>&d=1"><?php echo $this->lang->line('PDF Download') ?></a>
 
                                     </div>
                                 </div>
-                                <a href="<?php echo $link; ?>" class="btn btn-blue-grey mb-1"><i
+                                <a href="<?php echo $link; ?>" class="btn btn-blue-grey mb-1 hidden"><i
                                         class="fa fa-globe"></i> <?php echo $this->lang->line('Preview') ?>
                                 </a>
 
                                 <a href="#pop_model" data-toggle="modal" data-remote="false"
-                                   class="btn btn-large btn-cyan mb-1" title="Change Status"
+                                   class="btn btn-large btn-cyan mb-1 hidden" title="Change Status"
                                    ><span class="fa fa-retweet"></span> <?php echo $this->lang->line('Change Status') ?></a>
                                 <a href="#cancel-bill" class="btn btn-danger mb-1" id="cancel-bill"><i
                                         class="fa fa-minus-circle"> </i> <?php echo $this->lang->line('Cancel') ?>
                                 </a>
-                                <div class="btn-group ">
+                                <div class="btn-group hidden">
                                     <button type="button" class="btn btn-primary mb-1 btn-min-width dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                                             class="icon-anchor"></i> <?php echo $this->lang->line('Extra') ?>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item"
+                                        <a class="dropdown-item" target="_blank" 
                                            href="<?= base_url() . 'invoices/delivery?id=' . $invoice['iid']; ?>"><?php echo $this->lang->line('Delivery Note') ?></a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item"
+                                        <a class="dropdown-item" target="_blank" 
                                            href="<?= base_url() . 'invoices/proforma?id=' . $invoice['iid']; ?>"><?php echo $this->lang->line('Proforma Invoice') ?></a>
 
                                     </div>
                                 </div>
-                                <div class="btn-group ">
+                                <div class="btn-group hidden">
                                     <button type="button" class="btn btn-vimeo mb-1 btn-md dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                                             class="fa fa-print"></i> <?php echo $this->lang->line('POS Print') ?>

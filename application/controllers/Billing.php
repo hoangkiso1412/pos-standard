@@ -194,6 +194,7 @@ class Billing extends CI_Controller
             exit();
         }
         $tid = intval($this->input->get('id'));
+        $h = intval($this->input->get('h'));
         $token = $this->input->get('token');
         $validtoken = hash_hmac('ripemd160', $tid, $this->config->item('encryption_key'));
         if (hash_equals($token, $validtoken)) {
@@ -214,18 +215,26 @@ class Billing extends CI_Controller
             }
             $data['general'] = array('title' => $this->lang->line('Invoice'), 'person' => $this->lang->line('Customer'), 'prefix' => $pref, 't_type' => 0);
             ini_set('memory_limit', '64M');
-            if((double)$data['invoice']['tax']>0){
+            if((int)$h>0){
                 $html = $this->load->view('print_files/invoice-a4-vat-custom', $data, true);
-            }
-            elseif ($data['invoice']['taxstatus'] == 'cgst' || $data['invoice']['taxstatus'] == 'igst') {
-                $html = $this->load->view('print_files/invoice-a4-gst_v' . INVV, $data, true);
+//            }
+//            elseif ($data['invoice']['taxstatus'] == 'cgst' || $data['invoice']['taxstatus'] == 'igst') {
+//                $html = $this->load->view('print_files/invoice-a4-gst_v' . INVV, $data, true);
             } else {
                 $html = $this->load->view('print_files/invoice-a4-custom', $data, true);
+                echo $html;
+                exit();
             }
             //PDF Rendering
             $this->load->library('pdf');
             if(true){
-                $pdf = $this->pdf->load_split(array('margin_top' => 5));
+                if((int)$h==0){
+                    $pdf = $this->pdf->load_split(array('margin_top' => 0,'margin_bottom' => 0,'margin_left' => 0,'margin_right' => 0));
+                }
+                else{
+                    $pdf = $this->pdf->load_split(array('margin_top' => 5));
+                }
+                
             }
             else{
                 if (INVV == 1) {

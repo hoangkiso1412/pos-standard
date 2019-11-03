@@ -230,7 +230,7 @@
                     <?php echo "បានទិញទោចក្រយានយន្ត"//$this->lang->line('Description') ?><br>Bought Motocycle Model
                 </td>
                 <td style="text-align:center">
-                    ចំនួន<br><?php echo $this->lang->line('Qty') ?>
+                    ចំនួន<br><?php echo "Qty"//$this->lang->line('Qty') ?>
                 </td>
                 <?php 
                 if ($invoice['discount'] > 0) 
@@ -248,7 +248,7 @@
                     លេខតួ និង លេខម៉ាស៊ីន<br><?php echo "Engine and Frame No"//"Unit ".$this->lang->line('Price') ?>
                 </td>
                 <td style="text-align:center">
-                    តំលៃ / ឯកតា<br><?php echo "Unit ".$this->lang->line('Price') ?>
+                    តំលៃ / ឯកតា<br><?php echo "Unit Price" ?>
                 </td>
             </tr>
             <?php

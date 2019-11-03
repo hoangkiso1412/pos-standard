@@ -1,7 +1,7 @@
 <div class="content-body">
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title"><?php echo $this->lang->line('Purchase Detail Listing') ?>
+            <h4 class="card-title"><?php echo 'របាយការណ៍ស្តុកទាំងអស់' //$this->lang->line('Purchase Detail Listing') ?>
             <div class="heading-elements">
                 <ul class="list-inline mb-0">
                     <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
@@ -38,24 +38,21 @@
                             }
                             ?>
                         </select>
-                    </div> 
+                    </div>
                     <div class="col-md-1">
                         <input type="button" name="search" id="search" value="Search" class="btn btn-info btn-sm"/>
                     </div>
-                   
-
                 </div>
                 <hr>
 
                 <table id="po" class="table table-striped table-bordered zero-configuration">
                     <thead>
                     <tr>
-                    
-                        <th><?php echo 'ល.រ'//echo $this->lang->line('No') ?></th>
+                        <th><?php echo 'ល.រ' ?></th>
                         <th>កាលបរិឆ្ឆេត​</th>
                         <th>ស្តុក</th>
-                        <th>ប្រភេទ</th>
-                        <th>ឈ្មោះ</th>
+                        <th>ម៉ាក</th>
+                        <th>ប្រភេទម៉ូតូ</th>
                         <th>ចំនួន</th>
                         <th>ពណ៌</th>
                         <th>ឆ្នាំ</th>
@@ -64,17 +61,18 @@
                         <th>លេខម៉ាស៊ីន</th>
                         <th>អ្នកទិញ</th>
                         <th>តម្លៃ</th>
-                        <th>នៅខ្វះ</th>
-                        <th>សងប៉ុន្មាន</th>
-                        <th>ថ្ងៃសង</th>
+                        <th>ស្តុចូល</th>
+                        <th>ស្តុកចេញ</th>
+                        <th>ស្តុកសល់</th>
+                        <th>ថ្ងៃលក់</th>
                         <th>ផ្សេងៗ</th>
                     </tr>
                     </thead>
                     <tbody>
                     </tbody>
-
                     <tfoot>
                     <tr>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -114,7 +112,7 @@
                     <?php datatable_lang();?>
                     'order': [],
                     'ajax': {
-                        'url': "<?php echo site_url('purchase_master_detail/ajax_list')?>",
+                        'url': "<?php echo site_url('warehouse/ajax_list')?>",
                         'type': 'POST',
                         'data': {
                             '<?=$this->security->get_csrf_token_name()?>': crsf_hash,
@@ -189,7 +187,7 @@
  
             // Update footer
             $( api.column( 13 ).footer() ).html(
-                'សរុប = $  '+ pageTotal
+                pageTotal
              //   '$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
              // Total over all pages
@@ -210,7 +208,28 @@
  
             // Update footer
             $( api.column( 14 ).footer() ).html(
-                'សរុប = $  '+ pageTotal
+                 pageTotal
+               // '$  '+pageTotal +'<br/> សរុប= $  '+ total 
+            );
+             // Total over all pages
+             total = api
+                .column( 15 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 15, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 15 ).footer() ).html(
+                 pageTotal
                // '$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
 
