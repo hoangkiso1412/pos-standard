@@ -222,11 +222,13 @@ class Billing extends CI_Controller
 //                $html = $this->load->view('print_files/invoice-a4-gst_v' . INVV, $data, true);
             } else {
                 $html = $this->load->view('print_files/invoice-a4-custom', $data, true);
+                echo $html;
+                exit();
             }
             //PDF Rendering
             $this->load->library('pdf');
             if(true){
-                if((int)$h>0){
+                if((int)$h==0){
                     $pdf = $this->pdf->load_split(array('margin_top' => 0,'margin_bottom' => 0,'margin_left' => 0,'margin_right' => 0));
                 }
                 else{
