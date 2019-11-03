@@ -196,12 +196,11 @@
                                     <th width="5%" class="text-center"><?php echo $this->lang->line('Tax') ?>(%)</th>
                                     <th width="5%" class="text-center"><?php echo $this->lang->line('Tax') ?></th>
                                     <th width="5%" class="text-center"><?php echo $this->lang->line('Discount') ?></th>
-                                    
                                     <th width="3%" class="text-center">
                                         <?php echo $this->lang->line('Amount') ?>
                                         (<?php echo $this->config->item('currency'); ?>)
                                     </th>
-                                    <th width="5%" class="text-center"><?php echo "Paid Amount"//$this->lang->line('Discount') ?></th>
+                                    <th width="5%" class="text-center hidden"><?php echo "Paid Amount"//$this->lang->line('Discount') ?></th>
                                     <th width="5%" class="text-center"><?php echo $this->lang->line('Action') ?></th>
                                 </tr>
                                 </thead>
@@ -256,7 +255,7 @@
                                               <span class="currenty">' . $this->config->item('currency') . '</span>
                                               <strong><span class="ttlText" id="result-' . $i . '">' . edit_amountExchange_s($row['subtotal'], $invoice['multi'], $this->aauth->get_user()->loc) . '</span></strong>
                                           </td>
-                                          <td><input type="text" class="form-control discount" name="purchase_paid_amount[]" value="' . amountFormat_general($row['purchase_paid_amount']) . '" onkeypress="return isNumber(event)" id="purchasepaidamount-0" autocomplete="off"></td>
+                                          <td class="hidden"><input type="text" class="form-control discount" name="purchase_paid_amount[]" value="' . amountFormat_general($row['purchase_paid_amount']) . '" onkeypress="return isNumber(event)" id="purchasepaidamount-0" autocomplete="off"></td>
                                           <td class="text-center">
                                               <button type="button" data-rowid="' . $i . '" class="btn btn-danger removeProd '.$hidden.'" title="Remove"> <i class="fa fa-minus-square"></i> </button>
                                           </td>

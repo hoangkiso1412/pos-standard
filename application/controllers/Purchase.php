@@ -192,7 +192,7 @@ class Purchase extends CI_Controller
           $invocieno        = $this->db->insert_id();
           $productlist      = array();
           $stocklist        = array();
-          $transaction_list = array();
+          // $transaction_list = array();
           $prodindex        = 0;
           $itc              = 0;
           $flag             = false;
@@ -296,28 +296,28 @@ class Purchase extends CI_Controller
                   'purchase_qty'            => 1
                   );
 
-                $data_transaction = array(
-                  'acid'            => 1,
-                  'account'         => 'Sale Account',
-                  'type'            => 'Expense',
-                  'cat'             => 'Purchase',
-                  'debit'           => $purchase_paidamount[$key],
-                  'payer'           => '',
-                  'payerid'         => $customer_id,
-                  'method'          => 'Cash',
-                  'date'            => $newDate,
-                  'tid'             => $invocieno,
-                  'eid'             => $this->aauth->get_user()->id,
-                  'note'            => '',
-                  'ext'             => 1,
-                  'loc'             => 0,
-                  'other_id'        => $stock_id,
-                  );
+                // $data_transaction = array(
+                //   'acid'            => 1,
+                //   'account'         => 'Sale Account',
+                //   'type'            => 'Expense',
+                //   'cat'             => 'Purchase',
+                //   'debit'           => $purchase_paidamount[$key],
+                //   'payer'           => '',
+                //   'payerid'         => $customer_id,
+                //   'method'          => 'Cash',
+                //   'date'            => $newDate,
+                //   'tid'             => $invocieno,
+                //   'eid'             => $this->aauth->get_user()->id,
+                //   'note'            => '',
+                //   'ext'             => 1,
+                //   'loc'             => 0,
+                //   'other_id'        => $stock_id,
+                //   );
 
               $flag = true;
               $productlist[$prodindex]        = $data;
               $stocklist[$prodindex]          = $data_stock;
-              $transaction_list[$prodindex]   = $data_transaction;
+              //$transaction_list[$prodindex]   = $data_transaction;
               $i++;
               $prodindex++;
               $amt = numberClean($product_qty[$key]);
@@ -337,13 +337,13 @@ class Purchase extends CI_Controller
               $this->db->where('id', $invocieno);
               $this->db->update('geopos_purchase');
               $this->db->insert_batch('tb_stock', $stocklist);
-              $count    = count($stocklist);
-              $first_id = $this->db->insert_id();
-              $last_id  = $first_id + ($count-1);
+              // $count    = count($stocklist);
+              // $first_id = $this->db->insert_id();
+              // $last_id  = $first_id + ($count-1);
 
-              print_r('id:' + $last_id);
+              // print_r('id:' + $last_id);
 
-              $this->db->insert_batch('geopos_transactions', $transaction_list);
+              // $this->db->insert_batch('geopos_transactions', $transaction_list);
 
           } else {
               echo json_encode(array('status' => 'Error', 'message' => "Please choose product from product list. Go to Item manager section if you have not added the products."));
@@ -398,16 +398,16 @@ class Purchase extends CI_Controller
     {
         $this->load->model('accounts_model');
         $data['acclist'] = $this->accounts_model->accountslist((integer)$this->aauth->get_user()->loc);
-        $tid = intval($this->input->get('id'));
-        $data['id'] = $tid;
-        $head['title'] = "Purchase $tid";
+        $tid             = intval($this->input->get('id'));
+        $data['id']      = $tid;
+        $head['title']   = "Purchase $tid";
         $data['invoice'] = $this->purchase->purchase_details($tid);
         // $data['products'] = $this->purchase->purchase_products($tid);
         $data['products'] = $this->purchase->purchase_product_list($tid);
         $data['activity'] = $this->purchase->purchase_transactions($tid);
-        $data['attach'] = $this->purchase->attach($tid);
+        $data['attach']   = $this->purchase->attach($tid);
         $data['employee'] = $this->purchase->employee($data['invoice']['eid']);
-        $head['usernm'] = $this->aauth->get_user()->username;
+        $head['usernm']   = $this->aauth->get_user()->username;
         $this->load->view('fixed/header', $head);
         if ($data['invoice']['tid']) $this->load->view('purchase/view', $data);
         $this->load->view('fixed/footer');
