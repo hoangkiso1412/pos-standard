@@ -362,7 +362,7 @@
             ?>
             <tr>
                 <td><?php echo "តំលៃសរុប Total Price"//$this->lang->line('Balance Due') ?>:</td>
-                <td><strong><?php $rming = $invoice['total'];
+                <td><strong><?php $rming = $invoice['subtotal'];
               if ($rming < 0) {
                   $rming = 0;
               }
@@ -378,7 +378,7 @@
             </tr>
             <tr>
                 <td>' . 'នៅខ្វះ Balance' . ':</td>
-                <td>' . amountExchange($invoice['total']-$invoice['pamnt'], $invoice['multi'], $invoice['loc']) . '</td>
+                <td>' . amountExchange($invoice['subtotal']-$invoice['pamnt'], $invoice['multi'], $invoice['loc']) . '</td>
             </tr>
         </table>
         <br>
