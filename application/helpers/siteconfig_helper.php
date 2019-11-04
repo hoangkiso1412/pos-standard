@@ -541,3 +541,10 @@ function warehouse()
     $query2 = $ci->db->query("SELECT * FROM geopos_warehouse");
     return $query2->result_array();
 }
+function product_cat()
+{
+    $ci =& get_instance();
+    $ci->load->database();
+    $query2 = $ci->db->query("SELECT * FROM geopos_product_cat");
+    return $query2->result_array();
+}

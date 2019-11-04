@@ -70,7 +70,7 @@ class Purchase_master_detail extends CI_Controller
             $row[] = $invoices->conditions_plateNumber;
             $row[] = $invoices->body_number;
             $row[] = $invoices->engine_number;
-            $row[] = $invoices->Seller;
+            $row[] = $invoices->purchaser;
             $row[] = amountExchange($invoices->total, 0, $this->aauth->get_user()->loc);
             $row[] = amountExchange($invoices->remain_amount, 0, $this->aauth->get_user()->loc);
             $row[] = amountExchange($invoices->paid_amount, 0, $this->aauth->get_user()->loc);
