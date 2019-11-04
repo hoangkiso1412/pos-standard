@@ -255,7 +255,7 @@
                                               <span class="currenty">' . $this->config->item('currency') . '</span>
                                               <strong><span class="ttlText" id="result-' . $i . '">' . edit_amountExchange_s($row['subtotal'], $invoice['multi'], $this->aauth->get_user()->loc) . '</span></strong>
                                           </td>
-                                          <td class="hidden"><input type="text" class="form-control discount" name="purchase_paid_amount[]" value="' . amountFormat_general($row['purchase_paid_amount']) . '" onkeypress="return isNumber(event)" id="purchasepaidamount-0" autocomplete="off"></td>
+                                          <td class="hidden"><input type="text" class="form-control discount" name="purchase_paid_amount[]" value="0" onkeypress="return isNumber(event)" id="purchasepaidamount-0" autocomplete="off"></td>
                                           <td class="text-center">
                                               <button type="button" data-rowid="' . $i . '" class="btn btn-danger removeProd '.$hidden.'" title="Remove"> <i class="fa fa-minus-square"></i> </button>
                                           </td>

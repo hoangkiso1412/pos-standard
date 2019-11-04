@@ -190,12 +190,10 @@
                                     <tr>
                                         <th>#</th>
                                         <th><?php echo $this->lang->line('Description') ?></th>
-                                        <th><?php echo "Color"//$this->lang->line('Description') ?></th>
-                                        <th><?php echo "Year"//$this->lang->line('Description') ?></th>
-                                        <th><?php echo "Frame number"//$this->lang->line('Description') ?></th>
-                                        <th><?php echo "Engine number"//$this->lang->line('Description') ?></th>
-                                        <th><?php echo "Plate number"//$this->lang->line('Description') ?></th>
-                                        <th><?php echo "Other expense"//$this->lang->line('Description') ?></th>
+                                        <th><?php echo $this->lang->line('Frame Number') ?></th>
+                                        <th><?php echo $this->lang->line('Engine Number') ?></th>
+                                        <th><?php echo $this->lang->line('Plate number') ?></th>
+                                        <th><?php echo $this->lang->line('Other expense') ?></th>
                                         <th><?php echo $this->lang->line('Rate') ?></th>
                                         <th><?php echo $this->lang->line('Qty') ?></th>
                                         <th><?php echo $this->lang->line('Tax') ?></th>
@@ -211,9 +209,7 @@
                                         $sub_t += $row['price'] * $row['qty'];
                                         echo '<tr>
                                                 <th scope="row">' . $c . '</th>
-                                                <td>' . $row['product_name'] . '</td>  
-                                                <td>' . $row['color'] . '</td>          
-                                                <td>' . $row['year'] . '</td>  
+                                                <td>' . $row['product_name'] . ' ស៊េរី'.$row['year'].' ពណ៌'.$row['color'].'</td>  
                                                 <td>' . $row['body_number'] . '</td>  
                                                 <td>' . $row['engine_number'] . '</td>  
                                                 <td>' . $row['plate_number'] . '</td>   
@@ -224,7 +220,7 @@
                                                 <td>' . amountExchange($row['totaldiscount'], 0, $this->aauth->get_user()->loc) . ' (' . amountFormat_s($row['discount']) . $this->lang->line($invoice['format_discount']) . ')</td>
                                                 <td>' . amountExchange($row['subtotal'], 0, $this->aauth->get_user()->loc) . '</td>
                                             </tr>';
-                                        echo '<tr><td colspan=5>' . $row['product_des'] . '</td></tr>';
+                                        echo '<tr><td colspan=11>' . $row['product_des'] . '</td></tr>';
                                         $c++;
                                     } ?>
 
@@ -278,7 +274,7 @@
                                     </tr>
                                     <tr>
                                         <td class="text-bold-800"><?php echo $this->lang->line('Total') ?></td>
-                                        <td class="text-bold-800 text-xs-right"> <?php echo amountExchange($invoice['total'], 0, $this->aauth->get_user()->loc) ?></td>
+                                        <td class="text-bold-800 text-xs-right"> <?php echo amountExchange($invoice['subtotal'], 0, $this->aauth->get_user()->loc) ?></td>
                                     </tr>
                                     <tr>
                                         <td><?php echo $this->lang->line('Payment Made') ?></td>
@@ -288,10 +284,9 @@
                                     <tr class="bg-grey bg-lighten-4">
                                         <td class="text-bold-800"><?php echo $this->lang->line('Balance Due') ?></td>
                                         <td class="text-bold-800 text-xs-right"> <?php $myp = '';
-                                            $rming = $invoice['total'] - $invoice['pamnt'];
+                                            $rming = $invoice['subtotal'] - $invoice['pamnt'];
                                             if ($rming < 0) {
                                                 $rming = 0;
-
                                             }
                                             echo ' <span id="paydue">' . amountExchange($rming, 0, $this->aauth->get_user()->loc) . '</span></strong>'; ?></td>
                                     </tr>
@@ -307,82 +302,68 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Invoice Footer -->
-
-                <div id="invoice-footer"><p class="lead"><?php echo $this->lang->line('Debit Transactions') ?>:</p>
+                <div id="invoice-footer"><p class="lead">
+                    <?php echo $this->lang->line('Debit Transactions') ?>:</p>
                     <table class="table table-striped">
-                        <thead>
+                      <thead>
                         <tr>
-                            <th><?php echo $this->lang->line('Date') ?></th>
-                            <th><?php echo $this->lang->line('Method') ?></th>
-                            <th><?php echo $this->lang->line('Debit') ?></th>
-                            <th><?php echo $this->lang->line('Credit') ?></th>
-                            <th><?php echo $this->lang->line('Note') ?></th>
-
-
+                          <th><?php echo $this->lang->line('Date') ?></th>
+                          <th><?php echo $this->lang->line('Method') ?></th>
+                          <th><?php echo $this->lang->line('Debit') ?></th>
+                          <th><?php echo $this->lang->line('Credit') ?></th>
+                          <th><?php echo $this->lang->line('Note') ?></th>
                         </tr>
-                        </thead>
-                        <tbody id="activity">
-                        <?php foreach ($activity as $row) {
-
-                            echo '<tr>
-                            <td>' . $row['date'] . '</td>
-                            <td>' . $this->lang->line($row['method']) . '</td>
-                            <td>' . amountExchange($row['debit'], 0, $this->aauth->get_user()->loc) . '</td>
-                             <td>' . amountExchange($row['credit'], 0, $this->aauth->get_user()->loc) . '</td>
-                            <td>' . $row['note'] . '</td>
+                      </thead>
+                      <tbody id="activity">
+                      <?php foreach ($activity as $row) {
+                        echo '<tr>
+                                <td>' . $row['date'] . '</td>
+                                <td>' . $this->lang->line($row['method']) . '</td>
+                                <td>' . amountExchange($row['debit'], 0, $this->aauth->get_user()->loc) . '</td>
+                                <td>' . amountExchange($row['credit'], 0, $this->aauth->get_user()->loc) . '</td>
+                                <td>' . $row['note'] . '</td>
                         </tr>';
-                        } ?>
-
-                        </tbody>
+                      } ?>
+                      </tbody>
                     </table>
-
                     <div class="row">
-
-                        <div class="col-md-7 col-sm-12">
-
-                            <h6><?php echo $this->lang->line('Terms & Condition') ?></h6>
-                            <p> <?php
-
-                                echo '<strong>' . $invoice['termtit'] . '</strong><br>' . $invoice['terms'];
-                                ?></p>
-                        </div>
-
+                      <div class="col-md-7 col-sm-12">
+                        <h6><?php echo $this->lang->line('Terms & Condition') ?></h6>
+                        <p> 
+                          <?php
+                            echo '<strong>' . $invoice['termtit'] . '</strong><br>' . $invoice['terms'];
+                          ?>
+                        </p>
+                      </div>
                     </div>
-
                 </div>
                 <!--/ Invoice Footer -->
                 <hr>
-                <pre><?php echo $this->lang->line('Public Access URL') ?>: <?php
-                    echo $link ?></pre>
+                <pre><?php echo $this->lang->line('Public Access URL') ?>: <?php echo $link ?></pre>
                 <div class="row">
                     <table class="table table-striped">
                         <thead>
                         <tr>
                             <th><?php echo $this->lang->line('Files') ?></th>
-
-
                         </tr>
                         </thead>
                         <tbody id="activity">
-                        <?php foreach ($attach as $row) {
-
-                            echo '<tr><td><a data-url="' . base_url() . 'purchase/file_handling?op=delete&name=' . $row['col1'] . '&invoice=' . $invoice['iid'] . '" class="aj_delete"><i class="btn-danger btn-lg fa fa-trash"></i></a> <a class="n_item" href="' . base_url() . 'userfiles/attach/' . $row['col1'] . '"> ' . $row['col1'] . ' </a></td></tr>';
-                        } ?>
-
+                          <?php 
+                            foreach ($attach as $row) {
+                              echo '<tr><td><a data-url="' . base_url() . 'purchase/file_handling?op=delete&name=' . $row['col1'] . '&invoice=' . $invoice['iid'] . '" class="aj_delete"><i class="btn-danger btn-lg fa fa-trash"></i></a> <a class="n_item" href="' . base_url() . 'userfiles/attach/' . $row['col1'] . '"> ' . $row['col1'] . ' </a></td></tr>';
+                            } 
+                          ?>
                         </tbody>
                     </table>
-
                 </div>
                 <div class="card">
-                    <!-- The fileinput-button span is used to style the file input field as button -->
-                    <span class="btn btn-success fileinput-button">
-        <i class="glyphicon glyphicon-plus"></i>
-        <span>Select files...</span>
-                        <!-- The file input field used as target for the file upload widget -->
-        <input id="fileupload" type="file" name="files[]" multiple>
-    </span>
+                  <!-- The fileinput-button span is used to style the file input field as button -->
+                  <span class="btn btn-success fileinput-button"><i class="glyphicon glyphicon-plus"></i>
+                    <span>Select files...</span>
+                    <!-- The file input field used as target for the file upload widget -->
+                    <input id="fileupload" type="file" name="files[]" multiple>
+                  </span>
                     <br>
                     <pre>Allowed: gif, jpeg, png, docx, docs, txt, pdf, xls </pre>
                     <br>
@@ -395,7 +376,6 @@
                     <br>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -441,7 +421,6 @@
                 obj.remove();
             }
         });
-
     });
 </script>
 <!-- Modal HTML -->
@@ -464,7 +443,7 @@
                               ?>
                               <tr>
                                   <td colspan="4">
-                                      <?php echo $row['product'] ?><input type="hidden" class="form-control required" id="psid-<?php echo $pid?>" name="psid[]" value="<?php echo $row["product_stock_id"] ?>">
+                                      <?php echo $row['product'] ?><input class="form-control required hidden" id="psid-<?php echo $pid?>" name="psid[]" value="<?php echo $row["stock_id"] ?>">
                                   </td>
                               </tr>
                               <tr>

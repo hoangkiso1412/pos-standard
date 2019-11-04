@@ -249,75 +249,100 @@ class Transactions extends CI_Controller
 
     public function paypurchase()
     {
+      if (!$this->aauth->premission(1)) {
+          exit('<h3>Sorry! You have insufficient permissions to access this section</h3>');
+      }
+      $amount2      = 0;
+      $tid          = $this->input->post('tid');
+      
+      //array post
+      $psid         = $this->input->post("psid");
+      $amount       = $this->input->post("payamount");
+      $paydate      = $this->input->post('paydate', true);
+      //end array post
+      
+      $note         = $this->input->post('shortnote', true);
+      $pmethod      = $this->input->post('pmethod', true);
+      $acid         = $this->input->post('account', true);
+      $cid          = $this->input->post('cid', true);
+      $cname        = $this->input->post('cname', true);
+    
+      $this->db->select('holder');
+      $this->db->from('geopos_accounts');
+      $this->db->where('id', $acid);
+      $query   = $this->db->get();
+      $account = $query->row_array();
 
-        if (!$this->aauth->premission(2)) {
-            exit('<h3>Sorry! You have insufficient permissions to access this section</h3>');
-        }
-
-        $tid = $this->input->post('tid', true);
-        $amount = $this->input->post('amount', true);
-        $paydate = $this->input->post('paydate', true);
-        $note = $this->input->post('shortnote', true);
-        $pmethod = $this->input->post('pmethod', true);
-        $acid = $this->input->post('account', true);
-        $cid = $this->input->post('cid', true);
-        $cname = $this->input->post('cname', true);
-        $paydate = datefordatabase($paydate);
-        $this->db->select('holder');
-        $this->db->from('geopos_accounts');
-        $this->db->where('id', $acid);
-        $query = $this->db->get();
-        $account = $query->row_array();
-        $data = array(
-            'acid' => $acid,
-            'account' => $account['holder'],
-            'type' => 'Expense',
-            'cat' => 'Purchase',
-            'debit' => $amount,
-            'payer' => $cname,
-            'payerid' => $cid,
-            'method' => $pmethod,
-            'date' => $paydate,
-            'eid' => $this->aauth->get_user()->id,
-            'tid' => $tid,
-            'note' => $note,
-            'ext' => 1,
-            'loc' => $this->aauth->get_user()->loc
-        );
-        $this->db->insert('geopos_transactions', $data);
+      $productlist    = array();
+      $prodindex      = 0;
+      $totalpayamount = 0;
+      $updateQuery    = "";
+      foreach ($psid as $key => $value) {
+          $totalpayamount += numberClean($amount[$key]);
+          if((double)numberClean($amount[$key])>0){
+              $pamount = numberClean($amount[$key]);
+              $data = array(
+                  'acid'    => $acid,
+                  'account' => $account['holder'],
+                  'type'    => 'Expense',
+                  'cat'     => 'Purchase',
+                  'debit'  => rev_amountExchange_s($amount[$key], 0, $this->aauth->get_user()->loc),
+                  'payer'   => $cname,
+                  'payerid' => $cid,
+                  'method'  => $pmethod,
+                  'date'    => datefordatabase($paydate[$key]),
+                  'eid'     => $this->aauth->get_user()->id,
+                  'tid'     => $tid,
+                  'other_id'=> $psid[$key],
+                  'note'    => $note,
+                  'loc'     => $this->aauth->get_user()->loc,
+                  'ext'     => 1,
+              );
+              $productlist[$prodindex] = $data;
+              $prodindex++;
+              $this->db->set('purchase_paid_amount'  , "`purchase_paid_amount`+ $pamount"  , FALSE);
+              $this->db->set('purchase_remain_amount', "`purchase_remain_amount`- $pamount", FALSE);
+              $this->db->where('id', $psid[$key]);
+              $this->db->update('tb_stock');
+          }
+      }
+      if($prodindex>0){
+        $this->db->insert_batch('geopos_transactions', $productlist);
+      }
+        //$this->db->insert('geopos_transactions', $data);
         $this->db->insert_id();
         $this->db->select('total,csd,pamnt');
         $this->db->from('geopos_purchase');
         $this->db->where('id', $tid);
-        $query = $this->db->get();
+        $query     = $this->db->get();
         $invresult = $query->row();
-        $totalrm = $invresult->total - $invresult->pamnt;
-        if ($totalrm > $amount) {
+        $totalrm   = $invresult->total - $invresult->pamnt;
+        if ($totalrm > $totalpayamount) {
             $this->db->set('pmethod', $pmethod);
-            $this->db->set('pamnt', "pamnt+$amount", FALSE);
+            $this->db->set('pamnt', "pamnt+$totalpayamount", FALSE);
             $this->db->set('status', 'partial');
             $this->db->where('id', $tid);
             $this->db->update('geopos_purchase');
             //account update
-            $this->db->set('lastbal', "lastbal-$amount", FALSE);
+            $this->db->set('lastbal', "lastbal-", FALSE);
             $this->db->where('id', $acid);
             $this->db->update('geopos_accounts');
-            $paid_amount = $invresult->pamnt + $amount;
-            $status = 'Partial';
-            $totalrm = $totalrm - $amount;
+            $paid_amount = $invresult->pamnt + $totalpayamount;
+            $status      = 'Partial';
+            $totalrm     = $totalrm - $totalpayamount;
         } else {
             $this->db->set('pmethod', $pmethod);
-            $this->db->set('pamnt', "pamnt+$amount", FALSE);
-            $this->db->set('status', 'paid');
-            $this->db->where('id', $tid);
+            $this->db->set('pamnt'  , "pamnt+$totalpayamount", FALSE);
+            $this->db->set('status' , 'paid');
+            $this->db->where('id'   , $tid);
             $this->db->update('geopos_purchase');
             //acount update
-            $this->db->set('lastbal', "lastbal-$amount", FALSE);
-            $this->db->where('id', $acid);
+            $this->db->set('lastbal', "lastbal-$totalpayamount", FALSE);
+            $this->db->where('id'   , $acid);
             $this->db->update('geopos_accounts');
-            $totalrm = 0;
-            $status = 'Paid';
-            $paid_amount = $amount;
+            $totalrm     = 0;
+            $status      = 'Paid';
+            $paid_amount = $totalpayamount;
         }
 
         $dual = $this->custom->api_config(65);
@@ -326,29 +351,130 @@ class Transactions extends CI_Controller
             $this->db->select('holder');
             $this->db->from('geopos_accounts');
             $this->db->where('id', $dual['url']);
-            $query = $this->db->get();
+            $query   = $this->db->get();
             $account = $query->row_array();
 
-            $data['debit'] = 0;
-            $data['credit'] = $amount;
-            $data['type'] = 'Income';
-            $data['acid'] = $dual['url'];
+            $data['debit']   = 0;
+            $data['credit']  = $totalpayamount;
+            $data['type']    = 'Income';
+            $data['acid']    = $dual['url'];
             $data['account'] = $account['holder'];
-            $data['note'] = 'Credit ' . $data['note'];
+            $data['note']    = 'Credit ' . $data['note'];
 
             $this->db->insert('geopos_transactions', $data);
 
             //account update
-            $this->db->set('lastbal', "lastbal+$amount", FALSE);
+            $this->db->set('lastbal', "lastbal+$totalpayamount", FALSE);
             $this->db->where('id', $dual['url']);
             $this->db->update('geopos_accounts');
         }
         $activitym = "<tr><td>" . substr($paydate, 0, 10) . "</td><td>$pmethod</td><td>$amount</td><td>$note</td></tr>";
 
-
-        echo json_encode(array('status' => 'Success', 'message' =>
-            $this->lang->line('Transaction has been added'), 'pstatus' => $this->lang->line($status), 'activity' => $activitym, 'amt' => $totalrm, 'ttlpaid' => $paid_amount));
+        echo json_encode(array('status' => 'Success', 'message' => $this->lang->line('Transaction has been added'), 'pstatus' => $this->lang->line($status), 'activity' => $activitym, 'amt' => $totalrm, 'ttlpaid' => $paid_amount));
     }
+
+    // public function paypurchase()
+    // {
+
+    //     if (!$this->aauth->premission(2)) {
+    //         exit('<h3>Sorry! You have insufficient permissions to access this section</h3>');
+    //     }
+
+    //     $tid = $this->input->post('tid', true);
+    //     $amount = $this->input->post('amount', true);
+    //     $paydate = $this->input->post('paydate', true);
+    //     $note = $this->input->post('shortnote', true);
+    //     $pmethod = $this->input->post('pmethod', true);
+    //     $acid = $this->input->post('account', true);
+    //     $cid = $this->input->post('cid', true);
+    //     $cname = $this->input->post('cname', true);
+    //     $paydate = datefordatabase($paydate);
+    //     $this->db->select('holder');
+    //     $this->db->from('geopos_accounts');
+    //     $this->db->where('id', $acid);
+    //     $query = $this->db->get();
+    //     $account = $query->row_array();
+    //     $data = array(
+    //         'acid' => $acid,
+    //         'account' => $account['holder'],
+    //         'type' => 'Expense',
+    //         'cat' => 'Purchase',
+    //         'debit' => $amount,
+    //         'payer' => $cname,
+    //         'payerid' => $cid,
+    //         'method' => $pmethod,
+    //         'date' => $paydate,
+    //         'eid' => $this->aauth->get_user()->id,
+    //         'tid' => $tid,
+    //         'note' => $note,
+    //         'ext' => 1,
+    //         'loc' => $this->aauth->get_user()->loc
+    //     );
+    //     $this->db->insert('geopos_transactions', $data);
+    //     $this->db->insert_id();
+    //     $this->db->select('total,csd,pamnt');
+    //     $this->db->from('geopos_purchase');
+    //     $this->db->where('id', $tid);
+    //     $query = $this->db->get();
+    //     $invresult = $query->row();
+    //     $totalrm = $invresult->total - $invresult->pamnt;
+    //     if ($totalrm > $amount) {
+    //         $this->db->set('pmethod', $pmethod);
+    //         $this->db->set('pamnt', "pamnt+$amount", FALSE);
+    //         $this->db->set('status', 'partial');
+    //         $this->db->where('id', $tid);
+    //         $this->db->update('geopos_purchase');
+    //         //account update
+    //         $this->db->set('lastbal', "lastbal-$amount", FALSE);
+    //         $this->db->where('id', $acid);
+    //         $this->db->update('geopos_accounts');
+    //         $paid_amount = $invresult->pamnt + $amount;
+    //         $status = 'Partial';
+    //         $totalrm = $totalrm - $amount;
+    //     } else {
+    //         $this->db->set('pmethod', $pmethod);
+    //         $this->db->set('pamnt', "pamnt+$amount", FALSE);
+    //         $this->db->set('status', 'paid');
+    //         $this->db->where('id', $tid);
+    //         $this->db->update('geopos_purchase');
+    //         //acount update
+    //         $this->db->set('lastbal', "lastbal-$amount", FALSE);
+    //         $this->db->where('id', $acid);
+    //         $this->db->update('geopos_accounts');
+    //         $totalrm = 0;
+    //         $status = 'Paid';
+    //         $paid_amount = $amount;
+    //     }
+
+    //     $dual = $this->custom->api_config(65);
+    //     if ($dual['key1']) {
+
+    //         $this->db->select('holder');
+    //         $this->db->from('geopos_accounts');
+    //         $this->db->where('id', $dual['url']);
+    //         $query = $this->db->get();
+    //         $account = $query->row_array();
+
+    //         $data['debit'] = 0;
+    //         $data['credit'] = $amount;
+    //         $data['type'] = 'Income';
+    //         $data['acid'] = $dual['url'];
+    //         $data['account'] = $account['holder'];
+    //         $data['note'] = 'Credit ' . $data['note'];
+
+    //         $this->db->insert('geopos_transactions', $data);
+
+    //         //account update
+    //         $this->db->set('lastbal', "lastbal+$amount", FALSE);
+    //         $this->db->where('id', $dual['url']);
+    //         $this->db->update('geopos_accounts');
+    //     }
+    //     $activitym = "<tr><td>" . substr($paydate, 0, 10) . "</td><td>$pmethod</td><td>$amount</td><td>$note</td></tr>";
+
+
+    //     echo json_encode(array('status' => 'Success', 'message' =>
+    //         $this->lang->line('Transaction has been added'), 'pstatus' => $this->lang->line($status), 'activity' => $activitym, 'amt' => $totalrm, 'ttlpaid' => $paid_amount));
+    // }
 
 
     public function cancelinvoice()
