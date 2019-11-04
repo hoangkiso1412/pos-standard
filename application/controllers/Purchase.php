@@ -222,16 +222,16 @@ class Purchase extends CI_Controller
                   $transok = false;
                   exit;
             }
-            if($body_num[$key]=="") {
-              echo json_encode(array('status' => 'Error', 'message' => "Body number require!"));
-                  $transok = false;
-                  exit;
-            }
-            if($engine_num[$key]=="") {
-              echo json_encode(array('status' => 'Error', 'message' => "Engine number require!"));
-                  $transok = false;
-                  exit;
-            }
+            // if($body_num[$key]=="") {
+            //   echo json_encode(array('status' => 'Error', 'message' => "Body number require!"));
+            //       $transok = false;
+            //       exit;
+            // }
+            // if($engine_num[$key]=="") {
+            //   echo json_encode(array('status' => 'Error', 'message' => "Engine number require!"));
+            //       $transok = false;
+            //       exit;
+            // }
             
           // Check validation of product exising with engine number and body number 
             $engineno=$this->db->query("select tb_stock.engine_number from tb_stock where tb_stock.product_id=".$product_id[$key]." and tb_stock.engine_number='".$engine_num[$key]."' and tb_stock.body_number='".$body_num[$key]."'")->row()->engine_number;
@@ -574,6 +574,7 @@ class Purchase extends CI_Controller
 
         $this->db->delete('geopos_purchase_items', array('tid' => $invocieno));
         $this->db->delete('tb_stock', array('purchase_id' => $invocieno));
+        $this->db->delete('geopos_transactions', array('tid' => $invocieno));
         
         $product_id       = $this->input->post('pid');
         $old_product_id   = $this->input->post('old_product_id');
@@ -877,7 +878,7 @@ class Purchase extends CI_Controller
 
     public function update_status()
     {
-        $tid = $this->input->post('tid');
+        $tid    = $this->input->post('tid');
         $status = $this->input->post('status');
 
 

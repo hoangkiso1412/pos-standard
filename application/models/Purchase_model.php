@@ -89,7 +89,7 @@ class Purchase_model extends CI_Model
     public function purchase_product_list($id) {
         $query=$this->db->query("select
                           tb_stock.id as stock_id,
-                          CONCAT(geopos_products.product_name,' Color: ',IFNULL(geopos_products.color,''),'Year: ',IFNULL(geopos_products.year,'')) as product,
+                          CONCAT(geopos_products.product_name,' ស៊េរី',IFNULL(geopos_products.year,''),' ពណ៌',IFNULL(geopos_products.color,'')) as product,
                           geopos_products.color,
                           geopos_products.year,
                           geopos_products.product_name,

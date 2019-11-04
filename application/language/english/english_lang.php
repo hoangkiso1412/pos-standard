@@ -124,7 +124,7 @@ $lang['flat Discount'] = "Flat Discount";
 $lang['Invoice Note'] = "Invoice Note";
 $lang['Item Name'] = "Item Name";
 $lang['Quantity'] = " Quantity";
-$lang['Rate'] = " Rate";
+$lang['Rate'] = "Rate";
 $lang['Tax(%)'] = " Tax(%)";
 $lang['Discount'] = " Discount";
 $lang['Action'] = " Action";
@@ -162,7 +162,6 @@ $lang['INVOICE'] = "INVOICE";
 $lang['Gross Amount'] = "Gross Amount";
 $lang['Due Date'] = "Due Date";
 $lang['Terms'] = "Terms";
-$lang['Rate'] = "Rate";
 $lang['Qty'] = "Qty";
 $lang['Payment Status'] = "Payment Status";
 $lang['Payment Method'] = "Payment Method";
@@ -847,4 +846,7 @@ $lang["Plate Number"] = "Plate Number";
 $lang["New"] = "New";
 $lang["Purchase Detail Listing"] = "Purchase Detail Listing";
 $lang["Select Stock"] = "Select Stock";
+
+
+$lang['Other expense'] =  "Other expense";
 
