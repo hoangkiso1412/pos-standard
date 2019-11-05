@@ -481,9 +481,9 @@ class Purchase extends CI_Controller
     // Srieng modified save to data to tb_stock 26-10-2019
     public function editaction()
     {
+        $s_warehouse        = $this->input->post("s_warehouses");
         $s_purchaser        = $this->input->post("s_purchaser");
         $receive_amount     = $this->input->post("receive_amount");
-        $s_warehouse        = $this->input->post("s_warehouses");
         $currency           = $this->input->post('mcurrency');
         $customer_id        = $this->input->post('customer_id');
         $invocieno          = $this->input->post('iid');
