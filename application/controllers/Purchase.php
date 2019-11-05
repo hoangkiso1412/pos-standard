@@ -272,8 +272,8 @@ class Purchase extends CI_Controller
                   'unit'          => $product_unit[$key]
               );
               // $date = DateTime::createFromFormat('d/m/Y', $invoicedate);
-              $date = str_replace('/', '-', $invoicedate );
-              $newDate = date("Y-m-d", strtotime($date));
+              $date       = str_replace('/', '-', $invoicedate );
+              $newDate    = date("Y-m-d", strtotime($date));
               $data_stock = array(
                   'product_id'      => $product_id[$key],
                   'warehouse_id'    => $s_warehouse,
@@ -289,11 +289,12 @@ class Purchase extends CI_Controller
                   'subtotal'        => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc),
                   'totaltax'        => rev_amountExchange_s($ptotal_tax[$key], $currency, $this->aauth->get_user()->loc),
                   'totaldiscount'   => rev_amountExchange_s($ptotal_disc[$key], $currency, $this->aauth->get_user()->loc),
-                  'product_des'     => $product_des[$key],
-                  'unit'            => $product_unit[$key],
+                  'product_des'             => $product_des[$key],
+                  'unit'                    => $product_unit[$key],
                   'purchase_paid_amount'    => $purchase_paidamount[$key],
                   'purchase_remain_amount'  => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc)-$purchase_paidamount[$key],
-                  'purchase_qty'            => 1
+                  'purchase_qty'            => 1,
+                  'status'                  => 'in-stock'
                   );
 
                 // $data_transaction = array(
@@ -635,6 +636,8 @@ class Purchase extends CI_Controller
                 'unit'                    => $product_unit[$key],
                 'purchase_remain_amount'  => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc)-$purchase_paidamount[$key],
                 'purchase_paid_amount'    => $paid_amount[$key],
+                'purchase_qty'            => 1,
+                'status'                  => 'in-stock'
               );
               // $stock_new_index++;
             $stocklist_new[$stock_new_index] = $data_stock_new;
