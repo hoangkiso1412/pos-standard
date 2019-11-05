@@ -587,8 +587,9 @@ text-transform: capitalize;
     float: right;
 }
 .buttons-html5{
-    padding: .2rem;
+   
     background: #28b9ff;
+    font-size: larger
 }
    .p-mobile {
         padding: 0.3rem !important;
@@ -605,9 +606,9 @@ text-transform: capitalize;
 .form-control-sm {
     height: -webkit-calc(1.375rem + 12px);
     height: -moz-calc(1.375rem + 12px);
-    height: calc(1.375rem + 12px);
+    height: calc(1.375rem + 25px);
     padding: 0.25rem 0.5rem;
-    font-size: 1.15rem;
+    font-size: 1.5rem;
     line-height: 1;
     border-radius: 0.21rem;
 }

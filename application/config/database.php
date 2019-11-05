@@ -6,7 +6,7 @@ $query_builder = TRUE;
 
 $hostname ='localhost';
 $username ='root';
-$password ='123456';
+$password ='';
 $database ='pos-standard';
 
 $db['default'] = array(
