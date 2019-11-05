@@ -18,11 +18,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Purchase_model_master_detail extends CI_Model
+class Sale_detail_model extends CI_Model
 {
-    var $table = 'geopos_purchase';
-    var $column_order = array(null,'tb_stock.purchase_date', '`geopos_warehouse`.`title`','`geopos_products`.`product_name`','`geopos_products`.`color`','`tb_stock`.`body_number`','`tb_stock`.`engine_number`','tb_stock.subtotal','tb_stock.purchase_remain_amount','tb_stock.purchase_paid_amount','`geopos_products`.`year`', null);
-    var $column_search = array('tb_stock.purchase_date','`geopos_warehouse`.`title`','`geopos_products`.`product_name`','`geopos_products`.`color`','`geopos_products`.`year`');
+    var $table = 'tb_stock';
+    //var $column_order = array(null,'tb_stock.purchase_date', '`geopos_warehouse`.`title`','`geopos_products`.`product_name`','`geopos_products`.`color`','`tb_stock`.`body_number`','`tb_stock`.`engine_number`','tb_stock.subtotal','tb_stock.purchase_remain_amount','tb_stock.purchase_paid_amount','`geopos_products`.`year`', null);
+    //var $column_search = array('tb_stock.purchase_date','`geopos_warehouse`.`title`','`geopos_products`.`product_name`','`geopos_products`.`color`','`geopos_products`.`year`');
    // var $order = array('tb_stock.id' => 'desc');
 
     public function __construct()
@@ -32,10 +32,15 @@ class Purchase_model_master_detail extends CI_Model
 
     private function _get_datatables_query()
     {
-        $this->db->select('tb_stock.purchase_date AS `invoicedate`,`geopos_warehouse`.`title` AS `title`,`geopos_product_cat`.`title` AS `product_type`,`geopos_products`.`product_name` AS `product_name`,tb_stock.purchase_qty AS `items`,`geopos_products`.`color` AS `color`,`geopos_products`.`year` AS `year`, IF((`tb_stock`.`plate_number` = ""),"ថ្មី",`tb_stock`.`plate_number`) AS `conditions_plateNumber`,`tb_stock`.`body_number` AS `body_number`,`tb_stock`.`engine_number` AS `engine_number`,"Chanthron" AS `Seller`,tb_stock.subtotal AS `total`,tb_stock.purchase_remain_amount AS `remain_amount`,tb_stock.purchase_paid_amount AS `paid_amount`,DATE_FORMAT((SELECT `geopos_transactions`.`date` FROM `geopos_transactions` WHERE (`geopos_transactions`.`tid` = `geopos_purchase`.`id`)
-        ORDER BY `geopos_transactions`.`id` DESC LIMIT 1),"%d-%m-%Y") AS `paid_date`,geopos_purchase.notes AS `notes` ,`geopos_purchase`.`eid` AS `eid`,`geopos_warehouse`.`id` AS `id`,
-        (select geopos_employees.name from geopos_employees left join geopos_purchase on geopos_employees.id = geopos_purchase.purchaser_id where geopos_purchase.id = tb_stock.purchase_id  ) purchaser');
+        $this->db->select('DATE_FORMAT(tb_stock.sold_date,"%d-%m-%Y") AS `invoicedate`,
+        `geopos_warehouse`.`title` AS `stock`,`geopos_product_cat`.`title` AS `product_type`,
+        `geopos_products`.`product_name` AS `product_name`,tb_stock.purchase_qty AS `items`,`geopos_products`.`color` AS `color`,
+       `geopos_products`.`year` AS `year`, IF((`tb_stock`.`plate_number` = ""),"ថ្មី",`tb_stock`.`plate_number`) AS `conditions_plateNumber`,`tb_stock`.`body_number` AS `body_number`,
+       `tb_stock`.`engine_number` AS `engine_number`,tb_stock.selling_price,tb_stock.paid_amount,tb_stock.remain_amount,
+       tb_stock.sold_date,geopos_invoices.notes,geopos_product_cat.id as cat_id,
+       DATE_FORMAT(tb_stock.sold_date,"%d-%m-%Y") as sold_date,tb_stock.sale_detail_id,SUBSTRING_INDEX(geopos_invoices.customer_info, "*:", 1) buyer,geopos_warehouse.id');
         $this->db->from($this->table);
+        //$this->db->where(tb_stock.sold_date, '');
 
             if ($this->aauth->get_user()->loc) {
             $this->db->where('geopos_purchase.loc', $this->aauth->get_user()->loc);
@@ -43,19 +48,22 @@ class Purchase_model_master_detail extends CI_Model
         elseif(!BDATA) { $this->db->where('geopos_purchase.loc', 0); }
                     if ($this->input->post('start_date') && $this->input->post('end_date') && $this->input->post('stock')) // if datatable send POST for search
         {
-            $this->db->where('DATE(geopos_purchase.invoicedate) >=', datefordatabase($this->input->post('start_date')));
-            $this->db->where('DATE(geopos_purchase.invoicedate) <=', datefordatabase($this->input->post('end_date')));
+            $this->db->where('DATE(tb_stock.sold_date) >=', datefordatabase($this->input->post('start_date')));
+            $this->db->where('DATE(tb_stock.sold_date) <=', datefordatabase($this->input->post('end_date')));
             $this->db->where('`geopos_warehouse`.`id` = ', $this->input->post('stock'));
 
         }elseif($this->input->post('start_date') && $this->input->post('end_date')){
-            $this->db->where('DATE(geopos_purchase.invoicedate) >=', datefordatabase($this->input->post('start_date')));
-            $this->db->where('DATE(geopos_purchase.invoicedate) <=', datefordatabase($this->input->post('end_date')));
+            $this->db->where('DATE(tb_stock.sold_date) >=', datefordatabase($this->input->post('start_date')));
+            $this->db->where('DATE(tb_stock.sold_date) <=', datefordatabase($this->input->post('end_date')));
+            
         }
 
-        $this->db->join('tb_stock', 'geopos_purchase.id=tb_stock.purchase_id', 'left');
+        
         $this->db->join('geopos_warehouse', '`geopos_warehouse`.`id`=`tb_stock`.`warehouse_id`', 'left');
         $this->db->join('geopos_products', '`tb_stock`.`product_id`=`geopos_products`.`pid`', 'left');
         $this->db->join('geopos_product_cat', '`geopos_product_cat`.`id`= `geopos_products`.`pcat`', 'left');
+        $this->db->join('geopos_invoice_items', 'geopos_invoice_items.id = tb_stock.sale_detail_id', 'inner');
+        $this->db->join('geopos_invoices', 'geopos_invoices.id = geopos_invoice_items.tid', 'inner');
 
 
 
