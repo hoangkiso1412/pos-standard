@@ -9,6 +9,7 @@ $username ='root';
 $password ='';
 $database ='pos-standard';
 
+
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => $hostname,
