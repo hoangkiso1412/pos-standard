@@ -58,6 +58,11 @@ class Purchase_model extends CI_Model
         return $query->result_array();
 
     }
+    public function get_warehouse_s($id) {
+      $query = $this->db->query("SELECT w.id,w.title as name FROM tb_stock AS s LEFT JOIN geopos_warehouse AS w ON s.warehouse_id=w.id WHERE
+      s.purchase_id='$id' limit 1");
+      return $query->row_array();
+    }
 
     public function purchase_details($id)
     {

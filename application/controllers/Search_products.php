@@ -186,35 +186,33 @@ class Search_products extends CI_Controller
 
     public function puchase_search()
     {
-        $result = array();
-        $out = array();
-        $row_num = $this->input->post('row_num', true);
-        $name = $this->input->post('name_startsWith', true);
-        $wid = $this->input->post('wid', true);
-        $qw = '';
+        $result     = array();
+        $out        = array();
+        $row_num    = $this->input->post('row_num', true);
+        $name       = $this->input->post('name_startsWith', true);
+        $wid        = $this->input->post('wid', true);
+        $qw         = '';
         if ($wid > 0) {
-            $qw = "(geopos_products.warehouse='$wid' ) AND ";
+          $qw = "(geopos_products.warehouse='$wid' ) AND ";
         }
         $join = '';
         if ($this->aauth->get_user()->loc) {
-            $join = 'LEFT JOIN geopos_warehouse ON geopos_warehouse.id=geopos_products.warehouse';
-            if (BDATA) $qw .= '(geopos_warehouse.loc=' . $this->aauth->get_user()->loc . ' OR geopos_warehouse.loc=0) AND '; else $qw .= '(geopos_warehouse.loc=' . $this->aauth->get_user()->loc . ' ) AND ';
+          $join           = 'LEFT JOIN geopos_warehouse ON geopos_warehouse.id=geopos_products.warehouse';
+          if (BDATA) $qw .= '(geopos_warehouse.loc=' . $this->aauth->get_user()->loc . ' OR geopos_warehouse.loc=0) AND '; 
+          else       $qw .= '(geopos_warehouse.loc=' . $this->aauth->get_user()->loc . ' ) AND ';
         } elseif (!BDATA) {
-            $join = 'LEFT JOIN geopos_warehouse ON geopos_warehouse.id=geopos_products.warehouse';
-            $qw .= '(geopos_warehouse.loc=0) AND ';
+          $join = 'LEFT JOIN geopos_warehouse ON geopos_warehouse.id=geopos_products.warehouse';
+          $qw  .= '(geopos_warehouse.loc=0) AND ';
         }
         if ($name) {
-            $query = $this->db->query("SELECT geopos_products.pid,CONCAT(geopos_products.product_name,' Color: ',IFNULL(geopos_products.color,''),'Year: ',IFNULL(geopos_products.year,'')) as product_name,geopos_products.product_code,geopos_products.fproduct_price,geopos_products.taxrate,geopos_products.disrate,geopos_products.product_des,geopos_products.unit FROM geopos_products $join WHERE " . $qw . "UPPER(geopos_products.product_name) LIKE '%" . strtoupper($name) . "%' OR UPPER(geopos_products.product_code) LIKE '" . strtoupper($name) . "%' LIMIT 6");
-
-            $result = $query->result_array();
-            foreach ($result as $row) {
-                $name = array($row['product_name'], amountExchange_s($row['fproduct_price'], 0, $this->aauth->get_user()->loc), $row['pid'], amountFormat_general($row['taxrate']), amountFormat_general($row['disrate']), $row['product_des'], $row['unit'], $row['product_code'], $row_num);
-                array_push($out, $name);
-            }
-
-            echo json_encode($out);
+          $query  = $this->db->query("SELECT geopos_products.pid,CONCAT(geopos_products.product_name,' ស៊េរី',IFNULL(geopos_products.year,''),' ពណ៌',IFNULL(geopos_products.color,'')) as product_name,geopos_products.product_code,geopos_products.fproduct_price,geopos_products.taxrate,geopos_products.disrate,geopos_products.product_des,geopos_products.unit FROM geopos_products $join WHERE " . $qw . "UPPER(geopos_products.product_name) LIKE '%" . strtoupper($name) . "%' OR UPPER(geopos_products.product_code) LIKE '" . strtoupper($name) . "%' LIMIT 6");
+          $result = $query->result_array();
+          foreach ($result as $row) {
+            $name = array($row['product_name'], amountExchange_s($row['fproduct_price'], 0, $this->aauth->get_user()->loc), $row['pid'], amountFormat_general($row['taxrate']), amountFormat_general($row['disrate']), $row['product_des'], $row['unit'], $row['product_code'], $row_num);
+            array_push($out, $name);
+          }
+          echo json_encode($out);
         }
-
     }
 
     public function csearch()

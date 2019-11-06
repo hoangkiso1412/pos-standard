@@ -358,16 +358,16 @@ $lang['Add product'] = "បង្កើតផលិតផល";
 $lang['Edit Product Category'] = "Edit Product Category";
 $lang['Category Name'] = "Category Name";
 $lang['Edit Product'] = "កែប្រែផលិតផល";
-$lang['Add Supplier'] = "Add Supplier";
+$lang['Add Supplier'] = "បន្ថែមអ្នកផ្គត់ផ្គង់";
 $lang['Search Supplier'] = "វាយបញ្ជុល អ្នកផ្គត់ផ្គង់";
 $lang['Supplier Details'] = "ពត៌មានលំអិតរបស់អ្នកផ្គត់ផ្គង់";
-$lang['Purchase Order Properties'] = "Purchase Order Properties";
+$lang['Purchase Order Properties'] = "លក្ខណៈសម្បត្តិនៃការបញ្ជាទិញ";
 
 $lang['Order Due Date'] = "ថ្ងៃបង់ប្រាក់";
 $lang['Tax'] = "ពន្ធ";
 $lang['ADD'] = "បន្ថែម";
 
-$lang['Update Order'] = "Update Order";
+$lang['Update Order'] = "ធ្វើការកែប្រែ";
 $lang['Update Stock'] = "Update Stock";
 $lang['Generate Order'] = "ធ្វើការរក្សាទុក";
 $lang['Debit Payment Confirmation'] = "Debit Payment Confirmation";

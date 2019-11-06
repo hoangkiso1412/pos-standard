@@ -65,26 +65,27 @@ class Purchase extends CI_Controller
     public function edit()
     {
 
-        $tid = $this->input->get('id');
-        $data['id'] = $tid;
-        $data['title'] = "Purchase Order $tid";
+        $tid            = $this->input->get('id');
+        $data['id']     = $tid;
+        $data['title']  = "Purchase Order $tid";
         $this->load->model('customers_model', 'customers');
         $this->load->model('employee_model', 'employees');
-        $data['customergrouplist'] = $this->customers->group_list();
-        $data['purchaser_s'] = $this->employees->get_employee_s($tid);
-        $data['purchaser'] = $this->employees->get_employee_all();
-        $data['terms'] = $this->purchase->billingterms();
-        $data['invoice'] = $this->purchase->purchase_details($tid);
-        // $data['products'] = $this->purchase->purchase_products($tid);
-        $data['products'] = $this->purchase->purchase_product_list($tid);
-        $head['title'] = "Edit Invoice #$tid";
-        $head['usernm'] = $this->aauth->get_user()->username;
-        $data['warehouse'] = $this->purchase->warehouses();
-        $data['currency'] = $this->purchase->currencies();
         $this->load->model('plugins_model', 'plugins');
-        $data['exchange'] = $this->plugins->universal_api(5);
         $this->load->library("Common");
-        $data['taxlist'] = $this->common->taxlist_edit($data['invoice']['taxstatus']);
+        $data['customergrouplist'] = $this->customers->group_list();
+        $data['purchaser_s']       = $this->employees->get_employee_s($tid);
+        $data['purchaser']         = $this->employees->get_employee_all();
+        $data['terms']             = $this->purchase->billingterms();
+        $data['invoice']           = $this->purchase->purchase_details($tid);
+        // $data['products']       = $this->purchase->purchase_products($tid);
+        $data['products']          = $this->purchase->purchase_product_list($tid);
+        $head['title']             = "Edit Invoice #$tid";
+        $head['usernm']            = $this->aauth->get_user()->username;
+        $data['warehouse']         = $this->purchase->warehouses();
+        $data['warehouse_s']       = $this->purchase->get_warehouse_s($tid);
+        $data['currency']          = $this->purchase->currencies();
+        $data['exchange']          = $this->plugins->universal_api(5);
+        $data['taxlist']           = $this->common->taxlist_edit($data['invoice']['taxstatus']);
         $this->load->view('fixed/header', $head);
         $this->load->view('purchase/edit', $data);
         $this->load->view('fixed/footer');

@@ -154,10 +154,10 @@
                             <thead>
                               <tr class="item_header bg-gradient-directional-amber">
                                 <th width="15%" class="text-center"><?php echo $this->lang->line('Item Name') ?></th>
-                                <th width="10%" class="text-center"><?php echo "Frame Number"//echo $this->lang->line('Item Name') ?></th>
-                                <th width="10%" class="text-center"><?php echo "Engine Number"//echo $this->lang->line('Item Name') ?></th>
-                                <th width="10%" class="text-center"><?php echo "Plate Number"//echo $this->lang->line('Item Name') ?></th>
-                                <th width="10%" class="text-center"><?php echo "Other expense"//echo $this->lang->line('Item Name') ?></th>
+                                <th width="10%" class="text-center"><?php echo $this->lang->line('Frame Number') ?></th>
+                                <th width="10%" class="text-center"><?php echo $this->lang->line('Engine Number') ?></th>
+                                <th width="10%" class="text-center"><?php echo $this->lang->line('Plate Number') ?></th>
+                                <th width="10%" class="text-center"><?php echo $this->lang->line('Other expense') ?></th>
                                 <th width="3%" class="text-center hidden"><?php echo $this->lang->line('Quantity') ?></th>
                                 <th width="5%" class="text-center"><?php echo $this->lang->line('Rate') ?></th>
                                 <th width="5%" class="text-center"><?php echo $this->lang->line('Tax') ?>(%)</th>
