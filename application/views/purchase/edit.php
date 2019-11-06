@@ -42,40 +42,41 @@
                                     <div class="clientinfo">
                                         <?php echo $this->lang->line('Supplier Details') ?>
                                         <hr>
-                                        <?php echo '  <input type="hidden" name="customer_id" id="customer_id" value="' . $invoice['csd'] . '">
-                                <div id="customer_name"><strong>' . $invoice['name'] . '</strong></div>
-                            </div>
-                            <div class="clientinfo">
-
-                                <div id="customer_address1"><strong>' . $invoice['address'] . '<br>' . $invoice['city'] . ',' . $invoice['country'] . '</strong></div>
-                            </div>
-
-                            <div class="clientinfo">
-
-                                <div type="text" id="customer_phone">Phone: <strong>' . $invoice['phone'] . '</strong><br>Email: <strong>' . $invoice['email'] . '</strong></div>
-                            </div>'; ?>
-                                        <hr><?php echo $this->lang->line('Warehouse') ?> <select id="s_warehouses"
-                                                                                                 name="s_warehouses"
-                                                                                                 class="selectpicker form-control">
-                                            <?php echo $this->common->default_warehouse();
-                                            echo '<option value="0">' . $this->lang->line('All') ?></option><?php foreach ($warehouse as $row) {
-                                                echo '<option value="' . $row['id'] . '">' . $row['title'] . '</option>';
-                                            } ?>
-
-                                        </select>
-                                        <hr>
-                                      <?php echo "Purchaser"//$this->lang->line('Warehouse') ?> 
-                                        <select id="s_purchaser" name="s_purchaser" class="selectpicker form-control">
                                         <?php 
-                                        echo '<option value="' . $purchaser_s['id'] . '">' . $purchaser_s['name'] . ' (S)</option>';
-                                        echo '<option value="0">' . $this->lang->line('All') ?></option>
-                                        <?php foreach ($purchaser as $row) {
-                                            echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
-                                        } ?>
+                                          echo '<input type="hidden" name="customer_id" id="customer_id" value="' . $invoice['csd'] . '">
+                                          <div id="customer_name"><strong>' . $invoice['name'] . '</strong></div>
+                                          </div>
+                                          <div class="clientinfo">
+                                              <div id="customer_address1"><strong>' . $invoice['address'] . '<br>' . $invoice['city'] . ',' . $invoice['country'] . '</strong></div>
+                                          </div>
+                                          <div class="clientinfo">
+                                            <div type="text" id="customer_phone">Phone: <strong>' . $invoice['phone'] . '</strong><br>Email: <strong>' . $invoice['email'] . '</strong></div>
+                                          </div>'; ?>
+                                        <hr>
+                                        <?php 
+                                            echo $this->lang->line('Warehouse') ?> 
+                                            <select id="s_warehouses" name="s_warehouses" class="selectpicker form-control">
+                                              <?php
+                                                echo '<option value="' . $warehouse_s['id'] . '">' . $warehouse_s['name'] . ' (S)</option>';
+                                                echo '<option value="0">' . $this->lang->line('All') ?></option>
+                                                <?php foreach ($warehouse as $row) {
+                                                    echo '<option value="' . $row['id'] . '">' . $row['title'] . '</option>';
+                                                  } 
+                                                ?>
+                                            </select>
+                                        <hr>
+                                      <?php 
+                                        echo "Purchaser"//$this->lang->line('Warehouse') ?> 
+                                        <select id="s_purchaser" name="s_purchaser" class="selectpicker form-control">
+                                          <?php 
+                                            echo '<option value="' . $purchaser_s['id'] . '">' . $purchaser_s['name'] . ' (S)</option>';
+                                            echo '<option value="0">' . $this->lang->line('All') ?></option>
+                                          <?php foreach ($purchaser as $row) {
+                                              echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
+                                          } 
+                                          ?>
                                       </select>
                                     </div>
-
-
                                 </div>
                             </div>
                             <div class="col-sm-6 cmp-pnl">
@@ -188,10 +189,10 @@
                                     <tr class="item_header bg-gradient-directional-amber">
                                     <th width="15%" class="text-center hidden"><?php echo "Purchase ID" //echo $this->lang->line('Item Name') ?></th>
                                     <th width="15%" class="text-center"><?php echo $this->lang->line('Item Name') ?></th>
-                                    <th width="10%" class="text-center"><?php echo "Body Number"//echo $this->lang->line('Item Name') ?></th>
-                                    <th width="10%" class="text-center"><?php echo "Engine Number"//echo $this->lang->line('Item Name') ?></th>
-                                    <th width="10%" class="text-center"><?php echo "Plate Number"//echo $this->lang->line('Item Name') ?></th>
-                                    <th width="10%" class="text-center"><?php echo "Other expense"//echo $this->lang->line('Item Name') ?></th>
+                                    <th width="10%" class="text-center"><?php echo $this->lang->line('Frame Number') ?></th>
+                                    <th width="10%" class="text-center"><?php echo $this->lang->line('Engine Number') ?></th>
+                                    <th width="10%" class="text-center"><?php echo $this->lang->line('Plate Number') ?></th>
+                                    <th width="10%" class="text-center"><?php echo $this->lang->line('Other expense') ?></th>
                                     <th width="3%" class="text-center hidden"><?php echo $this->lang->line('Quantity') ?></th>
                                     <th width="7%" class="text-center"><?php echo $this->lang->line('Rate') ?></th>
                                     <th width="5%" class="text-center"><?php echo $this->lang->line('Tax') ?>(%)</th>

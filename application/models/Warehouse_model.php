@@ -87,7 +87,7 @@ class Warehouse_model extends CI_Model
             $this->db->order_by(key($order), $order[key($order)]);
         }
     }
-
+    
     function get_datatables()
     {
         $this->_get_datatables_query();
