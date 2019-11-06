@@ -238,10 +238,6 @@ pre {
   border-top: inherit;
   border-bottom: inherit; }
 
-form {
-  /* .form-body{
-        overflow: hidden;
-    } */ }
   form label {
     color: #2e405c; }
   form .form-group {
