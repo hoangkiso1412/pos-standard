@@ -99,6 +99,8 @@ class Transactions extends CI_Controller
         //array post
         $psid = $this->input->post("psid");
         $amount = $this->input->post("payamount");
+        $tamount = $this->input->post("totalamount");
+        $tpaid = $this->input->post("totalpaid");
         $paydate = $this->input->post('paydate', true);
         //end array post
         
@@ -123,6 +125,7 @@ class Transactions extends CI_Controller
             $totalpayamount += numberClean($amount[$key]);
             if((double)numberClean($amount[$key])>0){
                 $pamount = numberClean($amount[$key]);
+                $ramount = $tamount[$key]-$tpaid[$key]-$amount[$key];
                 $data = array(
                     'acid' => $acid,
                     'account' => $account['holder'],
@@ -137,7 +140,8 @@ class Transactions extends CI_Controller
                     'tid' => $tid,
                     'other_id' => $psid[$key],
                     'note' => $note,
-                    'loc' => $this->aauth->get_user()->loc
+                    'loc' => $this->aauth->get_user()->loc,
+                    'remain_amount' => 0//rev_amountExchange_s($ramount, 0, $this->aauth->get_user()->loc)
                 );
                 $productlist[$prodindex] = $data;
                 $prodindex++;
