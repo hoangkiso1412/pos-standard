@@ -38,10 +38,9 @@ class Sale_detail_model extends CI_Model
        `geopos_products`.`year` AS `year`, IF((`tb_stock`.`plate_number` = ""),"ថ្មី",`tb_stock`.`plate_number`) AS `conditions_plateNumber`,`tb_stock`.`body_number` AS `body_number`,
        `tb_stock`.`engine_number` AS `engine_number`,tb_stock.selling_price,tb_stock.paid_amount,tb_stock.remain_amount,
        tb_stock.sold_date,geopos_invoices.notes,geopos_product_cat.id as cat_id,
-       DATE_FORMAT(tb_stock.sold_date,"%d-%m-%Y") as sold_date,tb_stock.sale_detail_id,SUBSTRING_INDEX(geopos_invoices.customer_info, "*:", 1) buyer,geopos_warehouse.id');
+       DATE_FORMAT(tb_stock.sold_date,"%d-%m-%Y") as sold_date,tb_stock.sale_detail_id,SUBSTRING_INDEX(geopos_invoices.customer_info, "*:", 1) buyer,geopos_warehouse.id,(SELECT geopos_transactions.date from geopos_transactions WHERE geopos_transactions.other_id = tb_stock.id  ORDER BY geopos_transactions.id DESC LIMIT 1 ) AS paid_date,geopos_invoices.id as invid');
         $this->db->from($this->table);
-        //$this->db->where(tb_stock.sold_date, '');
-
+       
             if ($this->aauth->get_user()->loc) {
             $this->db->where('geopos_purchase.loc', $this->aauth->get_user()->loc);
         }
@@ -57,7 +56,6 @@ class Sale_detail_model extends CI_Model
             $this->db->where('DATE(tb_stock.sold_date) <=', datefordatabase($this->input->post('end_date')));
             
         }
-
         
         $this->db->join('geopos_warehouse', '`geopos_warehouse`.`id`=`tb_stock`.`warehouse_id`', 'left');
         $this->db->join('geopos_products', '`tb_stock`.`product_id`=`geopos_products`.`pid`', 'left');
