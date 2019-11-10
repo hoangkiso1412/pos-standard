@@ -707,6 +707,27 @@
                     data-toggle="dropdown"><i
                         class="icon-calculator"></i><span><?= $this->lang->line('Accounts') ?></span></a>
                 <ul class="dropdown-menu">
+                    
+                <li data-menu=""><a class="dropdown-item"
+                                    href="<?php echo base_url(); ?>purchase_master_detail"
+                            data-toggle="dropdown"><i class="fa fa-money"></i><?= 'របាយការណ៍ទិញចូលសំរាយ';//$this->lang->line('Account Statements'); ?></a>
+                    </li>                     
+                    <li data-menu=""><a class="dropdown-item"
+                            href="<?php echo base_url(); ?>sale_detail"
+                            data-toggle="dropdown"><i class="fa fa-money"></i><?= 'របាយការណ៍លក់សំរាយ';//$this->lang->line('Account Statements'); ?></a>
+                    </li>
+                    <li data-menu=""><a class="dropdown-item"
+                            href="<?php echo base_url(); ?>warehouse"
+                            data-toggle="dropdown"><i class="fa fa-money"></i><?= 'របាយការណ៍ស្តុកចេញចូល';//$this->lang->line('Account Statements'); ?></a>
+                    </li>
+
+                    <li data-menu=""><a class="dropdown-item" href="<?php echo base_url(); ?>transactions/expense"
+                            data-toggle="dropdown"><i class="fa fa-money"></i><?= $this->lang->line('Expense'); ?></a>
+                    </li>
+                    <li data-menu=""><a class="dropdown-item" href="<?php echo base_url(); ?>transactions/income"
+                            data-toggle="dropdown"><i class="fa fa-money"></i><?= $this->lang->line('Income'); ?></a>
+                    </li>
+                    
                     <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu"><a
                             class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown"><i
                                 class="icon-book-open"></i><?php echo $this->lang->line('Accounts') ?></a>
@@ -736,26 +757,8 @@
                             </li>
                           
                         </ul>
-                    </li>
-                    <li data-menu=""><a class="dropdown-item" href="<?php echo base_url(); ?>transactions/income"
-                            data-toggle="dropdown"><i class="fa fa-money"></i><?= $this->lang->line('Income'); ?></a>
-                    </li>
-                    <li data-menu=""><a class="dropdown-item" href="<?php echo base_url(); ?>transactions/expense"
-                            data-toggle="dropdown"><i class="fa fa-money"></i><?= $this->lang->line('Expense'); ?></a>
-                    </li>
-
-                    <li data-menu=""><a class="dropdown-item"
-                                    href="<?php echo base_url(); ?>purchase_master_detail"
-                            data-toggle="dropdown"><i class="fa fa-money"></i><?= 'របាយការណ៍ទិញចូលសំរាយ';//$this->lang->line('Account Statements'); ?></a>
-                    </li>
-                    <li data-menu=""><a class="dropdown-item"
-                            href="<?php echo base_url(); ?>sale_detail"
-                            data-toggle="dropdown"><i class="fa fa-money"></i><?= 'របាយការណ៍លក់សំរាយ';//$this->lang->line('Account Statements'); ?></a>
-                    </li>
-                    <li data-menu=""><a class="dropdown-item"
-                            href="<?php echo base_url(); ?>warehouse"
-                            data-toggle="dropdown"><i class="fa fa-money"></i><?= 'របាយការណ៍ស្តុកចេញចូល';//$this->lang->line('Account Statements'); ?></a>
-                    </li>
+                    </li>            
+                    
                 </ul>
             </li>
 

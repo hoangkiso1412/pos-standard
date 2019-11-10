@@ -67,6 +67,7 @@
                         <th>សងប៉ុន្មាន</th>
                         <th>ថ្ងៃសង</th>
                         <th>ផ្សេងៗ</th>
+                        <th>បង់លុយ</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -74,6 +75,7 @@
 
                     <tfoot>
                     <tr>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
