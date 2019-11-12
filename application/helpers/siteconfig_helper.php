@@ -548,3 +548,11 @@ function product_cat()
     $query2 = $ci->db->query("SELECT * FROM geopos_product_cat");
     return $query2->result_array();
 }
+
+function payer()
+{
+    $ci =& get_instance();
+    $ci->load->database();
+    $query2 = $ci->db->query("SELECT DISTINCT geopos_transactions.payer  FROM geopos_transactions WHERE geopos_transactions.`type` ='Income' AND geopos_transactions.cat ='Sales' AND remain_amount != 0");
+    return $query2->result_array();
+}

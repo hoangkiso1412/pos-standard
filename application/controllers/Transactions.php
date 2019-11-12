@@ -141,7 +141,7 @@ class Transactions extends CI_Controller
                     'other_id' => $psid[$key],
                     'note' => $note,
                     'loc' => $this->aauth->get_user()->loc,
-                    'remain_amount' => 0//rev_amountExchange_s($ramount, 0, $this->aauth->get_user()->loc)
+                    'remain_amount' => rev_amountExchange_s($ramount, 0, $this->aauth->get_user()->loc)
                 );
                 $productlist[$prodindex] = $data;
                 $prodindex++;

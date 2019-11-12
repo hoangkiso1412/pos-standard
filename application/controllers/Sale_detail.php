@@ -72,8 +72,8 @@ class Sale_detail extends CI_Controller
             $row[] = $invoices->engine_number;
             $row[] = $invoices->buyer;
             $row[] = amountExchange($invoices->selling_price, 0, $this->aauth->get_user()->loc);
-            $row[] = amountExchange($invoices->remain_amount, 0, $this->aauth->get_user()->loc);
             $row[] = amountExchange($invoices->paid_amount, 0, $this->aauth->get_user()->loc);
+            $row[] = amountExchange($invoices->remain_amount, 0, $this->aauth->get_user()->loc);
             $row[] = $invoices->paid_date;
             $row[] = $invoices->notes;
             $row[] = '<a href="' . base_url("invoices/view?id=$invoices->invid") . '">&nbsp; បង់លុយ</a>';
