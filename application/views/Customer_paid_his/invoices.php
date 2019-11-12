@@ -128,13 +128,7 @@
                             'targets': [0],
                             'orderable': false,
                         },
-                    ],'rowCallback': function(row, data, index){
-                            if(data[15] !='$ 0.00'){
-                                $(row).find('td:eq(14)').css('backgroundColor', 'red');
-                                $(row).find('td:eq(14)').css('color', 'white');
-                                $(row).find('td:eq(14)').css('font-weight', 'bold');
-                            }
-                        },
+                    ],
                     dom: 'Blfrtip',
                     buttons: [
                         {

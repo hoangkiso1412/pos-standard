@@ -129,7 +129,7 @@
                             'orderable': false,
                         },
                     ],'rowCallback': function(row, data, index){
-                            if(data[13] !='$ 0.00'){
+                            if(data[14] !='$ 0.00'){
                                 $(row).find('td:eq(14)').css('backgroundColor', 'red');
                                 $(row).find('td:eq(14)').css('color', 'white');
                                 $(row).find('td:eq(14)').css('font-weight', 'bold');
