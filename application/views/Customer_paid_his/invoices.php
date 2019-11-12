@@ -1,7 +1,7 @@
 <div class="content-body">
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title"><?php echo 'របាយការណ៍លក់សំរាយ';//$this->lang->line('Purchase Detail Listing') ?>
+            <h4 class="card-title"><?php echo 'របាយការណ៍ភ្ញៀវបង់លុយ ជំពាក់ប្រចាំថ្ងៃ';//$this->lang->line('Purchase Detail Listing') ?>
             <div class="heading-elements">
                 <ul class="list-inline mb-0">
                     <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
@@ -28,13 +28,13 @@
                         <input type="text" name="end_date" id="end_date" class="form-control form-control-sm"
                                data-toggle="datepicker" autocomplete="off"/>
                     </div>
-                    <div class="col-md-2">
-                        <select name="stock" id="stock" class="form-control form-control-sm">
-                            <option value="0"><?php echo 'ជ្រើសរើសស្ដុក';//$this->lang->line('Select Stock'); ?></option>
-                            <?php $loc = warehouse();
+                    <div class="col-md-3">
+                        <select name="customer" id="customer" class="form-control form-control-sm">
+                            <option value="0"><?php echo 'ជ្រើសរើសឈ្មោះអ្នកជំពាក់';//$this->lang->line('Select customer'); ?></option>
+                            <?php $loc = payer();
 
                             foreach ($loc as $row) {
-                                echo ' <option value="' . $row['id'] . '"> ' . $row['title'] . '</option>';
+                                echo ' <option value="' . $row['payer'] . '"> ' . $row['payer'] . '</option>';
                             }
                             ?>
                         </select>
@@ -51,23 +51,23 @@
                     <tr>
 
                         <th><?php echo 'ល.រ'//echo $this->lang->line('No') ?></th>
-                        <th>កាលបរិឆ្ឆេត​</th>
+                        <th>កាលបរិឆ្ឆេត​លក់</th>
+                        <th>កាលបរិឆ្ឆេត​សង</th>
+                        <th>អ្នកជំពាក់</th>
                         <th>ស្តុក</th>
                         <th>ប្រភេទ</th>
-                        <th>ប្រភេទម៉ូតូ</th>
-                        <th>ចំនួន</th>
+                        <th>ប្រភេទម៉ូតូ</th>                        
                         <th>ពណ៌</th>
                         <th>ឆ្នាំ</th>
+                        <th>ចំនួន</th>
                         <th>ថ្មី&ចាស់</th>
                         <th>លេខតួ</th>
                         <th>លេខម៉ាស៊ីន</th>
-                        <th>អ្នកទិញ</th>
                         <th>តម្លៃ</th>
                         <th>សងប៉ុន្មាន</th>
                         <th>នៅខ្វះ</th>
-                        <th>ថ្ងៃសង</th>
                         <th>ផ្សេងៗ</th>
-                        <th>បង់លុយ</th>
+                        
                     </tr>
                     </thead>
                     <tbody>
@@ -92,7 +92,7 @@
                         <th></th>
                         <th></th>
                         <th></th>
-                        <th></th>
+                        
                     </tr>
                     </tfoot>
                 </table>
@@ -105,7 +105,7 @@
         $(document).ready(function () {
             draw_data();
 
-            function draw_data(start_date = '', end_date = '',stock =0) {
+            function draw_data(start_date = '', end_date = '',customer =0) {
                 $('#po').DataTable({
                     'processing': true,
                     'serverSide': true,
@@ -114,13 +114,13 @@
                     <?php datatable_lang();?>
                     'order': [],
                     'ajax': {
-                        'url': "<?php echo site_url('sale_detail/ajax_list')?>",
+                        'url': "<?php echo site_url('Customer_paid_his/ajax_list')?>",
                         'type': 'POST',
                         'data': {
                             '<?=$this->security->get_csrf_token_name()?>': crsf_hash,
                             start_date: start_date,
                             end_date: end_date,
-                            stock: stock,
+                            customer: customer,
                         }
                     },
                     'columnDefs': [
@@ -129,7 +129,7 @@
                             'orderable': false,
                         },
                     ],'rowCallback': function(row, data, index){
-                            if(data[13] !='$ 0.00'){
+                            if(data[15] !='$ 0.00'){
                                 $(row).find('td:eq(14)').css('backgroundColor', 'red');
                                 $(row).find('td:eq(14)').css('color', 'white');
                                 $(row).find('td:eq(14)').css('font-weight', 'bold');
@@ -157,7 +157,7 @@
  
             // Total over all pages
             total = api
-                .column( 12 )
+                .column( 15)
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -165,39 +165,18 @@
  
             // Total over this page
             pageTotal = api
-                .column( 12, { page: 'current'} )
+                .column( 15, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column( 12 ).footer() ).html(
-                'សរុប = $  '+ pageTotal
+            $( api.column( 15 ).footer() ).html(
+                '$  '+ pageTotal + '.00'
                 //'$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
 
-             // Total over all pages
-             total = api
-                .column( 13 )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Total over this page
-            pageTotal = api
-                .column( 13, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Update footer
-            $( api.column( 13 ).footer() ).html(
-                'សរុប = $  '+ pageTotal
-             //   '$  '+pageTotal +'<br/> សរុប= $  '+ total 
-            );
              // Total over all pages
              total = api
                 .column( 14 )
@@ -216,8 +195,50 @@
  
             // Update footer
             $( api.column( 14 ).footer() ).html(
-                'សរុប = $  '+ pageTotal
+                '$  '+ pageTotal + '.00'
+             //   '$  '+pageTotal +'<br/> សរុប= $  '+ total 
+            );
+             // Total over all pages
+             total = api
+                .column( 14 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 9, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 9 ).footer() ).html(
+                '$  '+ pageTotal
                // '$  '+pageTotal +'<br/> សរុប= $  '+ total 
+            );
+
+             // Total over all pages
+             total = api
+                .column( 9 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+                   // Total over this page
+            pageTotal = api
+                .column( 9, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 9 ).footer() ).html(
+                 pageTotal
             );
 
              // Total over all pages
@@ -227,6 +248,8 @@
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
+
+                
  
             // Total over this page
             pageTotal = api
@@ -247,13 +270,13 @@
             $('#search').click(function () {
                 var start_date = $('#start_date').val();
                 var end_date = $('#end_date').val();
-                var stock = $('#stock').val();
-                if (start_date != '' && end_date != '' && stock ==0 ) {
+                var customer = $('#customer').val();
+                if (start_date != '' && end_date != '' && customer ==0 ) {
                     $('#po').DataTable().destroy();
                     draw_data(start_date, end_date);
-                } else if (start_date != '' && end_date != '' && stock !=0 ){
+                } else if (start_date != '' && end_date != '' && customer !=0 ){                  
                     $('#po').DataTable().destroy();
-                    draw_data(start_date, end_date,stock);
+                    draw_data(start_date, end_date,customer);
                     
                 }
                 else {

@@ -18,12 +18,12 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Purchase_master_detail extends CI_Controller
+class Customer_paid_his extends CI_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Purchase_model_master_detail', 'purchase');
+        $this->load->model('Customer_paid_his_model', 'purchase');
         $this->load->library("Aauth");
         if (!$this->aauth->is_loggedin()) {
             redirect('/user/', 'refresh');
@@ -41,10 +41,10 @@ class Purchase_master_detail extends CI_Controller
     //invoices list
     public function index()
     {
-        $head['title'] = "Purchase Detail";
+        $head['title'] = "Customer Paid";
         $head['usernm'] = $this->aauth->get_user()->username;
         $this->load->view('fixed/header', $head);
-        $this->load->view('purchase_master_detail/invoices');
+        $this->load->view('Customer_paid_his/invoices');
         $this->load->view('fixed/footer');
     }
 
@@ -59,24 +59,24 @@ class Purchase_master_detail extends CI_Controller
         foreach ($list as $invoices) {
             $no++;
             $row = array();
-            $row[] = '<a href="' . base_url("purchase/view?id=$invoices->id") . '">'.$no .'</a>';
+            $row[] = '<a href="' . base_url("invoices/view?id=$invoices->invid") . '">'.$no.'</a>';
             $row[] = dateformat($invoices->invoicedate);
-            $row[] = $invoices->title;
+            $row[] = dateformat($invoices->trans_date);
+            $row[] = $invoices->payer;
+            $row[] = $invoices->stock;
             $row[] = $invoices->product_type;
-            $row[] = $invoices->product_name;
-            $row[] = $invoices->items;
+            $row[] = $invoices->product_name;            
             $row[] = $invoices->color;
             $row[] = $invoices->year;
+            $row[] = $invoices->qty;
             $row[] = $invoices->conditions_plateNumber;
             $row[] = $invoices->body_number;
             $row[] = $invoices->engine_number;
-            $row[] = $invoices->purchaser;
-            $row[] = amountExchange($invoices->total, 0, $this->aauth->get_user()->loc);
+            $row[] = amountExchange($invoices->selling_price, 0, $this->aauth->get_user()->loc);
             $row[] = amountExchange($invoices->paid_amount, 0, $this->aauth->get_user()->loc);
-            $row[] = amountExchange($invoices->remain_amount, 0, $this->aauth->get_user()->loc);
-            $row[] = $invoices->paid_date;
-            $row[] = $invoices->notes;
-            $row[] = amountExchange($invoices->total, 0, $this->aauth->get_user()->loc);
+            $row[] =amountExchange($invoices->remain_amount, 0, $this->aauth->get_user()->loc);
+            $row[] = $invoices->note;   
+            $row[] = '<a href="' . base_url("invoices/view?id=$invoices->invid") . '">abc</a>';
 
             $data[] = $row;
         }

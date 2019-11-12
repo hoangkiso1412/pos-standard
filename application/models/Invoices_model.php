@@ -21,8 +21,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Invoices_model extends CI_Model
 {
     var $table = 'geopos_invoices';
-    var $column_order = array(null, 'geopos_invoices.tid', 'geopos_customers.name', 'geopos_invoices.invoicedate', 'geopos_invoices.total', 'geopos_invoices.status', null);
-    var $column_search = array('geopos_invoices.tid', 'geopos_customers.name', 'geopos_invoices.invoicedate', 'geopos_invoices.total','geopos_invoices.status');
+    var $column_order = array(null, 'geopos_invoices.tid', 'geopos_invoices.invoicedate', 'geopos_invoices.total', 'geopos_invoices.status', null);
+    var $column_search = array('geopos_invoices.tid', 'SUBSTRING_INDEX(geopos_invoices.customer_info, "*:", 1)', 'geopos_invoices.invoicedate', 'geopos_invoices.total','geopos_invoices.status');
     var $order = array('geopos_invoices.tid' => 'desc');
 
     public function __construct()
@@ -222,7 +222,7 @@ class Invoices_model extends CI_Model
 
     private function _get_datatables_query($opt = '')
     {
-        $this->db->select('geopos_invoices.id,geopos_invoices.tid,geopos_invoices.invoicedate,geopos_invoices.invoiceduedate,geopos_invoices.total,geopos_invoices.status,geopos_customers.name');
+        $this->db->select('geopos_invoices.id,geopos_invoices.tid,geopos_invoices.invoicedate,geopos_invoices.invoiceduedate,geopos_invoices.total,geopos_invoices.status,SUBSTRING_INDEX(geopos_invoices.customer_info, "*:", 1) name');
         $this->db->from($this->table);
         $this->db->where('geopos_invoices.i_class', 0);
         if ($opt) {

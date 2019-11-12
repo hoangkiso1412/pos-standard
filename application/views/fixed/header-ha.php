@@ -222,39 +222,18 @@
                                                 aria-labelledby="heading5" aria-expanded="true">
                                                 <div class="card-content">
                                                     <ul>
-                                                        <li><a class="dropdown-item hidden"
-                                                                href="<?php echo base_url(); ?>settings/discship"><i
-                                                                    class="ft-chevron-right"></i>
-                                                                <?php echo $this->lang->line('Discount') . ' & ' . $this->lang->line('Shipping') ?>
-                                                            </a></li>
-                                                        <li><a class="dropdown-item hidden"
-                                                                href="<?php echo base_url(); ?>settings/prefix"><i
-                                                                    class="ft-chevron-right"></i><?php echo $this->lang->line('Prefix') ?>
-                                                            </a></li>
+                                                        
                                                         <li><a class="dropdown-item"
                                                                 href="<?php echo base_url(); ?>settings/billing_terms"><i
                                                                     class="ft-chevron-right"></i>
                                                                 <?php echo $this->lang->line('Billing Terms') ?>
                                                             </a></li>
-                                                        <li><a class="dropdown-item hidden"
-                                                                href="<?php echo base_url(); ?>settings/automail"><i
-                                                                    class="ft-chevron-right"></i>
-                                                                <?php echo $this->lang->line('Auto Email SMS') ?>
-                                                            </a></li>
-                                                        <li><a class="dropdown-item hidden"
-                                                                href="<?php echo base_url(); ?>settings/warehouse"><i
-                                                                    class="ft-chevron-right"></i>
-                                                                <?php echo $this->lang->line('Default') . ' ' . $this->lang->line('Warehouse') ?>
-                                                            </a></li>
+                                                       
                                                         <li><a class="dropdown-item"
                                                                 href="<?php echo base_url(); ?>settings/zero_stock"><i
                                                                     class="ft-chevron-right"></i>
                                                                 <?php echo $this->lang->line('Zero Stock') . ' ' . $this->lang->line('Billing') ?>
-                                                            </a></li>
-                                                        <li><a class="dropdown-item hidden"
-                                                                href="<?php echo base_url(); ?>settings/pos_style"><i
-                                                                    class="ft-chevron-right"></i><?php echo $this->lang->line('POS') . ' ' . $this->lang->line('Style') ?>
-                                                            </a></li>
+                                                            </a></li>                                                       
                                                     </ul>
                                                 </div>
                                             </div>
@@ -300,10 +279,7 @@
                                                 aria-labelledby="heading7" aria-expanded="true">
                                                 <div class="card-content">
                                                     <ul>
-                                                        <li><a class="dropdown-item hidden"
-                                                                href="<?php echo base_url(); ?>units"><i
-                                                                    class="ft-chevron-right"></i><?php echo $this->lang->line('Measurement Unit') ?>
-                                                            </a></li>
+                                                       
                                                         <li><a class="dropdown-item"
                                                                 href="<?php echo base_url(); ?>units/variations"><i
                                                                     class="ft-chevron-right"></i>
@@ -331,21 +307,7 @@
                                                                 href="<?php echo base_url(); ?>paymentgateways/settings"><i
                                                                     class="ft-chevron-right"></i><?php echo $this->lang->line('Payment Settings') ?>
                                                             </a></li>
-                                                        <li><a class="dropdown-item hidden"
-                                                                href="<?php echo base_url(); ?>paymentgateways"><i
-                                                                    class="ft-chevron-right"></i>
-                                                                <?php echo $this->lang->line('Payment Gateways') ?>
-                                                            </a></li>
-                                                        <li><a class="dropdown-item hidden"
-                                                                href="<?php echo base_url(); ?>paymentgateways/currencies"><i
-                                                                    class="ft-chevron-right"></i>
-                                                                <?php echo $this->lang->line('Payment Currencies') ?>
-                                                            </a></li>
-                                                        <li><a class="dropdown-item hidden"
-                                                                href="<?php echo base_url(); ?>paymentgateways/exchange"><i
-                                                                    class="ft-chevron-right"></i>
-                                                                <?php echo $this->lang->line('Currency Exchange') ?>
-                                                            </a></li>
+                                                        
                                                         <li><a class="dropdown-item"
                                                                 href="<?php echo base_url(); ?>paymentgateways/bank_accounts"><i
                                                                     class="ft-chevron-right"></i>
@@ -627,7 +589,8 @@
             if ($this->aauth->premission(2)) { ?>
                 <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
                         data-toggle="dropdown"><i
-                            class="ft-layers"></i><span><?php echo $this->lang->line('Stock') ?></span></a>
+                            class="ft-layers"></i><span><?php echo 'ផលិតផល & ការទិញចូល';//$this->lang->line('Stock') ?></span></a>
+                            
                     <ul class="dropdown-menu">
                         <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu"><a
                                 class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown"><i
@@ -718,7 +681,11 @@
                     </li>
                     <li data-menu=""><a class="dropdown-item"
                             href="<?php echo base_url(); ?>warehouse"
-                            data-toggle="dropdown"><i class="fa fa-money"></i><?= 'របាយការណ៍ស្តុកចេញចូល';//$this->lang->line('Account Statements'); ?></a>
+                            data-toggle="dropdown"><i class="fa fa-money"></i><?= 'របាយការណ៍ស្តុកទាំងអស់';//$this->lang->line('Account Statements'); ?></a>
+                    </li>
+                    <li data-menu=""><a class="dropdown-item"
+                            href="<?php echo base_url(); ?>customer_paid_his"
+                            data-toggle="dropdown"><i class="fa fa-money"></i><?= 'របាយការណ៍ភ្ញៀវបង់លុយ ជំពាក់ប្រចាំថ្ងៃ';//$this->lang->line('Account Statements'); ?></a>
                     </li>
 
                     <li data-menu=""><a class="dropdown-item" href="<?php echo base_url(); ?>transactions/expense"
