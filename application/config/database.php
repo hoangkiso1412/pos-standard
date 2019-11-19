@@ -7,7 +7,7 @@ $query_builder = TRUE;
 $hostname ='localhost:3307';
 $username ='root';
 $password ='';
-$database ='standard-pos';
+$database ='pos-moto';
 
 
 $db['default'] = array(

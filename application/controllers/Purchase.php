@@ -15,9 +15,9 @@
  *  * here- http://codecanyon.net/licenses/standard/
  * ***********************************************************************
  */
-
+     
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+    
 class Purchase extends CI_Controller
 {
     public function __construct()
@@ -28,16 +28,16 @@ class Purchase extends CI_Controller
         if (!$this->aauth->is_loggedin()) {
             redirect('/user/', 'refresh');
         }
-
+            
         if (!$this->aauth->premission(2)) {
-
+            
             exit('<h3>Sorry! You have insufficient permissions to access this section</h3>');
-
+                
         }
         $this->li_a = 'stock';
-
+            
     }
-
+        
     //create invoice
     public function create()
     {
@@ -60,11 +60,11 @@ class Purchase extends CI_Controller
         $this->load->view('purchase/newinvoice', $data);
         $this->load->view('fixed/footer');
     }
-
+        
     //edit invoice
     public function edit()
     {
-
+        
         $tid            = $this->input->get('id');
         $data['id']     = $tid;
         $data['title']  = "Purchase Order $tid";
@@ -89,9 +89,9 @@ class Purchase extends CI_Controller
         $this->load->view('fixed/header', $head);
         $this->load->view('purchase/edit', $data);
         $this->load->view('fixed/footer');
-
+            
     }
-
+        
     //invoices list
     public function index()
     {
@@ -101,7 +101,7 @@ class Purchase extends CI_Controller
         $this->load->view('purchase/invoices');
         $this->load->view('fixed/footer');
     }
-
+        
     //action
     public function action()
     {
@@ -119,10 +119,10 @@ class Purchase extends CI_Controller
       $shipping       = rev_amountExchange_s($this->input->post('shipping'), $currency, $this->aauth->get_user()->loc);
       $shipping_tax   = rev_amountExchange_s($this->input->post('ship_tax'), $currency, $this->aauth->get_user()->loc);
       $ship_taxtype   = $this->input->post('ship_taxtype');
-
+          
       $purchase_paidamount = $this->input->post("purchase_paid_amount");
       $pid                 = $this->input->post('pid');
-
+      
       if ($ship_taxtype == 'incl') @$shipping = $shipping - $shipping_tax;
       $refer          = $this->input->post('refer', true);
       $total          = rev_amountExchange_s($this->input->post('total'), $currency, $this->aauth->get_user()->loc);
@@ -131,13 +131,13 @@ class Purchase extends CI_Controller
       $discountFormat = $this->input->post('discountFormat');
       $pterms         = $this->input->post('pterms');
       $i = 0;
-
+          
       if ($discountFormat == '0') {
           $discstatus = 0;
       } else {
           $discstatus = 1;
       }
-
+          
       if ($customer_id == 0) {
           echo json_encode(array('status' => 'Error', 'message' =>
               "Please add a new supplier or search from a previous added!"));
@@ -162,7 +162,7 @@ class Purchase extends CI_Controller
       } else if ($pamnt>0 && $pamnt<$total) {
         $status = 'partial';
       }
-
+          
       // print_r("Payment amouont: " + $pamnt);
       //end
       $data = array(
@@ -188,7 +188,7 @@ class Purchase extends CI_Controller
                     'pamnt'           => $pamnt,
                     'status'          => $status
                   );
-
+                      
       if ($this->db->insert('geopos_purchase', $data)) {
           $invocieno        = $this->db->insert_id();
           $productlist      = array();
@@ -215,7 +215,7 @@ class Purchase extends CI_Controller
           $product_des      = $this->input->post('product_description', true);
           $product_unit     = $this->input->post('unit');
           $product_hsn      = $this->input->post('hsn');
-          
+              
           foreach ($pid as $key => $value) {
             //Check validation when user not input in product name, engine number and body number
             if($product_name1[$key]=="") {
@@ -233,7 +233,7 @@ class Purchase extends CI_Controller
             //       $transok = false;
             //       exit;
             // }
-            
+                
           // Check validation of product exising with engine number and body number 
             $engineno=$this->db->query("select tb_stock.engine_number from tb_stock where tb_stock.product_id=".$product_id[$key]." and tb_stock.engine_number='".$engine_num[$key]."' and tb_stock.body_number='".$body_num[$key]."'")->row()->engine_number;
               if($engineno!=""){
@@ -252,11 +252,11 @@ class Purchase extends CI_Controller
                     exit;
                 }
             }
-
-
+                
+                
               $total_discount += numberClean(@$ptotal_disc[$key]);
               $total_tax      += numberClean($ptotal_tax[$key]);
-
+                  
               $data = array(
                   'tid'           => $invocieno,
                   'pid'           => $product_id[$key],
@@ -297,7 +297,7 @@ class Purchase extends CI_Controller
                   'purchase_qty'            => 1,
                   'status'                  => 'in-stock'
                   );
-
+                      
                 // $data_transaction = array(
                 //   'acid'            => 1,
                 //   'account'         => 'Sale Account',
@@ -315,7 +315,7 @@ class Purchase extends CI_Controller
                 //   'loc'             => 0,
                 //   'other_id'        => $stock_id,
                 //   );
-
+                    
               $flag = true;
               $productlist[$prodindex]        = $data;
               $stocklist[$prodindex]          = $data_stock;
@@ -323,7 +323,7 @@ class Purchase extends CI_Controller
               $i++;
               $prodindex++;
               $amt = numberClean($product_qty[$key]);
-
+                  
               if ($product_id[$key] > 0) {
                   if ($this->input->post('update_stock') == 'yes') {
                       $this->db->set('qty', "qty+$amt", FALSE);
@@ -342,11 +342,11 @@ class Purchase extends CI_Controller
               // $count    = count($stocklist);
               // $first_id = $this->db->insert_id();
               // $last_id  = $first_id + ($count-1);
-
+                  
               // print_r('id:' + $last_id);
-
+                  
               // $this->db->insert_batch('geopos_transactions', $transaction_list);
-
+                  
           } else {
               echo json_encode(array('status' => 'Error', 'message' => "Please choose product from product list. Go to Item manager section if you have not added the products."));
               $transok = false;
@@ -356,7 +356,7 @@ class Purchase extends CI_Controller
           echo json_encode(array('status' => 'Error', 'message'     => $this->lang->line('ERROR')));
           $transok = false;
       }
-
+          
       if ($transok) {
           $this->db->trans_complete();
       } else {
@@ -365,12 +365,12 @@ class Purchase extends CI_Controller
     }
     public function ajax_list()
     {
-
+        
         $list = $this->purchase->get_datatables();
         $data = array();
-
+            
         $no = $this->input->post('start');
-
+            
         foreach ($list as $invoices) {
             $no++;
             $row = array();
@@ -381,10 +381,10 @@ class Purchase extends CI_Controller
             $row[] = amountExchange($invoices->total, 0, $this->aauth->get_user()->loc);
             $row[] = '<span class="st-' . $invoices->status . '">' . $this->lang->line(ucwords($invoices->status)) . '</span>';
             $row[] = '<a href="' . base_url("purchase/view?id=$invoices->id") . '" class="btn btn-success btn-xs"><i class="fa fa-eye"></i> ' . $this->lang->line('View') . '</a> &nbsp; <a href="' . base_url("purchase/printinvoice?id=$invoices->id") . '&d=1" class="btn btn-info btn-xs"  title="Download"><span class="fa fa-download"></span></a>&nbsp; &nbsp;<a href="#" data-object-id="' . $invoices->id . '" class="btn btn-danger btn-xs delete-object"><span class="fa fa-trash"></span></a>';
-
+                
             $data[] = $row;
         }
-
+            
         $output = array(
             "draw" => $_POST['draw'],
             "recordsTotal" => $this->purchase->count_all(),
@@ -393,9 +393,9 @@ class Purchase extends CI_Controller
         );
         //output to json format
         echo json_encode($output);
-
+            
     }
-
+        
     public function view()
     {
         $this->load->model('accounts_model');
@@ -413,33 +413,33 @@ class Purchase extends CI_Controller
         $this->load->view('fixed/header', $head);
         if ($data['invoice']['tid']) $this->load->view('purchase/view', $data);
         $this->load->view('fixed/footer');
-
+            
     }
-
-
+        
+        
     public function printinvoice()
     {
-
+        
         $tid = $this->input->get('id');
-
+            
         $data['id'] = $tid;
         $data['title'] = "Purchase $tid";
         $data['invoice'] = $this->purchase->purchase_details($tid);
         $data['products'] = $this->purchase->purchase_products($tid);
         $data['employee'] = $this->purchase->employee($data['invoice']['eid']);
         $data['invoice']['multi'] = 0;
-
+            
         $data['general'] = array('title' => $this->lang->line('Purchase Order'), 'person' => $this->lang->line('Supplier'), 'prefix' => prefix(2), 't_type' => 0);
-
-
+            
+            
         ini_set('memory_limit', '64M');
-
+            
         if ($data['invoice']['taxstatus'] == 'cgst' || $data['invoice']['taxstatus'] == 'igst') {
             $html = $this->load->view('print_files/invoice-a4-gst_v' . INVV, $data, true);
         } else {
             $html = $this->load->view('print_files/invoice-a4_v' . INVV, $data, true);
         }
-
+            
         //PDF Rendering
         $this->load->library('pdf');
         if (INVV == 1) {
@@ -451,33 +451,38 @@ class Purchase extends CI_Controller
             $pdf = $this->pdf->load_split(array('margin_top' => 5));
         }
         $pdf->SetHTMLFooter('<div style="text-align: right;font-family: serif; font-size: 8pt; color: #5C5C5C; font-style: italic;margin-top:-6pt;">{PAGENO}/{nbpg} #' . $data['invoice']['tid'] . '</div>');
-
+            
         $pdf->WriteHTML($html);
-
+            
         if ($this->input->get('d')) {
-
+            
             $pdf->Output('Purchase_#' . $data['invoice']['tid'] . '.pdf', 'D');
         } else {
             $pdf->Output('Purchase_#' . $data['invoice']['tid'] . '.pdf', 'I');
         }
-
-
+            
+            
     }
-
+        
     public function delete_i()
     {
         $id = $this->input->post('deleteid');
-
+            
         if ($this->purchase->purchase_delete($id)) {
             echo json_encode(array('status' => 'Success', 'message' =>
                 "Purchase Order #$id has been deleted successfully!"));
-
+                    
         } else {
-
+            
             echo json_encode(array('status' => 'Error', 'message' =>
                 "There is an error! Purchase has not deleted."));
         }
-
+            
+    }
+    
+    public function test(){
+        $stock_row = $this->purchase->get_stock_record(7);
+        print_r($stock_row);
     }
     // Srieng modified save to data to tb_stock 26-10-2019
     public function editaction()
@@ -519,24 +524,24 @@ class Purchase extends CI_Controller
         } else {
           $discstatus = 1;
         }
-
+            
         if ($customer_id == 0) {
           echo json_encode(array('status' => 'Error', 'message' =>  "Please add a new supplier or search from a previous added!"));
           exit();
         }
-
+            
         $this->db->trans_start();
         $flag     = false;
         $transok  = true;
         //Product Data
         $pid      = $this->input->post('pid');
         $productlist = array();
-
+            
         $prodindex         = 0;
         $stock_old_index   = 0;
         $stock_new_index   = 0;
         $transaction_index = 0;
-
+            
         //Check validation
         foreach ($pid as $key => $value) {
           //Check validation when user not input in product name, engine number and body number
@@ -555,9 +560,9 @@ class Purchase extends CI_Controller
               $transok = false;
               exit;
           }
-          
+              
         // Check validation of product exising with engine number and body number 
-          $engineno=$this->db->query("select tb_stock.engine_number from tb_stock where tb_stock.product_id<>".$product_id[$key]." and tb_stock.engine_number='".$engine_num[$key]."' and tb_stock.body_number='".$body_num[$key]."'")->row()->engine_number;
+          $engineno=$this->db->query("select tb_stock.engine_number from tb_stock where tb_stock.id<>".$purchase_id[$key]." and tb_stock.product_id<>".$product_id[$key]." and tb_stock.engine_number='".$engine_num[$key]."' and tb_stock.body_number='".$body_num[$key]."'")->row()->engine_number;
           if($engineno!=""){
             echo json_encode(array('status' => 'Error', 'message' => "This product $product_name1[$key] and body number: $body_num[$key] and engine number: $engine_num[$key] already exist!"));
             $transok = false;
@@ -565,7 +570,7 @@ class Purchase extends CI_Controller
           }
           // Check validation of plate number exising
           if($plate_num[$key]!="") {
-              $plateno=$this->db->query("select tb_stock.plate_number from tb_stock where tb_stock.product_id<>".$product_id[$key]." and tb_stock.plate_number='".$plate_num[$key]."'")->row()->plate_number;
+              $plateno=$this->db->query("select tb_stock.plate_number from tb_stock where tb_stock.id<>".$purchase_id[$key]." and tb_stock.product_id<>".$product_id[$key]." and tb_stock.plate_number='".$plate_num[$key]."'")->row()->plate_number;
               if($plateno!=""){
                 echo json_encode(array('status' => 'Error', 'message' => "This plate number $plate_num[$key] already exist!"));
                 $transok = false;
@@ -573,11 +578,11 @@ class Purchase extends CI_Controller
               }
             }
           }
-
+              
         $this->db->delete('geopos_purchase_items', array('tid' => $invocieno));
-        $this->db->delete('tb_stock', array('purchase_id' => $invocieno));
-        $this->db->delete('geopos_transactions', array('tid' => $invocieno));
-        
+//        $this->db->delete('tb_stock', array('purchase_id' => $invocieno));
+//        $this->db->delete('geopos_transactions', array('tid' => $invocieno));
+            
         $product_id       = $this->input->post('pid');
         $old_product_id   = $this->input->post('old_product_id');
         $product_name1    = $this->input->post('product_name', true);
@@ -598,7 +603,7 @@ class Purchase extends CI_Controller
         foreach ($pid as $key => $value) {
             $total_discount += numberClean(@$ptotal_disc[$key]);
             $total_tax      += numberClean($ptotal_tax[$key]);
-            $pamnt          += numberClean($paid_amount[$key]);
+            
             $data = array(
                 'tid'           => $invocieno,
                 'pid'           => $product_id[$key]=="" ? $old_product_id[$key] : $product_id[$key],
@@ -618,37 +623,113 @@ class Purchase extends CI_Controller
             $date             = str_replace('/', '-', $invoicedate );
             $newDate          = date("Y-m-d", strtotime($date));
             //if($purchase_id[$key]==0) {
-              $data_stock_new = array(
-                'product_id'              => $product_id[$key],
-                'warehouse_id'            => $s_warehouse,
-                'body_number'             => $body_num[$key],
-                'engine_number'           =>$engine_num[$key],
-                'plate_number'            => $plate_num [$key],
-                'other_expense'           => $other_expense[$key],
-                'total'                   => rev_amountExchange_s($product_price[$key], $currency, $this->aauth->get_user()->loc),
-                'purchase_date'           => $newDate,
-                'purchase_id'             => $invocieno,
-                'tax'                     => numberClean($product_tax[$key]),
-                'discount'                => numberClean($product_discount[$key]),
-                'subtotal'                => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc),
-                'totaltax'                => rev_amountExchange_s($ptotal_tax[$key], $currency, $this->aauth->get_user()->loc),
-                'totaldiscount'           => rev_amountExchange_s($ptotal_disc[$key], $currency, $this->aauth->get_user()->loc),
-                'product_des'             => $product_des[$key],
-                'unit'                    => $product_unit[$key],
-                'purchase_remain_amount'  => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc)-$purchase_paidamount[$key],
-                'purchase_paid_amount'    => $paid_amount[$key],
-                'purchase_qty'            => 1,
-                'status'                  => 'in-stock'
-              );
+            if((int)$purchase_id[$key]==0){
+                $data_stock_new = array(
+                    'product_id'              => $product_id[$key],
+                    'warehouse_id'            => $s_warehouse,
+                    'body_number'             => $body_num[$key],
+                    'engine_number'           =>$engine_num[$key],
+                    'plate_number'            => $plate_num [$key],
+                    'other_expense'           => $other_expense[$key],
+                    'total'                   => rev_amountExchange_s($product_price[$key], $currency, $this->aauth->get_user()->loc),
+                    'purchase_date'           => $newDate,
+                    'purchase_id'             => $invocieno,
+                    'tax'                     => numberClean($product_tax[$key]),
+                    'discount'                => numberClean($product_discount[$key]),
+                    'subtotal'                => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc),
+                    'totaltax'                => rev_amountExchange_s($ptotal_tax[$key], $currency, $this->aauth->get_user()->loc),
+                    'totaldiscount'           => rev_amountExchange_s($ptotal_disc[$key], $currency, $this->aauth->get_user()->loc),
+                    'product_des'             => $product_des[$key],
+                    'unit'                    => $product_unit[$key],
+                    'purchase_remain_amount'  => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc)-$purchase_paidamount[$key],
+                    'purchase_paid_amount'    => $paid_amount[$key],
+                    'purchase_qty'            => 1,
+                    'status'                  => 'in-stock'
+                  );
+                $this->db->insert('tb_stock', $data_stock_new);
+                $pamnt += numberClean($paid_amount[$key]);
+            }
+            else{
+                $stock_row = $this->purchase->get_stock_record((int)$purchase_id[$key]);
+                if($product_subtotal[$key]>=$stock_row['purchase_paid_amount']){
+                    
+                    $data_stock_new = array(
+                        'product_id'              => $product_id[$key],
+                        'warehouse_id'            => $s_warehouse,
+                        'body_number'             => $body_num[$key],
+                        'engine_number'           =>$engine_num[$key],
+                        'plate_number'            => $plate_num [$key],
+                        'other_expense'           => $other_expense[$key],
+                        'total'                   => rev_amountExchange_s($product_price[$key], $currency, $this->aauth->get_user()->loc),
+                        'purchase_date'           => $newDate,
+                        'purchase_id'             => $invocieno,
+                        'tax'                     => numberClean($product_tax[$key]),
+                        'discount'                => numberClean($product_discount[$key]),
+                        'subtotal'                => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc),
+                        'totaltax'                => rev_amountExchange_s($ptotal_tax[$key], $currency, $this->aauth->get_user()->loc),
+                        'totaldiscount'           => rev_amountExchange_s($ptotal_disc[$key], $currency, $this->aauth->get_user()->loc),
+                        'product_des'             => $product_des[$key],
+                        'unit'                    => $product_unit[$key],
+                        'purchase_remain_amount'  => rev_amountExchange_s($product_subtotal[$key]-$stock_row['purchase_paid_amount'], $currency, $this->aauth->get_user()->loc)-$purchase_paidamount[$key],
+                        'purchase_paid_amount'    => $paid_amount[$key],
+                        'purchase_qty'            => 1
+                    );
+                    $this->db->where('id',(int)$purchase_id[$key]);
+                    $this->db->update('tb_stock', $data_stock_new);
+                    $pamnt += numberClean($paid_amount[$key]);
+                }
+                else{
+                    $data_stock_new = array(
+                        'product_id'              => $product_id[$key],
+                        'warehouse_id'            => $s_warehouse,
+                        'body_number'             => $body_num[$key],
+                        'engine_number'           =>$engine_num[$key],
+                        'plate_number'            => $plate_num [$key],
+                        'other_expense'           => $other_expense[$key],
+                        'total'                   => rev_amountExchange_s($product_price[$key], $currency, $this->aauth->get_user()->loc),
+                        'purchase_date'           => $newDate,
+                        'purchase_id'             => $invocieno,
+                        'tax'                     => numberClean($product_tax[$key]),
+                        'discount'                => numberClean($product_discount[$key]),
+                        'subtotal'                => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc),
+                        'totaltax'                => rev_amountExchange_s($ptotal_tax[$key], $currency, $this->aauth->get_user()->loc),
+                        'totaldiscount'           => rev_amountExchange_s($ptotal_disc[$key], $currency, $this->aauth->get_user()->loc),
+                        'product_des'             => $product_des[$key],
+                        'unit'                    => $product_unit[$key],
+                        'purchase_remain_amount'  => rev_amountExchange_s($product_subtotal[$key], $currency, $this->aauth->get_user()->loc)-$purchase_paidamount[$key],
+                        'purchase_paid_amount'    => 0,
+                        'purchase_qty'            => 1
+                    );
+                    //reverse
+                    $this->db->select('credit,debit,acid');
+                    $this->db->from('geopos_transactions');
+                    $this->db->where('other_id', (int)$purchase_id[$key]);
+                    $this->db->where('cat', 'Purchase');
+                    $query = $this->db->get();
+                    $revresult = $query->result_array();
+                    foreach ($revresult as $trans) {
+                        $amt = $trans['debit'] - $trans['credit'];
+                        $this->db->set('lastbal', "lastbal+$amt", FALSE);
+                        $this->db->where('id', $trans['acid']);
+                        $this->db->update('geopos_accounts');
+                    }
+                    $this->db->delete('geopos_transactions', array('other_id'=>(int)$purchase_id[$key],'cat'=>'Purchase'));
+                    
+                    $this->db->where('id',(int)$purchase_id[$key]);
+                    $this->db->update('tb_stock', $data_stock_new);
+                }
+                
+            }
+              
               // $stock_new_index++;
-            $stocklist_new[$stock_new_index] = $data_stock_new;
+            //$stocklist_new[$stock_new_index] = $data_stock_new;
             $productlist[$prodindex]         = $data;
-
+                
             $prodindex++;
             $stock_new_index++;
             $amt = numberClean($product_qty[$key]);
             $itc += $amt;
-
+                
             if ($this->input->post('update_stock') == 'yes') {
                 $amt = numberClean(@$product_qty[$key]) - numberClean(@$old_product_qty[$key]);
                 $this->db->set('qty', "qty+$amt", FALSE);
@@ -657,7 +738,46 @@ class Purchase extends CI_Controller
             }
             $flag = true;
         }
-
+        
+        $rmstock = $this->input->post("rmstock");
+        $rmstock_count = 0;
+        foreach ($rmstock as $key => $value) {
+            //reverse
+            if((int)$rmstock[$key]!=0){
+                $this->db->select('credit,debit,acid');
+                $this->db->from('geopos_transactions');
+                $this->db->where('other_id', (int)$rmstock[$key]);
+                $this->db->where('cat', 'Purchase');
+                $query = $this->db->get();
+                $revresult = $query->result_array();
+                foreach ($revresult as $trans) {
+                    $amt = $trans['debit'] - $trans['credit'];
+                    $this->db->set('lastbal', "lastbal+$amt", FALSE);
+                    $this->db->where('id', $trans['acid']);
+                    $this->db->update('geopos_accounts');
+                }
+                $this->db->delete('geopos_transactions', array('other_id'=>(int)$rmstock[$key],'cat'=>'Purchase'));
+                $this->db->delete('tb_stock', array('id' => (int)$rmstock[$key]));     
+                $rmstock_count++;
+            }
+        }
+//        if($rmstock_count>0){
+//            $pamnt = 0;
+//            $this->db->select('credit,debit,acid');
+//            $this->db->from('geopos_transactions');
+//            $this->db->where('tid', $invocieno);
+//            $this->db->where('cat', 'Purchase');
+//            $query = $this->db->get();
+//            $revresult = $query->result_array();
+//            foreach ($revresult as $trans) {
+//                $amt = $trans['debit'] - $trans['credit'];
+//                $this->db->set('lastbal', "lastbal+$amt", FALSE);
+//                $this->db->where('id', $trans['acid']);
+//                $this->db->update('geopos_accounts');
+//            }
+//            $this->db->delete('geopos_transactions', array('tid'=>$invocieno,'cat'=>'Purchase'));
+//        }
+            
         $bill_date      = datefordatabase($invoicedate);
         $bill_due_date  = datefordatabase($invocieduedate);
         $total_discount = rev_amountExchange_s(amountFormat_general($total_discount), $currency, $this->aauth->get_user()->loc);
@@ -670,7 +790,7 @@ class Purchase extends CI_Controller
         } else if ($pamnt>0 && $pamnt<$total) {
           $status = 'partial';
         }
-
+            
         $data = array(
                     'invoicedate'     => $bill_date,
                     'invoiceduedate'  => $bill_due_date,
@@ -700,7 +820,7 @@ class Purchase extends CI_Controller
         if ($flag) {
             if ($this->db->update('geopos_purchase', $data)) {
               $this->db->insert_batch('geopos_purchase_items', $productlist);
-              $this->db->insert_batch('tb_stock', $stocklist_new);
+              //$this->db->insert_batch('tb_stock', $stocklist_new);
               echo json_encode(array('status' => 'Success', 'message' => "Purchase order has  been updated successfully! <a href='view?id=$invocieno' class='btn btn-info btn-lg'><span class='fa fa-eye' aria-hidden='true'></span> View </a> "));
             } else {
               echo json_encode(array('status' => 'Error', 'message'   => "There is a missing field!"));
@@ -730,7 +850,7 @@ class Purchase extends CI_Controller
           $this->db->trans_rollback();
         }
     }
-
+        
     // public function editaction()
     // {
     //     $currency = $this->input->post('mcurrency');
@@ -751,31 +871,31 @@ class Purchase extends CI_Controller
     //     $shipping = rev_amountExchange_s($this->input->post('shipping'), $currency, $this->aauth->get_user()->loc);
     //     $shipping_tax = rev_amountExchange_s($this->input->post('ship_tax'), $currency, $this->aauth->get_user()->loc);
     //     if ($ship_taxtype == 'incl') $shipping = $shipping - $shipping_tax;
-
+        
     //     $itc = 0;
     //     if ($discountFormat == '0') {
     //         $discstatus = 0;
     //     } else {
     //         $discstatus = 1;
     //     }
-
+        
     //     if ($customer_id == 0) {
     //         echo json_encode(array('status' => 'Error', 'message' =>
     //             "Please add a new supplier or search from a previous added!"));
     //         exit();
     //     }
-
+        
     //     $this->db->trans_start();
     //     $flag = false;
     //     $transok = true;
-
-
+        
+        
     //     //Product Data
     //     $pid = $this->input->post('pid');
     //     $productlist = array();
-
+        
     //     $prodindex = 0;
-
+        
     //     $this->db->delete('geopos_purchase_items', array('tid' => $invocieno));
     //     $product_id = $this->input->post('pid');
     //     $product_name1 = $this->input->post('product_name', true);
@@ -791,7 +911,7 @@ class Purchase extends CI_Controller
     //     $product_des = $this->input->post('product_description', true);
     //     $product_unit = $this->input->post('unit');
     //     $product_hsn = $this->input->post('hsn');
-
+        
     //     foreach ($pid as $key => $value) {
     //         $total_discount += numberClean(@$ptotal_disc[$key]);
     //         $total_tax += numberClean($ptotal_tax[$key]);
@@ -810,14 +930,14 @@ class Purchase extends CI_Controller
     //             'product_des' => $product_des[$key],
     //             'unit' => $product_unit[$key]
     //         );
-
-
+        
+        
     //         $productlist[$prodindex] = $data;
-
+        
     //         $prodindex++;
     //         $amt = numberClean($product_qty[$key]);
     //         $itc += $amt;
-
+        
     //         if ($this->input->post('update_stock') == 'yes') {
     //             $amt = numberClean(@$product_qty[$key]) - numberClean(@$old_product_qty[$key]);
     //             $this->db->set('qty', "qty+$amt", FALSE);
@@ -826,18 +946,18 @@ class Purchase extends CI_Controller
     //         }
     //         $flag = true;
     //     }
-
+        
     //     $bill_date = datefordatabase($invoicedate);
     //     $bill_due_date = datefordatabase($invocieduedate);
     //     $total_discount = rev_amountExchange_s(amountFormat_general($total_discount), $currency, $this->aauth->get_user()->loc);
     //     $total_tax = rev_amountExchange_s(amountFormat_general($total_tax), $currency, $this->aauth->get_user()->loc);
-
+        
     //     $data = array('invoicedate' => $bill_date, 'invoiceduedate' => $bill_due_date, 'subtotal' => $subtotal, 'shipping' => $shipping, 'ship_tax' => $shipping_tax, 'ship_tax_type' => $ship_taxtype, 'discount' => $total_discount, 'tax' => $total_tax, 'total' => $total, 'notes' => $notes, 'csd' => $customer_id, 'items' => $itc, 'taxstatus' => $tax, 'discstatus' => $discstatus, 'format_discount' => $discountFormat, 'refer' => $refer, 'term' => $pterms, 'multi' => $currency);
     //     $this->db->set($data);
     //     $this->db->where('id', $invocieno);
-
+        
     //     if ($flag) {
-
+        
     //         if ($this->db->update('geopos_purchase', $data)) {
     //             $this->db->insert_batch('geopos_purchase_items', $productlist);
     //             echo json_encode(array('status' => 'Success', 'message' =>
@@ -847,14 +967,14 @@ class Purchase extends CI_Controller
     //                 "There is a missing field!"));
     //             $transok = false;
     //         }
-
-
+        
+        
     //     } else {
     //         echo json_encode(array('status' => 'Error', 'message' =>
     //             "Please add atleast one product in order!"));
     //         $transok = false;
     //     }
-
+        
     //     if ($this->input->post('update_stock') == 'yes') {
     //         if ($this->input->post('restock')) {
     //             foreach ($this->input->post('restock') as $key => $value) {
@@ -862,38 +982,38 @@ class Purchase extends CI_Controller
     //                 $prid = $myArray[0];
     //                 $dqty = numberClean($myArray[1]);
     //                 if ($prid > 0) {
-
+        
     //                     $this->db->set('qty', "qty-$dqty", FALSE);
     //                     $this->db->where('pid', $prid);
     //                     $this->db->update('geopos_products');
     //                 }
     //             }
-
+        
     //         }
     //     }
-
-
+        
+        
     //     if ($transok) {
     //         $this->db->trans_complete();
     //     } else {
     //         $this->db->trans_rollback();
     //     }
     // }
-
+        
     public function update_status()
     {
         $tid    = $this->input->post('tid');
         $status = $this->input->post('status');
-
-
+            
+            
         $this->db->set('status', $status);
         $this->db->where('id', $tid);
         $this->db->update('geopos_purchase');
-
+            
         echo json_encode(array('status' => 'Success', 'message' =>
             'Purchase Order Status updated successfully!', 'pstatus' => $status));
     }
-
+        
     public function file_handling()
     {
         if ($this->input->get('op')) {
@@ -909,7 +1029,7 @@ class Purchase extends CI_Controller
             ));
             $files = (string)$this->uploadhandler_generic->filenaam();
             if ($files != '') {
-
+                
                 $this->purchase->meta_insert($id, 4, $files);
             }
         }

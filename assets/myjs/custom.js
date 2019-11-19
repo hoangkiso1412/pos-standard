@@ -818,7 +818,23 @@ function formatRest(taxFormat, disFormat, trate = '') {
 
 
 $('#saman-row').on('click', '.removeProd', function () {
-
+    
+    var rmstock_id = $(this).attr("stock-id");
+    var rmpaid = $(this).attr("paid-amount");
+    if(rmstock_id!==undefined && rmpaid!==undefined){
+        $('<input>').attr({
+            type: 'text',
+            id: 'rmstock',
+            name: 'rmstock[]',
+            value: rmstock_id
+        }).appendTo('[role="stock-id-remove"]');
+        $('<input>').attr({
+            type: 'text',
+            id: 'rmpaid',
+            name: 'rmpaid[]',
+            value: rmpaid
+        }).appendTo('[role="stock-id-remove"]');
+    }
     var pidd = $(this).closest('tr').find('.pdIn').val();
     var pqty = $(this).closest('tr').find('.amnt').val();
     pqty = pidd + '-' + pqty;

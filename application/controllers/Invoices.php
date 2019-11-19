@@ -625,6 +625,7 @@ class Invoices extends CI_Controller
                     $this->db->select('credit,debit,acid');
                     $this->db->from('geopos_transactions');
                     $this->db->where('tid', $iid);
+                    $this->db->where('cat', 'Sales');
                     $query = $this->db->get();
                     $revresult = $query->result_array();
                     foreach ($revresult as $trans) {
@@ -633,7 +634,7 @@ class Invoices extends CI_Controller
                         $this->db->where('id', $trans['acid']);
                     $this->db->update('geopos_accounts');
                     }
-                    $this->db->delete('geopos_transactions', array('tid' => $iid));
+                    $this->db->delete('geopos_transactions', array('tid' => $iid,'cat'=>'Sales'));
                 }
                 
         
