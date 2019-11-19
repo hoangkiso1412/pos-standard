@@ -63,6 +63,11 @@ class Purchase_model extends CI_Model
       s.purchase_id='$id' limit 1");
       return $query->row_array();
     }
+    
+    public function get_stock_record($id) {
+      $query = $this->db->query("SELECT * FROM tb_stock WHERE id='$id' limit 1");
+      return $query->row_array();
+    }
 
     public function purchase_details($id)
     {
@@ -117,7 +122,8 @@ class Purchase_model extends CI_Model
                           tb_stock.status,
                           tb_stock.purchase_paid_amount
                           from tb_stock 
-                          inner join geopos_products on tb_stock.product_id = geopos_products.pid where tb_stock.purchase_id=$id")->result_array();
+                          inner join geopos_products on tb_stock.product_id = geopos_products.pid 
+                          where tb_stock.purchase_id=$id")->result_array();
           return $query;
     }
 

@@ -656,7 +656,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" class="form-control"
+                        <input type="text" class="form-control"
                             name="shortnote" placeholder="Short note"
                             value="Payment for invoice #<?php echo $invoice['tid'] ?>"></div>
                         <input type="hidden" class="form-control required"

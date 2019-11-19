@@ -621,20 +621,22 @@ class Invoices extends CI_Controller
                     $this->db->set('status', 'due');
                     $this->db->where('id', $iid);
                     $this->db->update('geopos_invoices');
+                    //reverse
+                    $this->db->select('credit,debit,acid');
+                    $this->db->from('geopos_transactions');
+                    $this->db->where('tid', $iid);
+                    $this->db->where('cat', 'Sales');
+                    $query = $this->db->get();
+                    $revresult = $query->result_array();
+                    foreach ($revresult as $trans) {
+                        $amt = $trans['credit'] - $trans['debit'];
+                        $this->db->set('lastbal', "lastbal-$amt", FALSE);
+                        $this->db->where('id', $trans['acid']);
+                    $this->db->update('geopos_accounts');
+                    }
+                    $this->db->delete('geopos_transactions', array('tid' => $iid,'cat'=>'Sales'));
                 }
-                //reverse
-                $this->db->select('credit,debit,acid');
-                $this->db->from('geopos_transactions');
-                $this->db->where('tid', $iid);
-                $query = $this->db->get();
-                $revresult = $query->result_array();
-                foreach ($revresult as $trans) {
-                    $amt = $trans['credit'] - $trans['debit'];
-                    $this->db->set('lastbal', "lastbal-$amt", FALSE);
-                    $this->db->where('id', $trans['acid']);
-                $this->db->update('geopos_accounts');
-                }
-                $this->db->delete('geopos_transactions', array('tid' => $iid));
+                
         
                 echo json_encode(array('status' => 'Success', 'message' => $this->lang->line('Invoice has  been updated') . " <a href='view?id=$iid' class='btn btn-info btn-lg'><span class='fa fa-eye' aria-hidden='true'></span> " . $this->lang->line('View') . " </a> "));
             } else {
