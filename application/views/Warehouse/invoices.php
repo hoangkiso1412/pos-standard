@@ -46,9 +46,9 @@
                 </div>
                 <hr>
 
-                <table id="po" class="table table-striped table-bordered zero-configuration">
+                <table id="po" class="table table-striped table-bordered zero-configuration" style="font-weight:bold;">
                     <thead>
-                    <tr>
+                    <tr style="color:blue;">
                         <th><?php echo 'ល.រ' ?></th>
                         <th>កាលបរិឆ្ឆេត​</th>
                         <th>ស្តុក</th>
@@ -63,6 +63,7 @@
                         <th>អ្នកទិញ</th>
                         <th>តម្លៃទិញ</th>
                         <th>តម្លៃលក់</th>
+                        <th>ចំណេញ</th>
                         <th>ស្តុចូល</th>
                         <th>ស្តុកចេញ</th>
                         <th>ស្តុកសល់</th>
@@ -74,6 +75,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>

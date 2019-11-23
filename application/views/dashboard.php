@@ -99,14 +99,14 @@
                     <div id="products-sales" class="height-300"></div>
                 </div>
                 <div class="row">
-                    <div class="col-xl-3 col-lg-6 col-12">
+                    <div class="col-xl-4 col-lg-6 col-12">
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body">
                                     <div class="media">
                                         <div class="media-body text-left w-100">
                                             <h3 class="primary"><?= amountExchange($todayinexp['credit'], 0, $this->aauth->get_user()->loc) ?></h3>
-                                            <span><?php echo 'សរុបប្រាក់ចំណូលថ្ងៃនេះ';//echo $this->lang->line('today') . $this->lang->line('income') ?></span>
+                                            <h2><?php echo 'សរុបប្រាក់ចំណូលថ្ងៃនេះ';//echo $this->lang->line('today') . $this->lang->line('income') ?></h2>
                                         </div>
 
                                     </div>
@@ -118,14 +118,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-lg-6 col-12">
+                    <div class="col-xl-4 col-lg-6 col-12">
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body">
                                     <div class="media">
                                         <div class="media-body text-left w-100">
                                             <h3 class="danger"><?= amountExchange($todayinexp['debit'], 0, $this->aauth->get_user()->loc) ?></h3>
-                                            <span><?php echo 'សរុបប្រាប់ចំណាយថ្ងៃនេះ';//$this->lang->line('today') . $this->lang->line('expenses') ?></span>
+                                            <h2><?php echo 'សរុបប្រាប់ចំណាយថ្ងៃនេះ';//$this->lang->line('today') . $this->lang->line('expenses') ?></h2>
                                         </div>
 
                                     </div>
@@ -137,14 +137,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-lg-6 col-12">
+                    <div class="col-xl-4 col-lg-6 col-12">
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body">
                                     <div class="media">
                                         <div class="media-body text-left w-100">
                                             <h3 class="success"><?= amountExchange($todayprofit, 0, $this->aauth->get_user()->loc) ?></h3>
-                                            <span><?php echo 'សរុបប្រាប់ចំណេញថ្ងៃនេះ';//$this->lang->line('today') . $this->lang->line('Profit') ?></span>
+                                            <h2><?php echo 'សរុបប្រាប់ចំណេញថ្ងៃនេះ';//$this->lang->line('today') . $this->lang->line('Profit') ?></h2>
                                         </div>
 
                                     </div>
@@ -156,25 +156,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-lg-6 col-12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <div class="media">
-                                        <div class="media-body text-left w-100">
-                                            <h3 class="warning"><?= amountExchange($tt_inc - $tt_exp, 0, $this->aauth->get_user()->loc) ?></h3>
-                                            <span><?php echo 'ប្រាក់សរុប';//echo $this->lang->line('revenue') ?></span>
-                                        </div>
-
-                                    </div>
-                                    <div class="progress progress-sm mt-1 mb-0">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 35%"
-                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
         </div>
@@ -493,7 +475,7 @@
                         <thead>
                         <tr>
                             <th><?php echo $this->lang->line('Date') ?>#</th>
-                            <th><?php echo 'ប្រភេទ Account​';//$this->lang->line('Account') ?></th>
+                            <th><?php echo 'ប្រភេទ ចំណូល ឬ ចំណាយ';//$this->lang->line('Account') ?></th>
                             <th><?php echo 'ចំណាយ';//$this->lang->line('Debit') ?></th>
                             <th><?php echo 'ចំណូល';//$this->lang->line('Credit') ?></th>
 
@@ -507,7 +489,7 @@
 
                             echo '<tr>
                                 <td class="text-truncate"><a href="' . base_url() . 'transactions/view?id=' . $item['id'] . '">' . dateformat($item['date']) . '</a></td>
-                                <td class="text-truncate"> ' . $item['account'] . '</td>
+                                <td class="text-truncate"> ' .$item['cat'] . '</td>
                                 <td class="text-truncate">' . amountExchange($item['debit'], 0, $this->aauth->get_user()->loc) . '</td>
                                 <td class="text-truncate">' . amountExchange($item['credit'], 0, $this->aauth->get_user()->loc) . '</td>                    
                                 <td class="text-truncate">' . $this->lang->line($item['method']) . '</td>

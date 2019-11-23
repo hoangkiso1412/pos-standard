@@ -47,9 +47,9 @@
                 </div>
                 <hr>
 
-                <table id="po" class="table table-striped table-bordered zero-configuration">
+                <table id="po" class="table table-striped table-bordered zero-configuration" style="font-weight:bold;">
                     <thead>
-                    <tr>
+                    <tr style="color:blue;">
                     
                         <th><?php echo 'ល.រ'//echo $this->lang->line('No') ?></th>
                         <th>កាលបរិឆ្ឆេត​</th>
@@ -57,8 +57,8 @@
                         <th>ប្រភេទ</th>
                         <th>ឈ្មោះ</th>
                         <th>ចំនួន</th>
-                        <th>ពណ៌</th>
                         <th>ឆ្នាំ</th>
+                        <th>ពណ៌</th>
                         <th>ថ្មី&ចាស់</th>
                         <th>លេខតួ</th>
                         <th>លេខម៉ាស៊ីន</th>

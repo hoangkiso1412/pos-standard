@@ -46,9 +46,9 @@
                 </div>
                 <hr>
 
-                <table id="po" class="table table-striped table-bordered zero-configuration">
+                <table id="po" class="table table-striped table-bordered zero-configuration" style="font-weight:bold;">
                     <thead>
-                    <tr>
+                    <tr style="color:blue;">
 
                         <th><?php echo 'ល.រ'//echo $this->lang->line('No') ?></th>
                         <th>កាលបរិឆ្ឆេត​លក់</th>
@@ -57,8 +57,8 @@
                         <th>ស្តុក</th>
                         <th>ប្រភេទ</th>
                         <th>ប្រភេទម៉ូតូ</th>                        
-                        <th>ពណ៌</th>
                         <th>ឆ្នាំ</th>
+                        <th>ពណ៌</th>
                         <th>ចំនួន</th>
                         <th>ថ្មី&ចាស់</th>
                         <th>លេខតួ</th>
