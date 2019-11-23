@@ -46,9 +46,9 @@
                 </div>
                 <hr>
 
-                <table id="po" class="table table-striped table-bordered zero-configuration">
+                <table id="po" class="table table-striped table-bordered zero-configuration" style="font-weight:bold;">
                     <thead>
-                    <tr>
+                    <tr style="color:blue;">
 
                         <th><?php echo 'ល.រ'//echo $this->lang->line('No') ?></th>
                         <th>កាលបរិឆ្ឆេត​</th>

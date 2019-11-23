@@ -97,12 +97,12 @@ class Units_model extends CI_Model
     }
     public function variations_year_list_s($id) {
         $query = $this->db->query("SELECT u.id,u.name FROM geopos_products AS p LEFT JOIN geopos_units AS u ON p.year=u.name WHERE
-        p.pid='$id' and u.rid=2");
+        p.pid='$id'");
         return $query->row_array();
     }
     public function variations_color_list_s($id) {
         $query = $this->db->query("SELECT u.id,u.name FROM geopos_products AS p LEFT JOIN geopos_units AS u ON p.color=u.name WHERE
-        p.pid='$id' and u.rid=1");
+        p.pid='$id'");
         return $query->row_array();
     }
     //end

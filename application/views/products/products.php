@@ -86,12 +86,9 @@
                     <tr>
                         <th>#</th>
                         <th><?php echo $this->lang->line('Name') ?></th>
-                        <th><?php echo $this->lang->line('Color') ?></th>
-                        <th><?php echo $this->lang->line('Year') ?></th>
-                        <th><?php echo $this->lang->line('Qty') ?></th>
-                        <th><?php echo $this->lang->line('Code') ?></th>
                         <th><?php echo $this->lang->line('Category') ?></th>
-                        <th><?php echo $this->lang->line('Warehouse') ?></th>
+                        <th><?php echo $this->lang->line('Year') ?></th>
+                        <th><?php echo $this->lang->line('Color') ?></th>
                         <th><?php echo $this->lang->line('Price') ?></th>
                         <th><?php echo $this->lang->line('Settings') ?></th>
                     </tr>
@@ -103,12 +100,9 @@
                     <tr>
                         <th>#</th>
                         <th><?php echo $this->lang->line('Name') ?></th>
-                        <th><?php echo $this->lang->line('Color') ?></th>
-                        <th><?php echo $this->lang->line('Year') ?></th>
-                        <th><?php echo $this->lang->line('Qty') ?></th>
-                        <th><?php echo $this->lang->line('Code') ?></th>
                         <th><?php echo $this->lang->line('Category') ?></th>
-                        <th><?php echo $this->lang->line('Warehouse') ?></th>
+                        <th><?php echo $this->lang->line('Year') ?></th>
+                        <th><?php echo $this->lang->line('Color') ?></th>
                         <th><?php echo $this->lang->line('Price') ?></th>
                         <th><?php echo $this->lang->line('Settings') ?></th>
                     </tr>
@@ -155,15 +149,6 @@
                             exportOptions: {
                                 columns: [1, 2, 3, 4 , 5 , 6 , 7 , 8]
                             }
-                        }
-                    ],"columnDefs": [
-                        {
-                            "targets": [ 3 ],
-                            "visible": false
-                        },
-                        {
-                            "targets": [ 7 ],
-                            "visible": false,
                         }
                     ]
                 });
