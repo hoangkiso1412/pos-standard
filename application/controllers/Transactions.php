@@ -25,6 +25,7 @@ class Transactions extends CI_Controller
         parent::__construct();
         $this->load->library("Aauth");
         $this->load->model('invoices_model');
+        $this->load->model('purchase_model','purchases');
         $this->load->model('transactions_model', 'transactions');
         if (!$this->aauth->is_loggedin()) {
             redirect('/user/', 'refresh');
@@ -511,17 +512,7 @@ class Transactions extends CI_Controller
             $this->db->where('id', $trans['acid']);
             $this->db->update('geopos_accounts');
         }
-        $this->db->select('pid,qty');
-        $this->db->from('geopos_invoice_items');
-        $this->db->where('tid', $tid);
-        $query = $this->db->get();
-        $prevresult = $query->result_array();
-        foreach ($prevresult as $prd) {
-            $amt = $prd['qty'];
-            $this->db->set('qty', "qty+$amt", FALSE);
-            $this->db->where('pid', $prd['pid']);
-            $this->db->update('geopos_products');
-        }
+        $this->db->query("update tb_stock set sold_date='0000-00-00', sale_detail_id=0, selling_price=0, paid_amount=0, remain_amount=0, status='in-stock' where sale_detail_id in (select id from geopos_invoice_items where tid='".$tid."')");
         $this->db->delete('geopos_transactions', array('tid' => $tid));
         $data = array('type' => 9, 'rid' => $tid);
         $this->db->delete('geopos_metadata', $data);
@@ -553,18 +544,9 @@ class Transactions extends CI_Controller
             $this->db->where('id', $trans['acid']);
             $this->db->update('geopos_accounts');
         }
-        $this->db->select('pid,qty');
-        $this->db->from('geopos_purchase_items');
-        $this->db->where('tid', $tid);
-        $query = $this->db->get();
-        $prevresult = $query->result_array();
-        foreach ($prevresult as $prd) {
-            $amt = $prd['qty'];
-            $this->db->set('qty', "qty-$amt", FALSE);
-            $this->db->where('pid', $prd['pid']);
-            $this->db->update('geopos_products');
-        }
+        
         $this->db->delete('geopos_transactions', array('tid' => $tid, 'ext' => 1));
+        $this->db->delete('tb_stock', array('purchase_id' => $tid));
         echo json_encode(array('status' => 'Success', 'message' =>
             $this->lang->line('Purchase canceled!')));
     }
