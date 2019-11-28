@@ -1,3 +1,4 @@
+<?php $btn_cancel = 0; ?>
 <div class="content-body">
     <div class="card">
         <div class="card-content">
@@ -47,7 +48,7 @@
                               <i class="fa fa-globe"></i> <?php echo $this->lang->line('Public Preview') ?>
                             </a>
                             <a href="#pop_model" data-toggle="modal" data-remote="false" class="btn btn-large btn-success hidden" title="Change Status" ><span class="fa fa-retweet"></span> <?php echo $this->lang->line('Change Status') ?></a>
-                            <a href="#cancel-bill" class="btn btn-danger" id="cancel-bill_p"><i
+                            <a href="#cancel-bill" class="btn btn-danger hidden" id="cancel-bill_p"><i
                                         class="fa fa-minus-circle"> </i> <?php echo $this->lang->line('Cancel') ?>
                             </a>
 
@@ -128,7 +129,7 @@
                                 <tbody>
                                 <?php $c = 1;
                                 $sub_t = 0;
-
+                                
                                 foreach ($products as $row) {
                                     $sub_t += $row['price'] * $row['qty'];
                                     $gst = $row['totaltax'] / 2;
@@ -146,6 +147,9 @@
                                           </tr>';
                                     echo '<tr><td colspan=5>' . $row['product_des'] . '</td></tr>';
                                     $c++;
+                                    if($row['status']=='sold-out'){
+                                        $btn_cancel++;
+                                    }
                                 } ?>
 
                                 </tbody>
@@ -181,6 +185,9 @@
                                               </tr>';
                                         echo '<tr><td colspan=5>' . $row['product_des'] . '</td></tr>';
                                         $c++;
+                                        if($row['status']=='sold-out'){
+                                            $btn_cancel++;
+                                        }
                                       } 
                                     ?>
                                     </tbody>
@@ -222,6 +229,9 @@
                                             </tr>';
                                         echo '<tr><td colspan=11>' . $row['product_des'] . '</td></tr>';
                                         $c++;
+                                        if($row['status']=='sold-out'){
+                                            $btn_cancel++;
+                                        }
                                     } ?>
 
                                     </tbody>
@@ -696,5 +706,16 @@
             cancelBill(acturl);
 
         });
+    });
+    $(document).ready(function(e){
+        check_remove();
+       function check_remove(){
+           if(parseInt("<?php echo $btn_cancel ?>")>0){
+               $("#cancel-bill_p").remove();
+           }
+           else{
+               $("#cancel-bill_p").removeClass("hidden");
+           }
+       } 
     });
 </script>
