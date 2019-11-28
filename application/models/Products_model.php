@@ -177,7 +177,7 @@ class Products_model extends CI_Model
                 if (strlen($barcode) > 5 AND is_numeric($barcode)) {
                     $data = array(
                         'pcat' => $catid,
-                        'warehouse' => $warehouse,
+                        'warehouse' => 1,
                         'product_name' => $product_name,
                         'product_code' => $product_code,
                         'product_price' => $product_price,
@@ -204,7 +204,7 @@ class Products_model extends CI_Model
 
                     $data = array(
                         'pcat' => $catid,
-                        'warehouse' => $warehouse,
+                        'warehouse' => 1,
                         'product_name' => $product_name,
                         'product_code' => $product_code,
                         'product_price' => $product_price,
@@ -283,7 +283,7 @@ class Products_model extends CI_Model
             if (strlen($barcode) > 5 AND is_numeric($barcode)) {
                 $data = array(
                     'pcat' => $catid,
-                    'warehouse' => $warehouse,
+                    'warehouse' => 1,
                     'product_name' => $product_name,
                     'product_code' => $product_code,
                     'product_price' => $product_price,
@@ -307,7 +307,7 @@ class Products_model extends CI_Model
                 $barcode = rand(100, 999) . rand(0, 9) . rand(1000000, 9999999) . rand(0, 9);
                 $data = array(
                     'pcat' => $catid,
-                    'warehouse' => $warehouse,
+                    'warehouse' => 1,
                     'product_name' => $product_name,
                     'product_code' => $product_code,
                     'product_price' => $product_price,
@@ -397,7 +397,7 @@ class Products_model extends CI_Model
             if ($ware_valid['loc'] == $this->aauth->get_user()->loc OR $ware_valid['loc'] == '0' OR $warehouse == 0) {
                 $data = array(
                     'pcat' => $catid,
-                    'warehouse' => $warehouse,
+                    'warehouse' => 1,
                     'product_name' => $product_name,
                     'product_code' => $product_code,
                     'product_price' => $product_price,
@@ -439,7 +439,7 @@ class Products_model extends CI_Model
         } else {
             $data = array(
                 'pcat' => $catid,
-                'warehouse' => $warehouse,
+                'warehouse' => 1,
                 'product_name' => $product_name,
                 'product_code' => $product_code,
                 'product_price' => $product_price,

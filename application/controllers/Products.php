@@ -186,8 +186,8 @@ class Products extends CI_Controller
         $data['cat_ware'] = $this->categories_model->cat_ware($pid);
         //Srieng modified 10-23-2020
         $this->load->model('units_model', 'units');
-        $data['color_select'] = $this->units->variations_year_list_s($pid);
-        $data['year_select'] = $this->units->variations_color_list_s($pid);
+        $data['year_select'] = $this->units->variations_year_list_s($pid);
+        $data['color_select'] = $this->units->variations_color_list_s($pid);
         $data['colors'] = $this->units->variations_year_list();
         $data['years'] = $this->units->variations_color_list();
         //end

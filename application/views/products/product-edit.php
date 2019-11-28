@@ -58,8 +58,9 @@
                         <div class="col-sm-6"><label class="col-form-label"
                                                      for="sub_cat"><?php echo $this->lang->line('Sub') ?><?php echo $this->lang->line('Category') ?></label>
                             <select id="sub_cat" name="sub_cat" class="form-control select-box">
-                                <?= '<option value="' . $cat_sub['id'] . '" selected>' . $cat_sub['title'] . ' (S)</option>';
-
+                                <?php 
+                                echo '<option value="' . $cat_sub['id'] . '">' . $cat_sub['title'] . ' (S)</option>';
+                                
 
                                 foreach ($cat_sub_list as $row) {
                                     $cid = $row['id'];
