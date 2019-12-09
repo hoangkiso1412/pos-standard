@@ -235,7 +235,7 @@ class Purchase extends CI_Controller
             // }
                 
           // Check validation of product exising with engine number and body number 
-            $engineno=$this->db->query("select tb_stock.engine_number from tb_stock where tb_stock.product_id=".$product_id[$key]." and tb_stock.engine_number='".$engine_num[$key]."' and tb_stock.body_number='".$body_num[$key]."'")->row()->engine_number;
+            $engineno=$this->db->query("select tb_stock.engine_number from tb_stock where tb_stock.status='in-stock' and tb_stock.product_id=".$product_id[$key]." and tb_stock.engine_number='".$engine_num[$key]."' and tb_stock.body_number='".$body_num[$key]."'")->row()->engine_number;
               if($engineno!=""){
                   echo json_encode(array('status' => 'Error', 'message' => "This product $product_name1[$key] and body number: $body_num[$key] and engine number: $engine_num[$key] already exist!"));
                   $transok = false;
@@ -244,7 +244,7 @@ class Purchase extends CI_Controller
             // Check validation of plate number exising
             if($plate_num[$key]!="") {
                 $plateno=$this->db->query("select tb_stock.plate_number from tb_stock 
-                where tb_stock.plate_number='".$plate_num[$key]."'")->row()->plate_number;
+                where tb_stock.status='in-stock' and tb_stock.plate_number='".$plate_num[$key]."'")->row()->plate_number;
                 if($plateno!=""){
                         echo json_encode(array('status' => 'Error', 'message' =>
                         "This plate number $plate_num[$key] already exist!"));
@@ -562,7 +562,7 @@ class Purchase extends CI_Controller
           }
               
         // Check validation of product exising with engine number and body number 
-          $engineno=$this->db->query("select tb_stock.engine_number from tb_stock where tb_stock.id<>".$purchase_id[$key]." and tb_stock.product_id<>".$product_id[$key]." and tb_stock.engine_number='".$engine_num[$key]."' and tb_stock.body_number='".$body_num[$key]."'")->row()->engine_number;
+          $engineno=$this->db->query("select tb_stock.engine_number from tb_stock where tb_stock.status='in-stock' and purchase_id<>'$invocieno' and tb_stock.id<>".$purchase_id[$key]." and tb_stock.product_id<>".$product_id[$key]." and tb_stock.engine_number='".$engine_num[$key]."' and tb_stock.body_number='".$body_num[$key]."'")->row()->engine_number;
           if($engineno!=""){
             echo json_encode(array('status' => 'Error', 'message' => "This product $product_name1[$key] and body number: $body_num[$key] and engine number: $engine_num[$key] already exist!"));
             $transok = false;
@@ -570,7 +570,7 @@ class Purchase extends CI_Controller
           }
           // Check validation of plate number exising
           if($plate_num[$key]!="") {
-              $plateno=$this->db->query("select tb_stock.plate_number from tb_stock where tb_stock.id<>".$purchase_id[$key]." and tb_stock.product_id<>".$product_id[$key]." and tb_stock.plate_number='".$plate_num[$key]."'")->row()->plate_number;
+              $plateno=$this->db->query("select tb_stock.plate_number from tb_stock where tb_stock.status='in-stock' and purchase_id<>'$invocieno' and tb_stock.id<>".$purchase_id[$key]." and tb_stock.product_id<>".$product_id[$key]." and tb_stock.plate_number='".$plate_num[$key]."'")->row()->plate_number;
               if($plateno!=""){
                 echo json_encode(array('status' => 'Error', 'message' => "This plate number $plate_num[$key] already exist!"));
                 $transok = false;
