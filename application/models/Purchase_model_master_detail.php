@@ -56,7 +56,7 @@ class Purchase_model_master_detail extends CI_Model
         $this->db->join('geopos_warehouse', '`geopos_warehouse`.`id`=`tb_stock`.`warehouse_id`', 'left');
         $this->db->join('geopos_products', '`tb_stock`.`product_id`=`geopos_products`.`pid`', 'left');
         $this->db->join('geopos_product_cat', '`geopos_product_cat`.`id`= `geopos_products`.`pcat`', 'left');
-        $this->db->join('geopos_purchase_items', 'geopos_purchase_items.pid = tb_stock.product_id', 'left');
+        $this->db->join('geopos_purchase_items', 'geopos_purchase_items.pid = tb_stock.product_id and tb_stock.purchase_id = geopos_purchase_items.tid', 'left');
         
 
 
