@@ -851,4 +851,6 @@ $lang["Village"] = "ភូមិ";
 $lang["Commune"] = "ឃុំ/សង្កាត់";
 $lang["District"] = "ស្រុក/ក្រុង/ខណ្ឌ";
 $lang["Province"] = "រាជធានី/ខេត្ត";
+$lang['Register Cash'] =  "ដាក់ប្រាក់";
+$lang['Update Register'] =  "កែប្រែទឹកប្រាក់";
 

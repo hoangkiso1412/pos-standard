@@ -1,4 +1,6 @@
-<?php $btn_cancel = 0; ?>
+<?php $btn_cancel = 0; 
+$cashreg = $this->registerlog->check($this->aauth->get_user()->id);
+?>
 <div class="content-body">
     <div class="card">
         <div class="card-content">
@@ -18,10 +20,22 @@
                             <a href="<?php echo 'edit?id=' . $invoice['iid']; ?>" class="btn btn-warning"><i
                                         class="fa fa-pencil"></i> <?php echo $this->lang->line('Edit Order') ?> </a>
 
-                            <a href="#part_payment" data-toggle="modal" data-remote="false" data-type="reminder"
+                            <?php
+                                    if (!$cashreg) {
+                                        ?>
+                                <a href="<?php echo site_url('register/create'); ?>" 
+                                   class="btn btn-large btn-info mb-1" title="Partial Payment"
+                                   ><span class="fa fa-money"></span> <?php echo $this->lang->line('Register Cash') ?> </a>
+                                <?php
+                                    }
+                                    else{
+                                        ?>
+                                <a href="#part_payment" data-toggle="modal" data-remote="false" data-type="reminder"
                                class="btn btn-large btn-success" title="Partial Payment"
                             ><span class="fa fa-money"></span> <?php echo $this->lang->line('Make Payment') ?> </a>
-
+                                <?php
+                                    }
+                                ?>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary dropdown-toggle hidden" data-toggle="dropdown"aria-haspopup="true" aria-expanded="false">
                                   <span class="fa fa-envelope-o"></span> <?php echo $this->lang->line('Send') ?>
@@ -525,6 +539,7 @@
                       </button>
                       <input type="hidden" name="cid" value="<?php echo $invoice['cid'] ?>">
                       <input type="hidden" name="cname" value="<?php echo $invoice['name'] ?>">
+                        <input type="hidden" name="cash_id" value="<?php echo $cashreg['id'] ?>">
                       <button type="button" class="btn btn-primary" id="purchasepayment"><?php echo $this->lang->line('Do Payment') ?></button>
                   </div>
               </form>

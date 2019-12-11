@@ -103,6 +103,7 @@ class Transactions extends CI_Controller
         $tamount = $this->input->post("totalamount");
         $tpaid = $this->input->post("totalpaid");
         $paydate = $this->input->post('paydate', true);
+        $cash_id = $this->input->post('cash_id');
         //end array post
         
         $note = $this->input->post('shortnote', true);
@@ -142,7 +143,8 @@ class Transactions extends CI_Controller
                     'other_id' => $psid[$key],
                     'note' => $note,
                     'loc' => $this->aauth->get_user()->loc,
-                    'remain_amount' => rev_amountExchange_s($ramount, 0, $this->aauth->get_user()->loc)
+                    'remain_amount' => rev_amountExchange_s($ramount, 0, $this->aauth->get_user()->loc),
+                    'cash_id' => $cash_id
                 );
                 $productlist[$prodindex] = $data;
                 $prodindex++;
@@ -155,6 +157,10 @@ class Transactions extends CI_Controller
         }
         if($prodindex>0){
             $this->db->insert_batch('geopos_transactions', $productlist);
+            
+            $this->db->set('in_amount', "in_amount+$totalpayamount",false);
+            $this->db->where('id', $cash_id);
+            $this->db->update('geopos_register');
         }
 //        if ($pmethod == 'Balance') {
 //
@@ -271,6 +277,7 @@ class Transactions extends CI_Controller
       $acid         = $this->input->post('account', true);
       $cid          = $this->input->post('cid', true);
       $cname        = $this->input->post('cname', true);
+      $cash_id = $this->input->post('cash_id');
     
       $this->db->select('holder');
       $this->db->from('geopos_accounts');
@@ -302,6 +309,7 @@ class Transactions extends CI_Controller
                   'note'    => $note,
                   'loc'     => $this->aauth->get_user()->loc,
                   'ext'     => 1,
+                  'cash_id' => $cash_id
               );
               $productlist[$prodindex] = $data;
               $prodindex++;
@@ -313,6 +321,10 @@ class Transactions extends CI_Controller
       }
       if($prodindex>0){
         $this->db->insert_batch('geopos_transactions', $productlist);
+            
+        $this->db->set('out_amount', "out_amount+$totalpayamount",false);
+        $this->db->where('id', $cash_id);
+        $this->db->update('geopos_register');
       }
         //$this->db->insert('geopos_transactions', $data);
         $this->db->insert_id();
@@ -501,7 +513,7 @@ class Transactions extends CI_Controller
         $this->db->where('id', $tid);
         $this->db->update('geopos_invoices');
         //reverse
-        $this->db->select('credit,debit,acid');
+        $this->db->select('credit,debit,acid,cash_id');
         $this->db->from('geopos_transactions');
         $this->db->where('tid', $tid);
         $query = $this->db->get();
@@ -511,6 +523,10 @@ class Transactions extends CI_Controller
             $this->db->set('lastbal', "lastbal-$amt", FALSE);
             $this->db->where('id', $trans['acid']);
             $this->db->update('geopos_accounts');
+            
+            $this->db->set('in_amount', "in_amount-$amt",false);
+            $this->db->where('id', $trans['cash_id']);
+            $this->db->update('geopos_register');
         }
         $this->db->query("update tb_stock set sold_date='0000-00-00', sale_detail_id=0, selling_price=0, paid_amount=0, remain_amount=0, status='in-stock' where sale_detail_id in (select id from geopos_invoice_items where tid='".$tid."')");
         $this->db->delete('geopos_transactions', array('tid' => $tid));
@@ -532,7 +548,7 @@ class Transactions extends CI_Controller
         $this->db->where('id', $tid);
         $this->db->update('geopos_purchase');
         //reverse
-        $this->db->select('debit,credit,acid');
+        $this->db->select('debit,credit,acid,cash');
         $this->db->from('geopos_transactions');
         $this->db->where('tid', $tid);
         $this->db->where('ext', 1);
@@ -543,6 +559,10 @@ class Transactions extends CI_Controller
             $this->db->set('lastbal', "lastbal+$amt", FALSE);
             $this->db->where('id', $trans['acid']);
             $this->db->update('geopos_accounts');
+            
+            $this->db->set('in_amount', "out_amount-$amt",false);
+            $this->db->where('id', $trans['cash_id']);
+            $this->db->update('geopos_register');
         }
         
         $this->db->delete('geopos_transactions', array('tid' => $tid, 'ext' => 1));

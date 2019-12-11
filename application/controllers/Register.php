@@ -96,11 +96,11 @@ class Register Extends CI_Controller
     public function create()
     {
 
-        if (!$this->aauth->premission(1)) {
-            exit('<h3>Sorry! You have insufficient permissions to access this section</h3>');
-        }
+//        if (!$this->aauth->premission(1)) {
+//            exit('<h3>Sorry! You have insufficient permissions to access this section</h3>');
+//        }
         if ($this->registerlog->check($this->aauth->get_user()->id)) {
-            redirect('pos_invoices/create');
+            redirect('dashboard');
         }
         if ($this->input->post()) {
             $cash = (float)$this->input->post('cash');
@@ -110,7 +110,7 @@ class Register Extends CI_Controller
 
             if ($this->registerlog->create($this->aauth->get_user()->id, $cash, $card, $bank, $cheque)) {
 
-                echo json_encode(array('status' => 'Success', 'message' => $this->lang->line('ADDED') . " <a href='" . base_url() . "pos_invoices/create' class='btn btn-info btn-lg'><span class='icon-plus-circle' aria-hidden='true'></span> " . $this->lang->line('POS') . "  </a>"));
+                echo json_encode(array('status' => 'Success', 'message' => $this->lang->line('ADDED') . " <a href='" . base_url() . "dashboard' class='btn btn-info btn-lg'><span class='icon-plus-circle' aria-hidden='true'></span> " . $this->lang->line('POS') . "  </a>","activity","refresh"));
 
 
             } else {
@@ -123,6 +123,40 @@ class Register Extends CI_Controller
             $head['usernm'] = $this->aauth->get_user()->username;
             $this->load->view('fixed/header', $head);
             $this->load->view('register/create');
+            $this->load->view('fixed/footer');
+        }
+    }
+    
+    
+    public function update()
+    {
+
+//        if (!$this->aauth->premission(1)) {
+//            exit('<h3>Sorry! You have insufficient permissions to access this section</h3>');
+//        }
+        if (!$this->registerlog->check($this->aauth->get_user()->id)) {
+            redirect('register/create');
+        }
+        if ($this->input->post()) {
+            $cash = (float)$this->input->post('cash');
+            $card = (float)$this->input->post('card');
+            $bank = (float)$this->input->post('bank');
+            $cheque = (float)$this->input->post('cheque');
+            $update_id = (int)$this->input->post('update_id');
+
+            if ($this->registerlog->update_cash($update_id, $cash, $card, $bank, $cheque,0)) {
+
+                echo json_encode(array('status' => 'Success', 'message' => $this->lang->line('Updated') . " <a href='" . base_url() . "dashboard' class='btn btn-info btn-lg'><span class='icon-plus-circle' aria-hidden='true'></span> Dashboard  </a>","activity","refresh"));
+
+
+            } else {
+                echo json_encode(array('status' => 'Error', 'message' => $this->lang->line('ERROR')));
+            }
+        } else {
+            $head['title'] = "Add Register";
+            $head['usernm'] = $this->aauth->get_user()->username;
+            $this->load->view('fixed/header', $head);
+            $this->load->view('register/update');
             $this->load->view('fixed/footer');
         }
     }
