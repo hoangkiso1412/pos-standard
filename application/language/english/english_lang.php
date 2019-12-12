@@ -849,4 +849,5 @@ $lang["Select Stock"] = "Select Stock";
 
 
 $lang['Other expense'] =  "Other expense";
-
+$lang['Register Cash'] =  "Register Cash";
+$lang['Update Register'] =  "Update Register";

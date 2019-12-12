@@ -24,6 +24,7 @@ class Purchase extends CI_Controller
     {
         parent::__construct();
         $this->load->model('purchase_model', 'purchase');
+        $this->load->library("Registerlog");
         $this->load->library("Aauth");
         if (!$this->aauth->is_loggedin()) {
             redirect('/user/', 'refresh');

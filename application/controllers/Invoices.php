@@ -27,6 +27,7 @@ class Invoices extends CI_Controller
     {
         parent::__construct();
         $this->load->model('invoices_model', 'invocies');
+        $this->load->library("Registerlog");
         $this->load->library("Aauth");
 
         if (!$this->aauth->is_loggedin()) {

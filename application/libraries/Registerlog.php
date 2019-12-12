@@ -33,7 +33,6 @@ class Registerlog
     public function check($id)
     {
         $this->RI->db->from('geopos_register');
-        $this->RI->db->where('uid', $id);
         $this->RI->db->where('active', 1);
         $query = $this->RI->db->get();
         $result = $query->row_array();
@@ -91,9 +90,22 @@ class Registerlog
         $this->RI->db->set('bank', "bank+$bank", FALSE);
         $this->RI->db->set('cheque', "cheque+$cheque", FALSE);
         $this->RI->db->set('r_change', "r_change+$change", FALSE);
-        $this->RI->db->where('uid', $id);
+//        $this->RI->db->where('uid', $id);
         $this->RI->db->where('active', 1);
         $this->RI->db->update('geopos_register');
+    }
+    
+    public function update_cash($id, $cash = 0,  $card = 0, $bank = 0, $cheque = 0,$change = 0)
+    {
+
+        $this->RI->db->set('cash', "$cash", FALSE);
+        $this->RI->db->set('card', "$card", FALSE);
+        $this->RI->db->set('bank', "$bank", FALSE);
+        $this->RI->db->set('cheque', "$cheque", FALSE);
+        $this->RI->db->set('r_change', "$change", FALSE);
+        $this->RI->db->where('active', 1);
+        return $this->RI->db->update('geopos_register');
+        
     }
 
 
@@ -101,7 +113,7 @@ class Registerlog
     {
         $this->RI->db->set('active', 0);
           $this->RI->db->set('c_date',  date('Y-m-d H:i:s'));
-        $this->RI->db->where('uid', $id);
+//        $this->RI->db->where('uid', $id);
         $this->RI->db->where('active', 1);
         $this->RI->db->update('geopos_register');
     }

@@ -1,3 +1,6 @@
+<?php
+$cashreg = $this->registerlog->check($this->aauth->get_user()->id);
+?>
 <div class="content-body">
     <div class="card">
         <div class="card-content">
@@ -20,9 +23,22 @@
                             <div class="title-action">
                                 <a href="<?php echo 'edit?id=' . $invoice['iid']; ?>" class="btn btn-warning mb-1"><i
                                         class="fa fa-pencil"></i> <?php echo $this->lang->line('Edit Invoice') ?></a>
-                                <a href="#part_payment" data-toggle="modal" data-remote="false" data-type="reminder"
+                                <?php
+                                    if (!$cashreg) {
+                                        ?>
+                                <a href="<?php echo site_url('register/create'); ?>" 
                                    class="btn btn-large btn-info mb-1" title="Partial Payment"
+                                   ><span class="fa fa-money"></span> <?php echo $this->lang->line('Register Cash') ?> </a>
+                                <?php
+                                    }
+                                    else{
+                                        ?>
+                                <a href="#part_payment" data-toggle="modal" data-remote="false" data-type="reminder"
+                                   class="btn btn-large btn-info mb-1" title="Register Cash"
                                    ><span class="fa fa-money"></span> <?php echo $this->lang->line('Make Payment') ?> </a>
+                                <?php
+                                    }
+                                ?>
                                 <div class="btn-group hidden">
                                     <button type="button" class="btn btn-facebook dropdown-toggle mb-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="fa fa-envelope-o"></span> Email
@@ -658,13 +674,14 @@
                     <div class="modal-footer">
                         <input type="text" class="form-control"
                             name="shortnote" placeholder="Short note"
-                            value="Payment for invoice #<?php echo $invoice['tid'] ?>"></div>
+                            value="Payment for invoice #<?php echo $invoice['tid'] ?>">
                         <input type="hidden" class="form-control required"
                             name="tid" id="invoiceid" value="<?php echo $invoice['iid'] ?>">
                         <button type="button" class="btn btn-default"
                             data-dismiss="modal"><?php echo $this->lang->line('Close') ?></button>
                         <input type="hidden" name="cid" value="0">
                         <input type="hidden" name="cname" value="<?php echo $customer_info[0] ?>">
+                        <input type="hidden" name="cash_id" value="<?php echo $cashreg['id'] ?>">
                         <button type="button" class="btn btn-primary"
                                 id="submitpayment"><?php echo $this->lang->line('Make Payment'); ?></button>
                     </div>
