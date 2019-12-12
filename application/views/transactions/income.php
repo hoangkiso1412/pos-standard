@@ -31,6 +31,7 @@
                         <th><?php echo $this->lang->line('Payer') ?></th>
                         <th><?php echo $this->lang->line('Method') ?></th>
                         <th><?php echo $this->lang->line('Action') ?></th>
+                        <th><?php echo 'បញ្ចាក់'; ?></th>
 
 
                     </tr>
@@ -47,6 +48,7 @@
                         <th><?php echo $this->lang->line('Payer') ?></th>
                         <th><?php echo $this->lang->line('Method') ?></th>
                         <th><?php echo $this->lang->line('Action') ?></th>
+                        <th><?php echo 'បញ្ចាក់'; ?></th>
 
 
                     </tr>

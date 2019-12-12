@@ -22,7 +22,7 @@ class Warehouse_model extends CI_Model
 {
     var $table = 'tb_stock';
     var $column_order = array(null,'tb_stock.purchase_date', '`geopos_warehouse`.`title`','`geopos_products`.`product_name`','`geopos_products`.`color`','`tb_stock`.`body_number`','`tb_stock`.`engine_number`','`geopos_products`.`year`', null);
-    var $column_search = array('tb_stock.purchase_date','`geopos_warehouse`.`title`','`geopos_products`.`product_name`','`geopos_products`.`color`','`geopos_products`.`year`');
+    var $column_search = array('tb_stock.purchase_date','`geopos_warehouse`.`title`','`geopos_products`.`product_name`','`geopos_products`.`color`','`geopos_products`.`year`','`tb_stock`.`body_number`','`tb_stock`.`engine_number`','`tb_stock`.`plate_number`');
    // var $order = array('tb_stock.id' => 'desc');
 
     public function __construct()

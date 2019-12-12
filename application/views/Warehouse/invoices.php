@@ -108,7 +108,7 @@
         $(document).ready(function () {
             draw_data();
 
-            function draw_data(start_date = '', end_date = '', stock =0) {
+            function draw_data(start_date = '', end_date = '', stock = 0) {
                 $('#po').DataTable({
                     'processing': true,
                     'serverSide': true,
@@ -126,13 +126,16 @@
                             stock: stock,
                          
                         }
-                    },
+                    },'rowCallback': function(row, data, index){
+                            $(row).find('td:eq(8)').css('color', 'red');
+                        },
                     'columnDefs': [
                         {
                             'targets': [0],
                             'orderable': false,
                         },
-                    ],
+                    ],"aLengthMenu": [[10, 25,50, 100, 200, -1], [10, 25,50, 100, 200, "All"]],
+                        "iDisplayLength": 100,
                     dom: 'Blfrtip',
                     buttons: [
                         {
@@ -319,7 +322,7 @@
                     draw_data(start_date, end_date);
 
                 } else if (start_date != '' && end_date != '' && stock !=0 ){
-
+                    //alert (stock);
                     $('#po').DataTable().destroy();
                     draw_data(start_date, end_date,stock);
 
