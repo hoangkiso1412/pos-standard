@@ -246,7 +246,7 @@ $lang['Credit'] = "ចំណូល";
 
 $lang['Payer'] = "អ្នកសងលុយ / អ្នកយកលុយ";
 $lang['Delete Transaction'] = "Delete Transaction";
-$lang['delete this transaction'] = "Are you sure you want to delete this transaction? Account balance will be adjusted.";
+$lang['delete this transaction'] = "តើអ្នកពិតជាចង់លុបមែនទេ?";
 $lang['Edit Profile'] = "Edit Profile";
 $lang['Balance Summary'] = "Balance Summary";
 $lang['Customer Details'] = "Customer Details";

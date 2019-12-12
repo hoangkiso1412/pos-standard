@@ -516,13 +516,7 @@ var rowTotal = function (numb) {
     var totalPrice = amountVal.toFixed(two_fixed) * priceVal;
     var tax_status = $("#taxformat option:selected").val();
     var disFormat = $("#discount_format").val();
-    if ($("#inv_page").val() == 'new_i' && formInputGet("#pid", numb) > 0) {
-        var alertVal = accounting.unformat($("#alert-" + numb).val(), accounting.settings.number.decimal);
-        if (alertVal <= +amountVal) {
-            var aqt = alertVal-amountVal;
-            alert('Low Stock! ' + accounting.formatNumber(aqt));
-        }
-    }
+   
     //tax after bill
     if (tax_status == 'yes') {
         if (disFormat == '%' || disFormat == 'flat') {

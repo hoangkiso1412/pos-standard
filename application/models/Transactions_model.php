@@ -22,13 +22,13 @@ class Transactions_model extends CI_Model
 {
     var $table = 'geopos_transactions';
     var $column_order = array('date', 'acid', 'debit', 'credit', 'payer', 'method');
-    var $column_search = array('id', 'account', 'payer');
+    var $column_search = array('id', 'account', 'payer', 'date','DATE_FORMAT(geopos_transactions.date, "%m%d%Y")');
     var $order = array('id' => 'desc');
     var $opt = '';
 
     private function _get_datatables_query()
     {
-        $this->db->select('geopos_transactions.*,geopos_transactions.id as id');
+        $this->db->select('geopos_transactions.*,geopos_transactions.id as id,DATE_FORMAT(geopos_transactions.date, "%m%d%Y") AS today');
         $this->db->from($this->table);
         switch ($this->opt) {
             case 'income':

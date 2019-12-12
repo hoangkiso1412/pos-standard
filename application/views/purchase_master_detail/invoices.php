@@ -122,13 +122,16 @@
                             end_date: end_date,
                             stock: stock,
                         }
-                    },
+                    },"aLengthMenu": [[10, 25,50, 100, 200, -1], [10, 25,50, 100, 200, "All"]],
+                        "iDisplayLength": 100,
                     'columnDefs': [
                         {
                             'targets': [0],
                             'orderable': false,
                         },
-                    ],
+                    ],'rowCallback': function(row, data, index){
+                            $(row).find('td:eq(8)').css('color', 'red');
+                        },
                     dom: 'Blfrtip',
                     buttons: [
                         {

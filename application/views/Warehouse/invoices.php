@@ -108,7 +108,7 @@
         $(document).ready(function () {
             draw_data();
 
-            function draw_data(start_date = '', end_date = '', stock =0) {
+            function draw_data(start_date = '', end_date = '', stock = 0) {
                 $('#po').DataTable({
                     'processing': true,
                     'serverSide': true,
@@ -126,13 +126,16 @@
                             stock: stock,
                          
                         }
-                    },
+                    },'rowCallback': function(row, data, index){
+                            $(row).find('td:eq(8)').css('color', 'red');
+                        },
                     'columnDefs': [
                         {
                             'targets': [0],
                             'orderable': false,
                         },
-                    ],
+                    ],"aLengthMenu": [[10, 25,50, 100, 200, -1], [10, 25,50, 100, 200, "All"]],
+                        "iDisplayLength": 100,
                     dom: 'Blfrtip',
                     buttons: [
                         {
@@ -260,7 +263,30 @@
                  pageTotal
                // '$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
+            
              // Total over all pages
+   total = api
+                .column( 17 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 17, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 17 ).footer() ).html(
+                 pageTotal
+               // '$  '+pageTotal +'<br/> សរុប= $  '+ total 
+            );
+
+            // Total over all pages
              total = api
                 .column( 5 )
                 .data()
@@ -296,7 +322,7 @@
                     draw_data(start_date, end_date);
 
                 } else if (start_date != '' && end_date != '' && stock !=0 ){
-
+                    //alert (stock);
                     $('#po').DataTable().destroy();
                     draw_data(start_date, end_date,stock);
 
