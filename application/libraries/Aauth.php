@@ -2606,6 +2606,19 @@ class Aauth
          $emp = $query->row_array();
          return $emp['key1'];
      }
+     
+    public function check_register()
+    {
+        $this->aauth_db->from('geopos_register');
+        $this->aauth_db->where('active', 1);
+        $query = $this->aauth_db->get();
+        $result = $query->row_array();
+        if ($result) {
+            return $result;
+        } else {
+            return false;
+        }
+    }
 
 } // end class
 

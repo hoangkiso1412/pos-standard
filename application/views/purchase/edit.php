@@ -187,6 +187,7 @@
                             <table class="table-responsive tfr my_stripe">
                                 <thead>
                                     <tr class="item_header bg-gradient-directional-amber">
+                                    <th width="1%" class="text-center"></th>
                                     <th width="15%" class="text-center hidden"><?php echo "Purchase ID" //echo $this->lang->line('Item Name') ?></th>
                                     <th width="15%" class="text-center"><?php echo $this->lang->line('Item Name') ?></th>
                                     <th width="10%" class="text-center"><?php echo $this->lang->line('Frame Number') ?></th>
@@ -217,6 +218,7 @@
                                     $disable = "";
                                   }
                                   echo '<tr >
+                                          <td id="rownumber-'.$i.'">'.((int)$i+1).'</td>
                                           <td>
                                             <input type="text" class="form-control" name="product_name[]" placeholder="Enter Product name or Code"  value="' . $row['product'] . '">
                                           </td>
@@ -272,41 +274,42 @@
                                           <input type="hidden" class="form-control" name="old_product_id[]" placeholder="Product ID"  value="' . $row['pid'] . '">
                                       </tr>
                                         <tr class="desc_p">
+                                        <td></td>
                                           <td colspan="12"><textarea id="dpid-' . $i . '" class="form-control" name="product_description[]" placeholder="Enter Product description" autocomplete="off">' . $row['product_des'] . '</textarea><br></td>
                                         </tr>';
                                     $i++;
                                 } ?>
                                 <!-- end -->
                                 <tr class="last-item-row sub_c">
-                                    <td class="add-row">
+                                    <td class="add-row" colspan="2">
                                         <button type="button" class="btn btn-success" id="addproduct">
                                             <i class="fa fa-plus-square"></i> <?php echo $this->lang->line('Add Row') ?>
                                         </button>
                                     </td>
-                                    <td colspan="7"></td>
+                                    <td colspan="11"></td>
                                 </tr>
 
                                 <tr class="sub_c" style="display: table-row;">
-                                    <td colspan="6" align="right">
+                                    <td colspan="10" align="right">
                                         <strong><?php echo $this->lang->line('Total Tax') ?></strong>
                                     </td>
-                                    <td align="left" colspan="2"><span
+                                    <td align="left" colspan="3"><span
                                                 class="currenty lightMode"><?php echo $this->config->item('currency'); ?></span>
                                         <span id="taxr"
                                               class="lightMode"><?= edit_amountExchange_s($invoice['tax'], $invoice['multi'], $this->aauth->get_user()->loc) ?></span>
                                     </td>
                                 </tr>
                                 <tr class="sub_c" style="display: table-row;">
-                                    <td colspan="6" align="right">
+                                    <td colspan="10" align="right">
                                         <strong><?php echo $this->lang->line('Total Discount') ?></strong></td>
-                                    <td align="left" colspan="2"><span
+                                    <td align="left" colspan="3"><span
                                                 class="currenty lightMode"><?php echo $this->config->item('currency'); ?></span>
                                         <span id="discs"
                                               class="lightMode"><?php echo edit_amountExchange_s($invoice['discount'], $invoice['multi'], $this->aauth->get_user()->loc) ?></span>
                                     </td>
                                 </tr>
                                 <tr class="sub_c" style="display: table-row;">
-                                    <td colspan="2"><?php if ($exchange['active'] == 1){
+                                    <td colspan="6"><?php if ($exchange['active'] == 1){
                                         echo $this->lang->line('Payment Currency client') . ' <small>' . $this->lang->line('based on live market') ?></small>
                                         <select name="mcurrency"
                                                 class="selectpicker form-control">
@@ -323,7 +326,7 @@
                                             (<span
                                                     class="currenty lightMode"><?php echo $this->config->item('currency'); ?></span>)</strong>
                                     </td>
-                                    <td align="left" colspan="2"><input type="text" name="total" class="form-control"
+                                    <td align="left" colspan="3"><input type="text" name="total" class="form-control"
                                                                         id="invoiceyoghtml"
                                                                         value="<?= edit_amountExchange_s($invoice['total'], $invoice['multi'], $this->aauth->get_user()->loc); ?>"
                                                                         readonly="">
@@ -340,12 +343,12 @@
                                     </td>
                                 </tr>
                                 <tr class="sub_c hidden" style="display: table-row;">
-                                    <td colspan="6" align="right"><input type="hidden"
+                                    <td colspan="10" align="right"><input type="hidden"
                                                                          value="<?php echo edit_amountExchange_s($invoice['subtotal'], $invoice['multi'], $this->aauth->get_user()->loc) ?>"
                                                                          id="subttlform"
                                                                          name="subtotal"><strong><?php echo $this->lang->line('Shipping') ?></strong>
                                     </td>
-                                    <td align="left" colspan="2"><input type="text" class="form-control shipVal"
+                                    <td align="left" colspan="3"><input type="text" class="form-control shipVal"
                                                                         onkeypress="return isNumber(event)"
                                                                         placeholder="Value"
                                                                         name="shipping" autocomplete="off"
@@ -361,7 +364,7 @@
 
                                 
                                 <tr class="sub_c" style="display: table-row;">
-                                    <td colspan="2"><?php echo $this->lang->line('Payment Terms') ?> <select
+                                    <td colspan="8"><?php echo $this->lang->line('Payment Terms') ?> <select
                                                 name="pterms"
                                                 class="selectpicker form-control"><?php echo '<option value="' . $invoice['termid'] . '">*' . $invoice['termtit'] . '</option>';
                                             foreach ($terms as $row) {
@@ -370,7 +373,7 @@
 
 
                                         </select></td>
-                                    <td colspan="2" class="hidden">
+                                    <td colspan="3" class="hidden">
                                         <div>
                                             <label><?php echo $this->lang->line('Update Stock') ?></label>
 

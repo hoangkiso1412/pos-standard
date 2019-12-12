@@ -560,7 +560,21 @@
                             <a href="<?php echo base_url(); ?>user/holidays"
                                class="dropdown-item"><i
                                         class="fa fa-hotel"></i><?php echo $this->lang->line('Holidays') ?></a>
-
+                            <div class="dropdown-divider"></div>
+                            <?php
+                            if($this->aauth->check_register()){
+                                ?>
+                            <a class="dropdown-item" href="<?php echo base_url('register/update'); ?>"><i
+                                    class="fa fa-money"></i> <?php echo $this->lang->line('Update Register') ?></a>
+                            <?php
+                            }
+                            else{
+                                ?>
+                            <a class="dropdown-item" href="<?php echo base_url('register/update'); ?>"><i
+                                    class="fa fa-money"></i> <?php echo $this->lang->line('Register Cash') ?></a>
+                            <?php                                    
+                            }
+                            ?>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="<?php echo base_url('user/logout'); ?>"><i
                                         class="ft-power"></i> <?php echo $this->lang->line('Logout') ?></a>

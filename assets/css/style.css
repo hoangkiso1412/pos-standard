@@ -273,6 +273,7 @@ ballsWaveG{
     margin-left: -40px;
 }
 .ui-menu-item-wrapper {
+    white-space:pre;
     background-color: #b3d8e4;
     max-width: 60%;
     border-bottom: 1px solid #ddd;

@@ -198,7 +198,8 @@
                         <table class="table-responsive tfr my_stripe">
                             <thead>
                                 <tr class="item_header bg-gradient-directional-blue white">
-                                    <th width="23%" class="text-center"><?php echo $this->lang->line('Item Name') ?></th>
+                                    <th width="1%" class="text-center"></th>
+                                    <th width="22%" class="text-center"><?php echo $this->lang->line('Item Name') ?></th>
                                     <th width="10%" class="text-center"><?php echo $this->lang->line('Frame Number') ?></th>
                                     <th width="10%" class="text-center"><?php echo $this->lang->line('Engine Number') ?></th>
                                     <th width="10%" class="text-center"><?php echo $this->lang->line('Plate Number') ?></th>
@@ -216,6 +217,7 @@
                             </thead>
                             <tbody>
                                 <tr>
+                                    <td id="rownumber-0">1</td>
                                     <td>
                                         <input type="text" class="form-control" name="product_name[]"
                                                data-text='detail-item' placeholder="<?php echo $this->lang->line('Enter Product name') ?>"
@@ -271,6 +273,7 @@
                             <input type="hidden" name="hsn[]" id="hsn-0" value="">
                             </tr>
                             <tr>
+                                <td></td>
                                 <td colspan="11">
                                     <textarea id="dpid-0" class="form-control" name="product_description[]"
                                         placeholder="<?php echo $this->lang->line('Enter Product description'); ?> (Optional)"
@@ -278,7 +281,7 @@
                                 </td>
                             </tr>
                             <tr class="last-item-row sub_c">
-                                <td class="add-row">
+                                <td class="add-row" colspan="2">
                                     <button type="button" class="btn btn-success" aria-label="Left Align" id="addproductsale" invoice="0">
                                         <i class="fa fa-plus-square"></i> <?php echo $this->lang->line('Add Row') ?>
                                     </button>
@@ -286,7 +289,7 @@
                                 <td colspan="10"></td>
                             </tr>
                             <tr class="sub_c" style="display: table-row;">
-                                <td colspan="9" class="reverse_align">
+                                <td colspan="10" class="reverse_align">
                                     <input type="hidden" value="0" id="subttlform" name="subtotal">
                                     <strong><?php echo $this->lang->line('Total Tax') ?></strong>
                                 </td>
@@ -296,7 +299,7 @@
                                 </td>
                             </tr>
                             <tr class="sub_c" style="display: table-row;">
-                                <td colspan="9" class="reverse_align">
+                                <td colspan="10" class="reverse_align">
                                     <strong><?php echo $this->lang->line('Total Discount') ?></strong>
                                 </td>
                                 <td align="left" colspan="2">
@@ -312,7 +315,7 @@
                                 </td>
                             </tr>
                             <tr class="sub_c hidden" sstyle="display: table-row;">
-                                <td colspan="9" class="reverse_align">
+                                <td colspan="10" class="reverse_align">
                                     <strong><?php echo $this->lang->line('Shipping') ?></strong>
                                 </td>
                                 <td align="left" colspan="2">
@@ -326,7 +329,7 @@
                                 </td>
                             </tr>
                             <tr class="sub_c hidden" sstyle="display: table-row;">
-                                <td colspan="9" class="reverse_align">
+                                <td colspan="10" class="reverse_align">
                                     <strong> <?php echo $this->lang->line('Extra') . ' ' . $this->lang->line('Discount') ?></strong>
                                 </td>
                                 <td align="left" colspan="2"><input type="text"
@@ -342,7 +345,7 @@
                                 </td>
                             </tr>
                             <tr class="sub_c" style="display: table-row;">
-                                <td colspan="5">
+                                <td colspan="6">
                                     <?php if ($exchange['active'] == 1) {
                                         echo $this->lang->line('Payment Currency client')?>
                                     <small><?php echo $this->lang->line('based on live market')?></small>
@@ -363,7 +366,7 @@
                                 </td>
                             </tr>
                             <tr class="sub_c" style="display: table-row;">
-                                <td colspan="5">
+                                <td colspan="6">
                                     <?php echo $this->lang->line('Payment Terms') ?> 
                                     <select name="pterms" class="selectpicker form-control">
                                         <?php

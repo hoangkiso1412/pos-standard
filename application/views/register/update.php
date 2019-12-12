@@ -1,3 +1,6 @@
+<?php
+$result = $this->registerlog->check($this->aauth->get_user()->id);
+?>
 <div class="card card-block">
     <div id="notify" class="alert alert-success" style="display:none;">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
@@ -22,7 +25,7 @@
 
             <div class="col-sm-4">
                 <input type="number" placeholder="Cash"
-                       class="form-control margin-bottom round required" name="cash" value="0">
+                       class="form-control margin-bottom round required" name="cash" value="<?php echo $result['cash'] ?>">
             </div>
         </div>
         <div class="form-group row hidden">
@@ -64,8 +67,9 @@
 
             <div class="col-sm-4">
                 <input type="submit" id="submit-data" class="btn btn-blue btn-lg margin-bottom round bt"
-                       value="<?php echo $this->lang->line('Add Register') ?>" data-loading-text="Adding...">
-                <input type="hidden" value="register/create" id="action-url">
+                       value="<?php echo $this->lang->line('Update Register') ?>" data-loading-text="Adding...">
+                <input type="hidden" value="register/update" id="action-url">
+                <input type="hidden" value="<?php echo $result['id']?>" name="update_id">
             </div>
         </div>
 

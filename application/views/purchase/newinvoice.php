@@ -153,6 +153,7 @@
                         <table class="table-responsive tfr my_stripe">
                             <thead>
                               <tr class="item_header bg-gradient-directional-amber">
+                                <th width="1%" class="text-center"></th>
                                 <th width="15%" class="text-center"><?php echo $this->lang->line('Item Name') ?></th>
                                 <th width="10%" class="text-center"><?php echo $this->lang->line('Frame Number') ?></th>
                                 <th width="10%" class="text-center"><?php echo $this->lang->line('Engine Number') ?></th>
@@ -173,6 +174,7 @@
                             </thead>
                             <tbody>
                             <tr>
+                                <td id="rownumber-0">1</td>
                                 <td><input type="text" class="form-control text-center" name="product_name[]"
                                            placeholder="<?php echo $this->lang->line('Enter Product name') ?>"
                                            id='productname-0'>
@@ -221,38 +223,39 @@
                                 <input type="hidden" name="hsn[]" id="hsn-0" value="">
                             </tr>
                             <tr>
+                                <td></td>
                                 <td colspan="12">
                                   <textarea id="dpid-0" class="form-control" name="product_description[]" placeholder="<?php echo $this->lang->line('Enter Product description'); ?>" autocomplete="off"></textarea><br>
                                 </td>
                             </tr>
                             <tr class="last-item-row">
-                                <td class="add-row">
+                                <td class="add-row" colspan="2">
                                     <button type="button" class="btn btn-success" aria-label="Left Align" id="addproduct">
                                         <i class="fa fa-plus-square"></i> <?php echo $this->lang->line('Add Row') ?>
                                     </button>
                                 </td>
-                                <td colspan="12"></td>
+                                <td colspan="11"></td>
                             </tr>
                             <tr class="sub_c" style="display: table-row;">
-                                <td colspan="6" align="right">
+                                <td colspan="10" align="right">
                                   <input type="hidden" value="0" id="subttlform" name="subtotal"><strong><?php echo $this->lang->line('Total Tax') ?></strong>
                                 </td>
-                                <td align="left" colspan="2">
+                                <td align="left" colspan="3">
                                     <span class="currenty lightMode"><?php echo $this->config->item('currency'); ?></span>
                                     <span id="taxr" class="lightMode">0</span>
                                 </td>
                             </tr>
                             <tr class="sub_c" style="display: table-row;">
-                                <td colspan="6" align="right">
+                                <td colspan="10" align="right">
                                     <strong><?php echo $this->lang->line('Total Discount') ?></strong></td>
-                                <td align="left" colspan="2">
+                                <td align="left" colspan="3">
                                     <span class="currenty lightMode"><?php echo $this->config->item('currency'); ?></span>
                                     <span id="discs" class="lightMode">0</span></td>
                             </tr>
 
                             <!-- Srieng modified 23-10-2020 -->
                             <tr class="sub_c" style="display: table-row;">
-                                <td colspan="2"><?php if ($exchange['active'] == 1){
+                                <td colspan="7"><?php if ($exchange['active'] == 1){
                                     echo $this->lang->line('Payment Currency client') . ' <small>' . $this->lang->line('based on live market') ?></small>
                                     <select name="mcurrency"
                                             class="selectpicker form-control">
@@ -262,17 +265,17 @@
                                         } ?>
 
                                     </select><?php } ?></td>
-                                <td colspan="4" align="right"><strong><?php echo $this->lang->line('Grand Total') ?>
+                                <td colspan="3" align="right"><strong><?php echo $this->lang->line('Grand Total') ?>
                                         (<span
                                                 class="currenty lightMode"><?php echo $this->config->item('currency'); ?></span>)</strong>
                                 </td>
-                                <td align="left" colspan="2"><input type="text" name="total" class="form-control"
+                                <td align="left" colspan="3"><input type="text" name="total" class="form-control"
                                                                     id="invoiceyoghtml" readonly="">
 
                                 </td>
                             </tr>
                             <tr class="sub_c hidden" style="display: table-row;">
-                                <td colspan="6" align="right">
+                                <td colspan="11" align="right">
                                     <strong><?php echo "Receive Amount"//$this->lang->line('Shipping') ?></strong></td>
                                 <td align="left" colspan="2"><input type="text" class="form-control shipVal"
                                                                     onkeypress="return isNumber(event)"
@@ -282,7 +285,7 @@
                             </tr>
                             <!-- End -->
                             <tr class="sub_c hidden" style="display: table-row;">
-                                <td colspan="6" align="right">
+                                <td colspan="11" align="right">
                                     <strong><?php echo $this->lang->line('Shipping') ?></strong></td>
                                 <td align="left" colspan="2"><input type="text" class="form-control shipVal"
                                                                     onkeypress="return isNumber(event)"
@@ -296,7 +299,7 @@
 
                             
                             <tr class="sub_c" style="display: table-row;">
-                                <td colspan="2"><?php echo $this->lang->line('Payment Terms') ?> <select name="pterms"
+                                <td colspan="7"><?php echo $this->lang->line('Payment Terms') ?> <select name="pterms"
                                                                                                          class="selectpicker form-control"><?php foreach ($terms as $row) {
                                             echo '<option value="' . $row['id'] . '">' . $row['title'] . '</option>';
                                         } ?>
