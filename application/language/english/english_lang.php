@@ -851,3 +851,5 @@ $lang["Select Stock"] = "Select Stock";
 $lang['Other expense'] =  "Other expense";
 $lang['Register Cash'] =  "Register Cash";
 $lang['Update Register'] =  "Update Register";
+$lang['Close Account'] =  "Close Account";
+$lang['Close Account Confirmation'] =  "Close Account Confirmation";

@@ -2,6 +2,26 @@
 </div>
 </div>
 <!-- BEGIN VENDOR JS-->
+<div id="part_close_account" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title"><?php echo $this->lang->line('Close Account Confirmation') ?></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                        data-dismiss="modal"><?php echo $this->lang->line('Close') ?></button>
+                    <a href="<?php echo site_url("register/close") ?>"
+                       id=""><button type="button" class="btn btn-primary"><?php echo $this->lang->line('Close Account'); ?></button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     $('[data-toggle="datepicker"]').datepicker({
         autoHide: true,
