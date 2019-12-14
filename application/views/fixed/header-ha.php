@@ -545,6 +545,9 @@
                                     ?>
                                 <a class="dropdown-item" href="<?php echo base_url('register/update'); ?>"><i
                                         class="fa fa-money"></i> <?php echo $this->lang->line('Update Register') ?></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#part_close_account" data-toggle="modal" data-remote="false" data-type="reminder"><i
+                                        class="fa fa-money"></i> <?php echo $this->lang->line('Close Account') ?></a>
                                 <?php
                                 }
                                 else{
@@ -890,6 +893,7 @@
         </div>
         <!-- /horizontal menu content-->
     </div>
+    
     <!-- Horizontal navigation-->
     <div id="c_body"></div>
     <div class="app-content content">
