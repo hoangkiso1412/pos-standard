@@ -41,11 +41,8 @@ class Sale_detail_model extends CI_Model
        DATE_FORMAT(tb_stock.sold_date,"%d-%m-%Y") as sold_date,tb_stock.sale_detail_id,SUBSTRING_INDEX(geopos_invoices.customer_info, "*:", 1) buyer,geopos_warehouse.id,(SELECT geopos_transactions.date from geopos_transactions WHERE geopos_transactions.other_id = tb_stock.id  ORDER BY geopos_transactions.id DESC LIMIT 1 ) AS paid_date,geopos_invoices.id as invid');
         $this->db->from($this->table);
        
-            if ($this->aauth->get_user()->loc) {
-            $this->db->where('geopos_purchase.loc', $this->aauth->get_user()->loc);
-        }
-        elseif(!BDATA) { $this->db->where('geopos_purchase.loc', 0); }
-                    if ($this->input->post('start_date') && $this->input->post('end_date') && $this->input->post('stock')) // if datatable send POST for search
+        
+        if ($this->input->post('start_date') && $this->input->post('end_date') && $this->input->post('stock')) // if datatable send POST for search
         {
             $this->db->where('DATE(tb_stock.sold_date) >=', datefordatabase($this->input->post('start_date')));
             $this->db->where('DATE(tb_stock.sold_date) <=', datefordatabase($this->input->post('end_date')));
@@ -55,8 +52,7 @@ class Sale_detail_model extends CI_Model
             $this->db->where('DATE(tb_stock.sold_date) >=', datefordatabase($this->input->post('start_date')));
             $this->db->where('DATE(tb_stock.sold_date) <=', datefordatabase($this->input->post('end_date')));
             
-        }
-        
+        }        
         $this->db->join('geopos_warehouse', '`geopos_warehouse`.`id`=`tb_stock`.`warehouse_id`', 'left');
         $this->db->join('geopos_products', '`tb_stock`.`product_id`=`geopos_products`.`pid`', 'left');
         $this->db->join('geopos_product_cat', '`geopos_product_cat`.`id`= `geopos_products`.`pcat`', 'left');

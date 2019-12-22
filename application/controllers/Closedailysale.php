@@ -18,12 +18,12 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Purchase_master_detail extends CI_Controller
+class Closedailysale extends CI_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Purchase_model_master_detail', 'purchase');
+        $this->load->model('Closedailysale_model', 'purchase');
         $this->load->library("Aauth");
         if (!$this->aauth->is_loggedin()) {
             redirect('/user/', 'refresh');
@@ -41,10 +41,10 @@ class Purchase_master_detail extends CI_Controller
     //invoices list
     public function index()
     {
-        $head['title'] = "Purchase Detail";
+        $head['title'] = "Close Daily Sale";
         $head['usernm'] = $this->aauth->get_user()->username;
         $this->load->view('fixed/header', $head);
-        $this->load->view('purchase_master_detail/invoices');
+        $this->load->view('closedailysale/invoices');
         $this->load->view('fixed/footer');
     }
 
@@ -59,25 +59,13 @@ class Purchase_master_detail extends CI_Controller
         foreach ($list as $invoices) {
             $no++;
             $row = array();
-            $row[] = '<a href="' . base_url("purchase/view?id=$invoices->id") . '">'.$no .'</a>';
-            $row[] = dateformat($invoices->invoicedate);
-            $row[] = $invoices->title;
-            $row[] = $invoices->product_type;
-            $row[] = $invoices->product_name;
-            $row[] = $invoices->items;
-            $row[] = $invoices->color;
-            $row[] = $invoices->year;
-            $row[] = $invoices->conditions_plateNumber;
-            $row[] = $invoices->body_number;
-            $row[] = $invoices->engine_number;
-            $row[] = $invoices->supplier;            
-            $row[] = $invoices->purchaser;
-            $row[] = number_format($invoices->total,2);
-            $row[] = number_format($invoices->paid_amount, 2);
-            $row[] = number_format($invoices->total - $invoices->paid_amount, 2);
-            $row[] = $invoices->paid_date;
-            $row[] = $invoices->notes;
-            $row[] = number_format($invoices->total, 2);
+            $row[] = $no;
+            $row[] = dateformat($invoices->o_date);
+            $row[] = dateformat($invoices->c_date);
+            $row[] = amountExchange($invoices->cash, 0, $this->aauth->get_user()->loc);
+            $row[] = amountExchange($invoices->in_amount, 0, $this->aauth->get_user()->loc);
+            $row[] = amountExchange($invoices->out_amount, 0, $this->aauth->get_user()->loc);          
+
             $data[] = $row;
         }
 

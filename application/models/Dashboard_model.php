@@ -52,7 +52,7 @@ class Dashboard_model extends CI_Model
 
     public function todayInexp($today)
     {
-        $this->db->select('SUM(debit) as debit,SUM(credit) as credit', FALSE);
+        $this->db->select('SUM(debit) as debit,SUM(credit) as credit,(SELECT  geopos_register.cash FROM geopos_register WHERE DATE_FORMAT(geopos_register.o_date,"%Y-%m-%d") = CURDATE() ORDER BY geopos_register.id DESC LIMIT 1) cash,((SELECT  geopos_register.cash FROM geopos_register WHERE DATE_FORMAT(geopos_register.o_date,"%Y-%m-%d") = CURDATE() ORDER BY geopos_register.id DESC LIMIT 1)  + SUM(geopos_transactions.credit)) - SUM(geopos_transactions.debit) AS Cash_in_hand,(SELECT (SUM(tb_stock.paid_amount) - SUM(tb_stock.total)) AS profit FROM tb_stock WHERE tb_stock.`status` = "sold-out" and tb_stock.sold_date = CURDATE()) AS profit', FALSE);
         $this->db->where("DATE(date) ='$today'");
         $this->db->where("type!='Transfer'");
                 if ($this->aauth->get_user()->loc) {

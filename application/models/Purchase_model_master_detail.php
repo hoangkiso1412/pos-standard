@@ -34,14 +34,10 @@ class Purchase_model_master_detail extends CI_Model
     {
         $this->db->select('tb_stock.purchase_date AS `invoicedate`,`geopos_warehouse`.`title` AS `title`,`geopos_product_cat`.`title` AS `product_type`,`geopos_products`.`product_name` AS `product_name`,tb_stock.purchase_qty AS `items`,`geopos_products`.`color` AS `color`,`geopos_products`.`year` AS `year`, IF((`tb_stock`.`plate_number` = ""),"ថ្មី",`tb_stock`.`plate_number`) AS `conditions_plateNumber`,`tb_stock`.`body_number` AS `body_number`,`tb_stock`.`engine_number` AS `engine_number`,"Chanthron" AS `Seller`,tb_stock.subtotal AS `total`,tb_stock.purchase_remain_amount AS `remain_amount`,tb_stock.purchase_paid_amount AS `paid_amount`,DATE_FORMAT((SELECT `geopos_transactions`.`date` FROM `geopos_transactions` WHERE (`geopos_transactions`.`tid` = `geopos_purchase`.`id`)
         ORDER BY `geopos_transactions`.`id` DESC LIMIT 1),"%d-%m-%Y") AS `paid_date`, geopos_purchase_items.product_des AS `notes` ,`geopos_purchase`.`eid` AS `eid`,`geopos_warehouse`.`id` AS `id`,
-        (select geopos_employees.name from geopos_employees left join geopos_purchase on geopos_employees.id = geopos_purchase.purchaser_id where geopos_purchase.id = tb_stock.purchase_id  ) purchaser');
+        (select geopos_employees.name from geopos_employees left join geopos_purchase on geopos_employees.id = geopos_purchase.purchaser_id where geopos_purchase.id = tb_stock.purchase_id  ) purchaser,(SELECT NAME AS supplier FROM geopos_supplier WHERE geopos_supplier.id = geopos_purchase.csd) supplier');
         $this->db->from($this->table);
-
-            if ($this->aauth->get_user()->loc) {
-            $this->db->where('geopos_purchase.loc', $this->aauth->get_user()->loc);
-        }
-        elseif(!BDATA) { $this->db->where('geopos_purchase.loc', 0); }
-                    if ($this->input->post('start_date') && $this->input->post('end_date') && $this->input->post('stock')) // if datatable send POST for search
+               
+        if ($this->input->post('start_date') && $this->input->post('end_date') && $this->input->post('stock')) // if datatable send POST for search
         {
             $this->db->where('DATE(geopos_purchase.invoicedate) >=', datefordatabase($this->input->post('start_date')));
             $this->db->where('DATE(geopos_purchase.invoicedate) <=', datefordatabase($this->input->post('end_date')));
@@ -56,8 +52,8 @@ class Purchase_model_master_detail extends CI_Model
         $this->db->join('geopos_warehouse', '`geopos_warehouse`.`id`=`tb_stock`.`warehouse_id`', 'left');
         $this->db->join('geopos_products', '`tb_stock`.`product_id`=`geopos_products`.`pid`', 'left');
         $this->db->join('geopos_product_cat', '`geopos_product_cat`.`id`= `geopos_products`.`pcat`', 'left');
-        $this->db->join('geopos_purchase_items', 'geopos_purchase_items.pid = tb_stock.product_id and tb_stock.purchase_id = geopos_purchase_items.tid', 'left');
-        
+        $this->db->join('geopos_purchase_items', 'geopos_purchase_items.pid = tb_stock.product_id AND geopos_purchase_items.tid = tb_stock.purchase_id', 'left');
+        $this->db->distinct();
 
 
 

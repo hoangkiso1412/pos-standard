@@ -62,6 +62,7 @@
                         <th>ថ្មី&ចាស់</th>
                         <th>លេខតួ</th>
                         <th>លេខម៉ាស៊ីន</th>
+                        <th>អ្នកផ្គត់ផ្គង់</th>
                         <th>អ្នកទិញ</th>
                         <th>តម្លៃ</th>
                         <th>សងប៉ុន្មាន</th>
@@ -75,6 +76,7 @@
 
                     <tfoot>
                     <tr>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -154,28 +156,6 @@
  
             // Total over all pages
             total = api
-                .column( 12 )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Total over this page
-            pageTotal = api
-                .column( 12, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Update footer
-            $( api.column( 12 ).footer() ).html(
-                'សរុប = $  '+ pageTotal
-                //'$  '+pageTotal +'<br/> សរុប= $  '+ total 
-            );
-
-             // Total over all pages
-             total = api
                 .column( 13 )
                 .data()
                 .reduce( function (a, b) {
@@ -192,9 +172,10 @@
  
             // Update footer
             $( api.column( 13 ).footer() ).html(
-                'សរុប = $  '+ pageTotal
-             //   '$  '+pageTotal +'<br/> សរុប= $  '+ total 
+                 pageTotal
+                //'$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
+
              // Total over all pages
              total = api
                 .column( 14 )
@@ -213,7 +194,28 @@
  
             // Update footer
             $( api.column( 14 ).footer() ).html(
-                'សរុប = $  '+ pageTotal
+                 pageTotal
+             //   '$  '+pageTotal +'<br/> សរុប= $  '+ total 
+            );
+             // Total over all pages
+             total = api
+                .column( 15 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 15, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 15 ).footer() ).html(
+                 pageTotal
                // '$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
 

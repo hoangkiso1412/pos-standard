@@ -99,7 +99,7 @@
                     <div id="products-sales" class="height-300"></div>
                 </div>
                 <div class="row">
-                    <div class="col-xl-4 col-lg-6 col-12">
+                    <div class="col-xl-3 col-lg-6 col-12">
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body">
@@ -118,7 +118,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-lg-6 col-12">
+                    <div class="col-xl-3 col-lg-6 col-12">
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body">
@@ -137,14 +137,42 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-lg-6 col-12">
+
+                    <div class="col-xl-3 col-lg-6 col-12">
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body">
                                     <div class="media">
                                         <div class="media-body text-left w-100">
-                                            <h3 class="success"><?= amountExchange($todayprofit, 0, $this->aauth->get_user()->loc) ?></h3>
-                                            <h2><?php echo 'សរុបប្រាប់ចំណេញថ្ងៃនេះ';//$this->lang->line('today') . $this->lang->line('Profit') ?></h2>
+                                            <h3 class="success"><?= amountExchange($todayinexp['Cash_in_hand'], 0, $this->aauth->get_user()->loc) ?></h3>
+                                            <h2><?php echo 'សរុបប្រាប់ក្នុងទូថ្ងៃនេះ';//$this->lang->line('today') . $this->lang->line('Profit') ?></h2>
+                                        </div>
+
+                                    </div>
+                                    <div class="progress progress-sm mt-1 mb-0">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 60%"
+                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-6 col-12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <div class="media">
+                                        <div class="media-body text-left w-100">
+                                            <h3 class="success"><?= amountExchange($todayinexp['profit'], 0, $this->aauth->get_user()->loc) ?></h3>
+                                            <h2><?php  
+                                           
+                                           if ($todayinexp['profit'] < 0) {
+                                               echo 'សរុបប្រាក់ ខាតថ្ងៃនេះ';
+                                            }else{
+                                                echo 'សរុបប្រាក់ចំនេញថ្ងៃនេះ';
+                                            }
+                                            ?></h2>
                                         </div>
 
                                     </div>

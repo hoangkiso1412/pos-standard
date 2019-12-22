@@ -70,16 +70,17 @@ class Warehouse extends CI_Controller
             $row[] = $invoices->conditions_plateNumber;
             $row[] = $invoices->body_number;
             $row[] = $invoices->engine_number;
+            $row[] = $invoices->supplier;
             $row[] = $invoices->purchaser;
-            $row[] = amountExchange($invoices->total, 0, $this->aauth->get_user()->loc);
-            $row[] = amountExchange($invoices->selling_price, 0, $this->aauth->get_user()->loc); 
-            $row[] = amountExchange($invoices->income, 0, $this->aauth->get_user()->loc); 
+            $row[] = number_format($invoices->total, 2);
+            $row[] = number_format($invoices->selling_price, 2); 
+            $row[] = number_format($invoices->income, 2); 
             $row[] = $invoices->purchase_qty;
             $row[] = $invoices->sold_out_qty;
             $row[] = $invoices->available_qty;
             $row[] = $invoices->sold_date;
             $row[] = $invoices->product_des;
-            $row[] = amountExchange($invoices->total, 0, $this->aauth->get_user()->loc);
+            $row[] = number_format($invoices->total, 2);
 
             $data[] = $row;
         }
