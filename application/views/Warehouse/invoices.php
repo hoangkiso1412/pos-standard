@@ -39,6 +39,17 @@
                             ?>
                         </select>
                     </div>
+
+                    <div class="col-md-2">
+                        <select name="inout" id="inout" class="form-control form-control-sm">
+
+                            <option value="0"><?php echo 'ស្ថានភាពស្តុក';//$this->lang->line('Select Stock'); ?></option>
+
+                            <option value="in-stock"><?php echo 'ស្តុកជាក់ស្ដែង';//$this->lang->line('Select Stock'); ?></option>
+                            <option value="sold-out"><?php echo 'ស្តុកលក់ចេញ';//$this->lang->line('Select Stock'); ?></option>
+                            
+                        </select>
+                    </div>
                     
                     <div class="col-md-1">
                         <input type="button" name="search" id="search" value="Search" class="btn btn-info btn-sm"/>
@@ -60,6 +71,7 @@
                         <th>ថ្មី&ចាស់</th>
                         <th>លេខតួ</th>
                         <th>លេខម៉ាស៊ីន</th>
+                        <th>អ្នកផ្គត់ផ្គង់</th>
                         <th>អ្នកទិញ</th>
                         <th>តម្លៃទិញ</th>
                         <th>តម្លៃលក់</th>
@@ -95,6 +107,7 @@
                         <th></th>
                         <th></th>
                         <th></th>
+                        <th></th>
                     </tr>
                     </tfoot>
                 </table>
@@ -107,8 +120,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             draw_data();
-
-            function draw_data(start_date = '', end_date = '', stock = 0) {
+            function draw_data(start_date = '', end_date = '', stock = 0,inout = 0) {
                 $('#po').DataTable({
                     'processing': true,
                     'serverSide': true,
@@ -124,6 +136,7 @@
                             start_date: start_date,
                             end_date: end_date,
                             stock: stock,
+                            inout: inout,
                          
                         }
                     },'rowCallback': function(row, data, index){
@@ -134,7 +147,7 @@
                             'targets': [0],
                             'orderable': false,
                         },
-                    ],"aLengthMenu": [[10, 25,50, 100, 200, -1], [10, 25,50, 100, 200, "All"]],
+                    ],"aLengthMenu": [[10, 25,50, 100, 200,500], [10, 25,50, 100, 200, 500]],
                         "iDisplayLength": 100,
                     dom: 'Blfrtip',
                     buttons: [
@@ -158,28 +171,6 @@
  
             // Total over all pages
             total = api
-                .column( 12 )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Total over this page
-            pageTotal = api
-                .column( 12, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Update footer
-            $( api.column( 12 ).footer() ).html(
-                '$ '+ pageTotal + '.00'
-                //'$  '+pageTotal +'<br/> សរុប= $  '+ total
-            );
-
-             // Total over all pages
-             total = api
                 .column( 13 )
                 .data()
                 .reduce( function (a, b) {
@@ -196,7 +187,29 @@
  
             // Update footer
             $( api.column( 13 ).footer() ).html(
-                '$ '+ pageTotal + '.00'
+                 pageTotal + '.00'
+                //'$  '+pageTotal +'<br/> សរុប= $  '+ total
+            );
+
+             // Total over all pages
+             total = api
+                .column( 14 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 14, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 14 ).footer() ).html(
+                 pageTotal + '.00'
              //   '$  '+pageTotal +'<br/> សរុប= $  '+ total
             );
              // Total over all pages
@@ -209,20 +222,20 @@
 
             // Total over this page
             pageTotal = api
-                .column( 14, { page: 'current'} )
+                .column( 15, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
 
             // Update footer
-            $( api.column( 14 ).footer() ).html(
-                 pageTotal
+            $( api.column( 15 ).footer() ).html(
+                 pageTotal+ '.00'
                // '$  '+pageTotal +'<br/> សរុប= $  '+ total
             );
              // Total over all pages
              total = api
-                .column( 15 )
+                .column( 16 )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -230,15 +243,15 @@
  
             // Total over this page
             pageTotal = api
-                .column( 15, { page: 'current'} )
+                .column( 16, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column( 15 ).footer() ).html(
-                 pageTotal
+            $( api.column( 16 ).footer() ).html(
+                 pageTotal+ '.00'
                // '$  '+pageTotal +'<br/> សរុប= $  '+ total
             );
 
@@ -309,26 +322,40 @@
 			},
                 });
             };
-
+         
             $('#search').click(function () {
+
                 var start_date = $('#start_date').val();
                 var end_date = $('#end_date').val();
                 var stock = $('#stock').val();
-                var motor = $('#motor').val();
+                var inout = $('#inout').val();
 
-                if (start_date != '' && end_date != '' && stock ==0) {
+                if (start_date != '' && end_date != '' && stock !=0 && inout != 0) {               
+                
+                $('#po').DataTable().destroy();
+                draw_data(start_date, end_date,stock,inout);
 
-                    $('#po').DataTable().destroy();
-                    draw_data(start_date, end_date);
-
-                } else if (start_date != '' && end_date != '' && stock !=0 ){
-                    //alert (stock);
+                }else if (start_date != '' && end_date != '' && stock !=0) {
+                    alert(stock);
                     $('#po').DataTable().destroy();
                     draw_data(start_date, end_date,stock);
+
+                } else if (start_date != '' && end_date != '' && inout != 0){
+                   alert(inout);
+                    $('#po').DataTable().destroy();
+                    draw_data(start_date, end_date,inout);
+
+                }else if (start_date != '' && end_date != ''){
+                   
+                    $('#po').DataTable().destroy();
+                    draw_data(start_date, end_date);
 
                 }else {
                     alert("Date range is Required");
                 }
             });
+          
         });
+       
     </script>
+   

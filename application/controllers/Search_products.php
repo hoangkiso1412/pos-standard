@@ -55,7 +55,7 @@ class Search_products extends CI_Controller
             $qw .= '(geopos_warehouse.loc=0) AND ';
         }
         if ($name) {
-            $query = $this->db->query("SELECT geopos_products.pid,geopos_products.product_name,geopos_products.product_price,geopos_products.product_code,geopos_products.taxrate,geopos_products.disrate,geopos_products.product_des,geopos_products.qty,geopos_products.unit  FROM geopos_products $join WHERE " . $qw . "(UPPER(geopos_products.product_name) LIKE '%" . strtoupper($name) . "%') OR (UPPER(geopos_products.product_code) LIKE '" . strtoupper($name) . "%') limit 15");
+            $query = $this->db->query("SELECT geopos_products.pid,geopos_products.product_name,geopos_products.product_price,geopos_products.product_code,geopos_products.taxrate,geopos_products.disrate,geopos_products.product_des,geopos_products.qty,geopos_products.unit  FROM geopos_products $join WHERE " . $qw . "(UPPER(geopos_products.product_name) LIKE '%" . strtoupper($name) . "%') OR (UPPER(geopos_products.product_code) LIKE '" . strtoupper($name) . "%') limit 50");
 
             $result = $query->result_array();
             foreach ($result as $row) {
@@ -87,7 +87,7 @@ class Search_products extends CI_Controller
             $qw .= '(geopos_warehouse.loc=0) AND ';
         }
         if ($name) {
-            $query = $this->db->query("SELECT geopos_products.pid,concat(geopos_products.product_name,'   ស៊េរី ',ifnull(geopos_products.year,''),'   ពណ៌',ifnull(geopos_products.color,'')) as product_name,geopos_products.product_price,geopos_products.product_code,geopos_products.taxrate,geopos_products.disrate,geopos_products.product_des,geopos_products.qty,geopos_products.unit  FROM geopos_products $join WHERE " . $qw . "(UPPER(concat(geopos_products.product_name,'   ស៊េរី ',ifnull(geopos_products.year,''),'  ពណ៌',ifnull(geopos_products.color,''))) LIKE '%" . strtoupper($name) . "%') OR (UPPER(geopos_products.product_code) LIKE '" . strtoupper($name) . "%') limit 15");
+            $query = $this->db->query("SELECT geopos_products.pid,concat(geopos_products.product_name,'   ស៊េរី ',ifnull(geopos_products.year,''),'   ពណ៌ ',ifnull(geopos_products.color,' ')) as product_name,geopos_products.product_price,geopos_products.product_code,geopos_products.taxrate,geopos_products.disrate,geopos_products.product_des,geopos_products.qty,geopos_products.unit  FROM geopos_products $join WHERE " . $qw . "(UPPER(concat(geopos_products.product_name,'   ស៊េរី ',ifnull(geopos_products.year,''),'  ពណ៌ ',ifnull(geopos_products.color,''))) LIKE '%" . strtoupper($name) . "%') OR (UPPER(geopos_products.product_code) LIKE '" . strtoupper($name) . "%') limit 50");
 
             $result = $query->result_array();
             foreach ($result as $row) {
@@ -133,7 +133,7 @@ class Search_products extends CI_Controller
             $qw.=" (ifnull(status,'in-stock')='in-stock' or (status='sold-out' and sale_detail_id in (select id from geopos_invoice_items where tid='".$invoice."'))) and";
         }
         if ($name) {
-            $query = $this->db->query("SELECT distinct tb_stock.$col1 FROM tb_stock $join WHERE " . $qw . " product_id='" . $pid . "' and (UPPER(ifnull(tb_stock.$col1,'')) LIKE '%" . strtoupper($name) . "%') and (UPPER(ifnull(tb_stock.$col2,'')) LIKE '%" . strtoupper($val2) . "%') and (UPPER(ifnull(tb_stock.$col3,'')) LIKE '%" . strtoupper($val3) . "%') limit 15");
+            $query = $this->db->query("SELECT distinct tb_stock.$col1 FROM tb_stock $join WHERE " . $qw . " product_id='" . $pid . "' and (UPPER(ifnull(tb_stock.$col1,'')) LIKE '%" . strtoupper($name) . "%') and (UPPER(ifnull(tb_stock.$col2,'')) LIKE '%" . strtoupper($val2) . "%') and (UPPER(ifnull(tb_stock.$col3,'')) LIKE '%" . strtoupper($val3) . "%') limit 50");
             
             $result = $query->result_array();
             foreach ($result as $row) {
@@ -173,7 +173,7 @@ class Search_products extends CI_Controller
             $qw.=" (ifnull(status,'in-stock')='in-stock' or (status='sold-out' and sale_detail_id in (select id from geopos_invoice_items where tid='".$invoice."'))) and";
         }
         
-        $query = $this->db->query("SELECT tb_stock.id FROM tb_stock $join WHERE ".$qw." product_id='" . $pid . "' and (UPPER(ifnull(tb_stock.body_number,''))='" . strtoupper($body_number) . "') and (UPPER(ifnull(tb_stock.engine_number,''))='" . strtoupper($engine_number) . "') and (UPPER(ifnull(tb_stock.plate_number,''))='" . strtoupper($plate_number) . "') limit 15");
+        $query = $this->db->query("SELECT tb_stock.id FROM tb_stock $join WHERE ".$qw." product_id='" . $pid . "' and (UPPER(ifnull(tb_stock.body_number,''))='" . strtoupper($body_number) . "') and (UPPER(ifnull(tb_stock.engine_number,''))='" . strtoupper($engine_number) . "') and (UPPER(ifnull(tb_stock.plate_number,''))='" . strtoupper($plate_number) . "') limit 50");
         
         $result = $query->result_array();
         foreach ($result as $row) {
@@ -205,7 +205,7 @@ class Search_products extends CI_Controller
           $qw  .= '(geopos_warehouse.loc=0) AND ';
         }
         if ($name) {
-          $query  = $this->db->query("SELECT geopos_products.pid,CONCAT(geopos_products.product_name,'   ស៊េរី ',IFNULL(geopos_products.year,''),'   ពណ៌',IFNULL(geopos_products.color,'')) as product_name,geopos_products.product_code,geopos_products.fproduct_price,geopos_products.taxrate,geopos_products.disrate,geopos_products.product_des,geopos_products.unit FROM geopos_products $join WHERE " . $qw . "(UPPER(concat(geopos_products.product_name,'   ស៊េរី ',ifnull(geopos_products.year,''),'  ពណ៌',ifnull(geopos_products.color,''))) LIKE '%" . strtoupper($name) . "%') OR UPPER(geopos_products.product_code) LIKE '" . strtoupper($name) . "%' limit 15");
+          $query  = $this->db->query("SELECT geopos_products.pid,CONCAT(geopos_products.product_name,'   ស៊េរី ',IFNULL(geopos_products.year,''),'   ពណ៌ ',IFNULL(geopos_products.color,'')) as product_name,geopos_products.product_code,geopos_products.fproduct_price,geopos_products.taxrate,geopos_products.disrate,geopos_products.product_des,geopos_products.unit FROM geopos_products $join WHERE " . $qw . "(UPPER(concat(geopos_products.product_name,'   ស៊េរី ',ifnull(geopos_products.year,''),'  ពណ៌ ',ifnull(geopos_products.color,''))) LIKE '%" . strtoupper($name) . "%') OR UPPER(geopos_products.product_code) LIKE '" . strtoupper($name) . "%' limit 50");
           $result = $query->result_array();
           foreach ($result as $row) {
             $name = array($row['product_name'], amountExchange_s($row['fproduct_price'], 0, $this->aauth->get_user()->loc), $row['pid'], amountFormat_general($row['taxrate']), amountFormat_general($row['disrate']), $row['product_des'], $row['unit'], $row['product_code'], $row_num);
@@ -228,7 +228,7 @@ class Search_products extends CI_Controller
             $whr = ' (loc=0) AND ';
         }
         if ($name) {
-            $query = $this->db->query("SELECT id,name,address,city,phone,email,discount_c FROM geopos_customers WHERE $whr (UPPER(name)  LIKE '%" . strtoupper($name) . "%' OR UPPER(phone)  LIKE '" . strtoupper($name) . "%') limit 15");
+            $query = $this->db->query("SELECT id,name,address,city,phone,email,discount_c FROM geopos_customers WHERE $whr (UPPER(name)  LIKE '%" . strtoupper($name) . "%' OR UPPER(phone)  LIKE '" . strtoupper($name) . "%') limit 50");
             $result = $query->result_array();
             echo '<ol>';
             $i = 1;
@@ -263,7 +263,7 @@ class Search_products extends CI_Controller
 
 
         if ($name) {
-            $query = $this->db->query("SELECT id,name,address,city,phone,email FROM $tbl  WHERE $whr (UPPER(name)  LIKE '%" . strtoupper($name) . "%' OR UPPER(phone)  LIKE '" . strtoupper($name) . "%') limit 15");
+            $query = $this->db->query("SELECT id,name,address,city,phone,email FROM $tbl  WHERE $whr (UPPER(name)  LIKE '%" . strtoupper($name) . "%' OR UPPER(phone)  LIKE '" . strtoupper($name) . "%') limit 50");
             $result = $query->result_array();
             echo '<ol>';
             $i = 1;
@@ -291,7 +291,7 @@ class Search_products extends CI_Controller
         }
 
         if ($name) {
-            $query = $this->db->query("SELECT id,name,phone,discount_c FROM geopos_customers WHERE $whr (UPPER(name)  LIKE '%" . strtoupper($name) . "%' OR UPPER(phone)  LIKE '" . strtoupper($name) . "%') limit 15");
+            $query = $this->db->query("SELECT id,name,phone,discount_c FROM geopos_customers WHERE $whr (UPPER(name)  LIKE '%" . strtoupper($name) . "%' OR UPPER(phone)  LIKE '" . strtoupper($name) . "%') limit 50");
             $result = $query->result_array();
             echo '<ol>';
             $i = 1;
@@ -319,7 +319,7 @@ class Search_products extends CI_Controller
             $whr = ' (loc=0) AND ';
         }
         if ($name) {
-            $query = $this->db->query("SELECT id,name,address,city,phone,email FROM geopos_supplier WHERE $whr (UPPER(name)  LIKE '%" . strtoupper($name) . "%' OR UPPER(phone)  LIKE '" . strtoupper($name) . "%') limit 15");
+            $query = $this->db->query("SELECT id,name,address,city,phone,email FROM geopos_supplier WHERE $whr (UPPER(name)  LIKE '%" . strtoupper($name) . "%' OR UPPER(phone)  LIKE '" . strtoupper($name) . "%') limit 50");
             $result = $query->result_array();
             echo '<ol>';
             $i = 1;

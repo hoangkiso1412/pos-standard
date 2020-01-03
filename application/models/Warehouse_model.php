@@ -23,7 +23,7 @@ class Warehouse_model extends CI_Model
     var $table = 'tb_stock';
     var $column_order = array(null,'tb_stock.purchase_date', '`geopos_warehouse`.`title`','`geopos_products`.`product_name`','`geopos_products`.`color`','`tb_stock`.`body_number`','`tb_stock`.`engine_number`','`geopos_products`.`year`', null);
     var $column_search = array('tb_stock.purchase_date','`geopos_warehouse`.`title`','`geopos_products`.`product_name`','`geopos_products`.`color`','`geopos_products`.`year`','`tb_stock`.`body_number`','`tb_stock`.`engine_number`','`tb_stock`.`plate_number`');
-   // var $order = array('tb_stock.id' => 'desc');
+    var $order = array('tb_stock.id,`title`,`geopos_product_cat`.`title`,`geopos_products`.`product_name`' => 'desc');
 
     public function __construct()
     {
@@ -34,18 +34,28 @@ class Warehouse_model extends CI_Model
     {
         $this->db->select('tb_stock.purchase_date AS `invoicedate`,`geopos_warehouse`.`title` AS `title`,`geopos_product_cat`.`title` AS `product_type`,`geopos_products`.`product_name` AS `product_name`,tb_stock.purchase_qty AS `items`,`geopos_products`.`color` AS `color`,`geopos_products`.`year` AS `year`, IF((`tb_stock`.`plate_number` = ""),"ថ្មី",`tb_stock`.`plate_number`) AS `conditions_plateNumber`,`tb_stock`.`body_number` AS `body_number`,`tb_stock`.`engine_number` AS `engine_number`,"Chanthron" AS `Seller`,tb_stock.subtotal AS `total`,geopos_supplier.name,tb_stock.purchase_date,tb_stock.sold_date,if(tb_stock.sold_date!="",0,tb_stock.purchase_qty) as available_qty,if(tb_stock.sold_date!="",tb_stock.purchase_qty,0) as sold_out_qty,tb_stock.purchase_qty as purchase_qty,tb_stock.product_des,geopos_product_cat.id,DATE_FORMAT(tb_stock.sold_date,"%d-%m-%Y") as sold_date,tb_stock.selling_price as selling_price,
 
-        (select geopos_employees.name from geopos_employees inner join geopos_purchase on geopos_employees.id = geopos_purchase.purchaser_id where geopos_purchase.id = tb_stock.purchase_id  ) purchaser,IF((tb_stock.status = "sold-out"),(tb_stock.selling_price - tb_stock.total),"0.00") AS income');
+        (select geopos_employees.name from geopos_employees inner join geopos_purchase on geopos_employees.id = geopos_purchase.purchaser_id where geopos_purchase.id = tb_stock.purchase_id  ) purchaser,IF((tb_stock.status = "sold-out"),(tb_stock.selling_price - tb_stock.total),"0.00") AS income,(SELECT NAME AS supplier FROM geopos_supplier WHERE geopos_supplier.id = geopos_purchase.csd) supplier');
         $this->db->from($this->table);
+        //$this->db->where('tb_stock.status', "in-stock");           
+        
+        if ($this->input->post('start_date') && $this->input->post('end_date') && $this->input->post('stock') && $this->input->post('inout')){
 
-            if ($this->aauth->get_user()->loc) {
-            $this->db->where('geopos_purchase.loc', $this->aauth->get_user()->loc);
-        }
-        elseif(!BDATA) { $this->db->where('geopos_purchase.loc', 0); }
-            if ($this->input->post('start_date') && $this->input->post('end_date') && $this->input->post('stock')) // if datatable send POST for search
+            $this->db->where('DATE(tb_stock.purchase_date) >=', datefordatabase($this->input->post('start_date')));
+            $this->db->where('DATE(tb_stock.purchase_date) <=', datefordatabase($this->input->post('end_date')));
+            $this->db->where('`geopos_warehouse`.`id` = ', $this->input->post('stock'));
+            $this->db->where('`tb_stock`.`status` = ', $this->input->post('inout'));
+
+        }elseif($this->input->post('start_date') && $this->input->post('end_date') && $this->input->post('stock')) // if datatable send POST for search
         {
             $this->db->where('DATE(tb_stock.purchase_date) >=', datefordatabase($this->input->post('start_date')));
             $this->db->where('DATE(tb_stock.purchase_date) <=', datefordatabase($this->input->post('end_date')));
             $this->db->where('`geopos_warehouse`.`id` = ', $this->input->post('stock'));
+
+        }elseif($this->input->post('start_date') && $this->input->post('end_date') && $this->input->post('inout')) // if datatable send POST for search
+        {
+            $this->db->where('DATE(tb_stock.purchase_date) >=', datefordatabase($this->input->post('start_date')));
+            $this->db->where('DATE(tb_stock.purchase_date) <=', datefordatabase($this->input->post('end_date')));
+            $this->db->where('`tb_stock`.`status` = ', $this->input->post('inout'));
 
         }elseif($this->input->post('start_date') && $this->input->post('end_date')){
 
@@ -108,9 +118,9 @@ class Warehouse_model extends CI_Model
     {
         $this->db->from($this->table);
            if ($this->aauth->get_user()->loc) {
-            $this->db->where('geopos_purchase.loc', $this->aauth->get_user()->loc);
+            $this->db->where('tb_stock.status', 'in-stock');
         }
-        elseif(!BDATA) { $this->db->where('geopos_purchase.loc', 0); }
+        elseif(!BDATA) { $this->db->where('tb_stock.status', 'in-stock'); }
         return $this->db->count_all_results();
     }
 }
