@@ -336,12 +336,12 @@
                 draw_data(start_date, end_date,stock,inout);
 
                 }else if (start_date != '' && end_date != '' && stock !=0) {
-
+                    alert(stock);
                     $('#po').DataTable().destroy();
                     draw_data(start_date, end_date,stock);
 
                 } else if (start_date != '' && end_date != '' && inout != 0){
-                  // alert(inout);
+                   alert(inout);
                     $('#po').DataTable().destroy();
                     draw_data(start_date, end_date,inout);
 
