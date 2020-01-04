@@ -548,7 +548,7 @@ class Transactions extends CI_Controller
         $this->db->where('id', $tid);
         $this->db->update('geopos_purchase');
         //reverse
-        $this->db->select('debit,credit,acid,cash');
+        $this->db->select('debit,credit,acid,cash_id');
         $this->db->from('geopos_transactions');
         $this->db->where('tid', $tid);
         $this->db->where('ext', 1);
@@ -564,9 +564,9 @@ class Transactions extends CI_Controller
             $this->db->where('id', $trans['cash_id']);
             $this->db->update('geopos_register');
         }
-        
-        $this->db->delete('geopos_transactions', array('tid' => $tid, 'ext' => 1));
         $this->db->delete('tb_stock', array('purchase_id' => $tid));
+        $this->db->delete('geopos_transactions', array('tid' => $tid, 'ext' => 1));
+        
         echo json_encode(array('status' => 'Success', 'message' =>
             $this->lang->line('Purchase canceled!')));
     }

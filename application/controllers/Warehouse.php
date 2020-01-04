@@ -75,6 +75,7 @@ class Warehouse extends CI_Controller
             $row[] = number_format($invoices->total, 2);
             $row[] = number_format($invoices->selling_price, 2); 
             $row[] = number_format($invoices->income, 2); 
+            $row[] = "<span edit_id='".$invoices->stock_id."'>".number_format($invoices->profit_amount, 2)."</span>&nbsp;&nbsp;<a name='edit-profit' data_id='".$invoices->stock_id."'><i class='fa fa-pencil'></i></a>";
             $row[] = $invoices->purchase_qty;
             $row[] = $invoices->sold_out_qty;
             $row[] = $invoices->available_qty;
@@ -115,5 +116,15 @@ class Warehouse extends CI_Controller
                 $this->purchase->meta_insert($id, 4, $files);
             }
         }
+    }
+    
+    public function update_profit(){
+        $id = $this->input->get("tid");
+        $amount = $this->input->get("profit_amount");
+        $this->db->where("id",$id);
+        $this->db->set('profit_amount', $amount, FALSE);
+        $this->db->update("tb_stock");
+        echo json_encode(array('status' => 'Success', 'message' =>
+            $this->lang->line('Profit Updated!'),'amount'=>number_format($amount,2)));
     }
 }
