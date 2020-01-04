@@ -316,7 +316,7 @@ function cancelBill(acturl) {
                 }, 2000);
 
             },
-            error: function (data) {
+            error: function (error,data) {
                 $("#notify .message").html("<strong>" + data.status + "</strong>: " + data.message);
                 $("#notify").removeClass("alert-success").addClass("alert-danger").fadeIn();
                 $("html, body").scrollTop($("body").offset().top);
