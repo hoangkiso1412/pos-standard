@@ -188,9 +188,32 @@
                                 columns: [0,1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18]
                             }
                         }
-                    ],"footerCallback": function ( row, data, start, end, display ) {
+                    ], "language":{
+    "decimal":        "",
+    "emptyTable":     "ពុំមានទិន្និន័យនោះទេ",
+    "info":           "បង្ហាញចំនួន  _START_​ រហូតដល់​ _END_ នៃចំនួនសរុប _TOTAL_ ",
+    "infoEmpty":      "Showing 0 to 0 of 0 entries",
+    "infoFiltered":   "",
+    "infoPostFix":    "",
+    "thousands":      ",",
+    "lengthMenu":     "បង្ហាញចំនួន _MENU_ នៅក្នុងទំព័រនេះ",
+    "loadingRecords": "Loading...",
+    "processing":     "កំពុងដំណើរការ សូមរង់ចាំបន្ដិច...",
+    "search":         "ស្វែងរក :",
+    "zeroRecords":    "ទិន្និន័យដែលអ្នកស្វែងរក ពុំមាននោះទេ ",
+    "paginate": {
+        "first":      "ដំបូង",
+        "last":       "ចុងក្រោយ",
+        "next":       "បន្ទាប់",
+        "previous":   "ត្រឡប់ក្រោយ"
+    },
+    "aria": {
+        "sortAscending":  ": activate to sort column ascending",
+        "sortDescending": ": activate to sort column descending"
+    }
+},"footerCallback": function ( row, data, start, end, display ) {
                         var api = this.api(), data;
-
+                        var numFormat = $.fn.dataTable.render.number( '\,', '.', 2,'' ).display;
                         // Remove the formatting to get integer data for summation
                         var intVal = function ( i ) {
                             return typeof i === 'string' ?
@@ -217,7 +240,7 @@
 
                         // Update footer
                         $( api.column( 13 ).footer() ).html(
-                                pageTotal 
+                            numFormat(pageTotal) 
                                 //'$  '+pageTotal +'<br/> សរុប= $  '+ total
                                 );
 
@@ -239,12 +262,13 @@
 
                         // Update footer
                         $( api.column( 14 ).footer() ).html(
-                                pageTotal 
+                            numFormat(pageTotal) 
                                 //   '$  '+pageTotal +'<br/> សរុប= $  '+ total
                                 );
+
                         // Total over all pages
                         total = api
-                                .column( 14 )
+                                .column( 15 )
                                 .data()
                                 .reduce( function (a, b) {
                                     return intVal(a) + intVal(b);
@@ -260,9 +284,34 @@
 
                         // Update footer
                         $( api.column( 15 ).footer() ).html(
-                                pageTotal
+                            numFormat(pageTotal)
                                 // '$  '+pageTotal +'<br/> សរុប= $  '+ total
                                 );
+
+
+                         // Total over all pages
+                         total = api
+                                .column( 16 )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                        }, 0 );
+
+                        // Total over this page
+                        pageTotal = api
+                                .column( 16, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                        }, 0 );
+
+                        // Update footer
+                        $( api.column( 16 ).footer() ).html(
+                            numFormat(pageTotal)
+                                // '$  '+pageTotal +'<br/> សរុប= $  '+ total
+                                );
+
+
                         // Total over all pages
                         total = api
                                 .column( 18 )
@@ -281,31 +330,12 @@
 
                         // Update footer
                         $( api.column( 18).footer() ).html(
-                                pageTotal
+                            numFormat(pageTotal)
                                 // '$  '+pageTotal +'<br/> សរុប= $  '+ total
                                 );
 
-                        // Total over all pages
-                        total = api
-                                .column( 18 )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                        }, 0 );
-
-                        // Total over this page
-                        pageTotal = api
-                                .column( 18, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                        }, 0 );
-
-                        // Update footer
-                        $( api.column( 17 ).footer() ).html(
-                                pageTotal
-                                // '$  '+pageTotal +'<br/> សរុប= $  '+ total 
-                                );
+                       
+                       
 
                         // Total over all pages
                         total = api
@@ -347,11 +377,11 @@
 
                         // Update footer
                         $( api.column( 5 ).footer() ).html(
-                                pageTotal
+                            pageTotal
                                 );
                    
-                    // Total over all pages
-                    total = api
+                        // Total over all pages
+                        total = api
                                 .column( 19 )
                                 .data()
                                 .reduce( function (a, b) {
@@ -368,7 +398,7 @@
 
                         // Update footer
                         $( api.column( 19 ).footer() ).html(
-                                pageTotal
+                            numFormat(pageTotal)
                                 );
                     },
                 });

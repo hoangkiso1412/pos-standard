@@ -65,7 +65,7 @@
 						<th>តម្លៃទិញចូល</th>
                         <th>តម្លៃលក់ចេញ</th>
 						<th>ចំណេញ</th>
-						<th>លុយចំណេញសុទ្ធ</th>
+						<th>ចំណេញសុទ្ធ</th>						
                         <th>សងប៉ុន្មាន</th>
                         <th>នៅខ្វះ</th>						
                         <th>ថ្ងៃសង</th>						
@@ -78,8 +78,8 @@
 
                     <tfoot>
                     <tr>
-						<th></th>
-						<th></th>
+                        <th></th>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -162,7 +162,7 @@
                             'orderable': false,
                         },
                     ],'rowCallback': function(row, data, index){
-                            if(data[14] !='$ 0.00'){
+                            if(data[17] !='0.00'){
                                 $(row).find('td:eq(17)').css('backgroundColor', 'red');
                                 $(row).find('td:eq(17)').css('color', 'white');
                                 $(row).find('td:eq(17)').css('font-weight', 'bold');
@@ -175,12 +175,35 @@
                             extend: 'excelHtml5',
                             footer: true,
                             exportOptions: {
-                                columns: [0,1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16]
+                                columns: [0,1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
                             }
                         }
-                    ],"footerCallback": function ( row, data, start, end, display ) {
+                    ], "language":{
+    "decimal":        "",
+    "emptyTable":     "ពុំមានទិន្និន័យនោះទេ",
+    "info":           "បង្ហាញចំនួន  _START_​ រហូតដល់​ _END_ នៃចំនួនសរុប _TOTAL_ ",
+    "infoEmpty":      "Showing 0 to 0 of 0 entries",
+    "infoFiltered":   "",
+    "infoPostFix":    "",
+    "thousands":      ",",
+    "lengthMenu":     "បង្ហាញចំនួន _MENU_ នៅក្នុងទំព័រនេះ",
+    "loadingRecords": "Loading...",
+    "processing":     "កំពុងដំណើរការ សូមរង់ចាំបន្ដិច...",
+    "search":         "ស្វែងរក :",
+    "zeroRecords":    "ទិន្និន័យដែលអ្នកស្វែងរក ពុំមាននោះទេ ",
+    "paginate": {
+        "first":      "ដំបូង",
+        "last":       "ចុងក្រោយ",
+        "next":       "បន្ទាប់",
+        "previous":   "ត្រឡប់ក្រោយ"
+    },
+    "aria": {
+        "sortAscending":  ": activate to sort column ascending",
+        "sortDescending": ": activate to sort column descending"
+    }
+},"footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
- 
+            var numFormat = $.fn.dataTable.render.number( '\,', '.', 2,'' ).display;           
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -207,7 +230,7 @@
  
             // Update footer
             $( api.column( 12 ).footer() ).html(
-                 pageTotal
+                numFormat(pageTotal)
                 //'$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
 
@@ -229,7 +252,7 @@
  
             // Update footer
             $( api.column( 13 ).footer() ).html(
-                pageTotal
+                numFormat(pageTotal)
              //   '$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
              // Total over all pages
@@ -250,7 +273,7 @@
  
             // Update footer
             $( api.column( 14 ).footer() ).html(
-                 pageTotal
+                numFormat(pageTotal)
                // '$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
 
@@ -272,8 +295,51 @@
  
             // Update footer
             $( api.column( 5 ).footer() ).html(
-                pageTotal
+                numFormat(pageTotal)
             );
+
+             // Total over all pages
+             total = api
+                .column( 16 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 16, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 16 ).footer() ).html(
+                numFormat(pageTotal)
+            );
+
+             // Total over all pages
+             total = api
+                .column( 17 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 17, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 17 ).footer() ).html(
+                numFormat(pageTotal)
+            );
+
 			},
                 });
             };
@@ -296,9 +362,9 @@
             })
 			
 			
-            $(document).on('click', "[name='edit-profit']", function (e) {
+            $(document).on('click', "[name='edit-profit']", function (e) {                
                 e.preventDefault();
-                var tid = $(this).attr('data_id');
+                var tid = $(this).attr('data_id');                 
                 $("#profit_amount").val($("#po").find("[edit_id='"+tid+"']").html());
                 $("#tid").val(tid);
                 $('#edit_profit').modal({backdrop: 'static', keyboard: false}).one('click', '#send', function () {
@@ -316,6 +382,7 @@
                     success: function (data){
                         if (data.status === "Success") {
                             $("#po").find("[edit_id='"+id+"']").html(data.amount);
+                            $("#po").find("[edit_id='"+id+"']").css('color', 'blue');
                             $('#edit_profit').modal('hide');
                         }
                         console.log(data);

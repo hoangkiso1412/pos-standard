@@ -143,9 +143,32 @@
                                 columns: [0,1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15]
                             }
                         }
-                    ],"footerCallback": function ( row, data, start, end, display ) {
+                    ], "language":{
+    "decimal":        "",
+    "emptyTable":     "ពុំមានទិន្និន័យនោះទេ",
+    "info":           "បង្ហាញចំនួន  _START_​ រហូតដល់​ _END_ នៃចំនួនសរុប _TOTAL_ ",
+    "infoEmpty":      "Showing 0 to 0 of 0 entries",
+    "infoFiltered":   "",
+    "infoPostFix":    "",
+    "thousands":      ",",
+    "lengthMenu":     "បង្ហាញចំនួន _MENU_ នៅក្នុងទំព័រនេះ",
+    "loadingRecords": "Loading...",
+    "processing":     "កំពុងដំណើរការ សូមរង់ចាំបន្ដិច...",
+    "search":         "ស្វែងរក :",
+    "zeroRecords":    "ទិន្និន័យដែលអ្នកស្វែងរក ពុំមាននោះទេ ",
+    "paginate": {
+        "first":      "ដំបូង",
+        "last":       "ចុងក្រោយ",
+        "next":       "បន្ទាប់",
+        "previous":   "ត្រឡប់ក្រោយ"
+    },
+    "aria": {
+        "sortAscending":  ": activate to sort column ascending",
+        "sortDescending": ": activate to sort column descending"
+    }
+},"footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
- 
+            var numFormat = $.fn.dataTable.render.number( '\,', '.', 2,'' ).display;
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -172,7 +195,7 @@
  
             // Update footer
             $( api.column( 13 ).footer() ).html(
-                 pageTotal
+                numFormat(pageTotal)
                 //'$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
 
@@ -194,7 +217,7 @@
  
             // Update footer
             $( api.column( 14 ).footer() ).html(
-                 pageTotal
+                numFormat(pageTotal)
              //   '$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
              // Total over all pages
@@ -215,7 +238,7 @@
  
             // Update footer
             $( api.column( 15 ).footer() ).html(
-                 pageTotal
+                numFormat(pageTotal)
                // '$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
 
@@ -237,7 +260,7 @@
  
             // Update footer
             $( api.column( 5 ).footer() ).html(
-                pageTotal
+                numFormat(pageTotal)
             );
 			},
                 });

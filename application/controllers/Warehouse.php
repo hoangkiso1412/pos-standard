@@ -75,7 +75,7 @@ class Warehouse extends CI_Controller
             $row[] = number_format($invoices->total, 2);
             $row[] = number_format($invoices->selling_price, 2); 
             $row[] = number_format($invoices->income, 2); 
-            $row[] = "<span edit_id='".$invoices->stock_id."'>".number_format($invoices->profit_amount, 2)."</span>&nbsp;&nbsp;<a name='edit-profit' data_id='".$invoices->stock_id."'><i class='fa fa-pencil'></i></a>";
+            $row[] = number_format($invoices->profit_amount,2); 
             $row[] = $invoices->purchase_qty;
             $row[] = $invoices->sold_out_qty;
             $row[] = $invoices->available_qty;

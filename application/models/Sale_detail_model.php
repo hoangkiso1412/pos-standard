@@ -38,7 +38,7 @@ class Sale_detail_model extends CI_Model
        `geopos_products`.`year` AS `year`, IF((`tb_stock`.`plate_number` = ""),"ថ្មី",`tb_stock`.`plate_number`) AS `conditions_plateNumber`,`tb_stock`.`body_number` AS `body_number`,
        `tb_stock`.`engine_number` AS `engine_number`,tb_stock.selling_price,tb_stock.paid_amount,tb_stock.remain_amount,
        tb_stock.sold_date,geopos_invoices.notes,geopos_product_cat.id as cat_id,
-       DATE_FORMAT(tb_stock.sold_date,"%d-%m-%Y") as sold_date,tb_stock.sale_detail_id,SUBSTRING_INDEX(geopos_invoices.customer_info, "*:", 1) buyer,geopos_warehouse.id,(SELECT geopos_transactions.date from geopos_transactions WHERE geopos_transactions.other_id = tb_stock.id  ORDER BY geopos_transactions.id DESC LIMIT 1 ) AS paid_date,geopos_invoices.id as invid,IF((tb_stock.status = "sold-out"),(tb_stock.selling_price - tb_stock.total),"0.00") AS income,tb_stock.total as purchase_price,tb_stock.id as stock_id,ifnull(profit_amount,0) as profit_amount');
+       DATE_FORMAT(tb_stock.sold_date,"%d-%m-%Y") as sold_date,tb_stock.sale_detail_id,SUBSTRING_INDEX(geopos_invoices.customer_info, "*:", 1) buyer,geopos_warehouse.id,(SELECT geopos_transactions.date from geopos_transactions WHERE geopos_transactions.other_id = tb_stock.id  ORDER BY geopos_transactions.date DESC LIMIT 1 ) AS paid_date,geopos_invoices.id as invid,IF((tb_stock.status = "sold-out"),(tb_stock.selling_price - tb_stock.total),"0.00") AS income,tb_stock.total as purchase_price,tb_stock.id as stock_id,if(ifnull(profit_amount,0)=0,IF((tb_stock.status = "sold-out"),(tb_stock.selling_price - tb_stock.total),"0.00"),ifnull(profit_amount,0)) as profit_amount');
         $this->db->from($this->table);
        
         
