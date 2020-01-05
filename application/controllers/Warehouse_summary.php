@@ -18,12 +18,12 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Sale_detail extends CI_Controller
+class Warehouse_summary extends CI_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Sale_detail_model', 'purchase');
+        $this->load->model('Warehouse_summary_model', 'purchase');
         $this->load->library("Aauth");
         if (!$this->aauth->is_loggedin()) {
             redirect('/user/', 'refresh');
@@ -41,10 +41,10 @@ class Sale_detail extends CI_Controller
     //invoices list
     public function index()
     {
-        $head['title'] = "Sale Detail";
+        $head['title'] = "Warehouse";
         $head['usernm'] = $this->aauth->get_user()->username;
         $this->load->view('fixed/header', $head);
-        $this->load->view('sale_detail/invoices');
+        $this->load->view('warehouse/warehouse_summary');
         $this->load->view('fixed/footer');
     }
 
@@ -59,26 +59,14 @@ class Sale_detail extends CI_Controller
         foreach ($list as $invoices) {
             $no++;
             $row = array();
-            $row[] = $no;
-            $row[] = dateformat($invoices->invoicedate);
-            $row[] = $invoices->stock;
-            $row[] = $invoices->product_type;
+            $row[] = $no;     
+            $row[] = $invoices->warehouse;       
+            $row[] = $invoices->category;
             $row[] = $invoices->product_name;
-            $row[] = $invoices->items;
             $row[] = $invoices->color;
             $row[] = $invoices->year;
-            $row[] = $invoices->conditions_plateNumber;
-            $row[] = $invoices->body_number;
-            $row[] = $invoices->engine_number;
-            $row[] = $invoices->buyer;
-			$row[] =  number_format($invoices->purchase_price, 2);			
-            $row[] =  number_format($invoices->selling_price, 2);
-			$row[] =  number_format($invoices->income, 2);
-			$row[] = "<span edit_id='".$invoices->stock_id."'>".number_format($invoices->profit_amount, 2)."</span>&nbsp;&nbsp;<a name='edit-profit' data_id='".$invoices->stock_id."'><i class='fa fa-pencil'></i></a>";
-			$row[] =  number_format($invoices->paid_amount, 2);
-            $row[] =  number_format($invoices->remain_amount, 2); 
-            $row[] = $invoices->paid_date;			
-            $row[] = $invoices->notes;           
+            $row[] = $invoices->qty;            
+            $row[] = $invoices->plate_number;
             $data[] = $row;
         }
 
@@ -113,13 +101,5 @@ class Sale_detail extends CI_Controller
             }
         }
     }
-		public function update_profit(){
-        $id = $this->input->get("tid");
-        $amount = $this->input->get("profit_amount");
-        $this->db->where("id",$id);
-        $this->db->set('profit_amount', $amount, FALSE);
-        $this->db->update("tb_stock");
-        echo json_encode(array('status' => 'Success', 'message' =>
-            $this->lang->line('Profit Updated!'),'amount'=>number_format($amount,2)));
-    }
+    
 }

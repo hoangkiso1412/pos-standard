@@ -55,7 +55,7 @@ class Warehouse_model extends CI_Model
         {
             $this->db->where('DATE(tb_stock.purchase_date) >=', datefordatabase($this->input->post('start_date')));
             $this->db->where('DATE(tb_stock.purchase_date) <=', datefordatabase($this->input->post('end_date')));
-            $this->db->where('`tb_stock`.`status` = ', $this->input->post('inout'));
+            $this->db->where('tb_stock.status = ', $this->input->post('inout'));
 
         }elseif($this->input->post('start_date') && $this->input->post('end_date')){
 

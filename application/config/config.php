@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-$config['base_url'] = 'http://localhost:8081/git/pos-standard/';
+$config['base_url'] = 'http://192.168.0.11/git/pos-standard/';
 
 /*
 |--------------------------------------------------------------------------

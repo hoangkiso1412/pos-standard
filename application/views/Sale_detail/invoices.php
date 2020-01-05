@@ -62,12 +62,15 @@
                         <th>លេខតួ</th>
                         <th>លេខម៉ាស៊ីន</th>
                         <th>អ្នកទិញ</th>
-                        <th>តម្លៃ</th>
+						<th>តម្លៃទិញចូល</th>
+                        <th>តម្លៃលក់ចេញ</th>
+						<th>ចំណេញ</th>
+						<th>លុយចំណេញសុទ្ធ</th>
                         <th>សងប៉ុន្មាន</th>
-                        <th>នៅខ្វះ</th>
-                        <th>ថ្ងៃសង</th>
+                        <th>នៅខ្វះ</th>						
+                        <th>ថ្ងៃសង</th>						
                         <th>ផ្សេងៗ</th>
-                        <th>បង់លុយ</th>
+                        
                     </tr>
                     </thead>
                     <tbody>
@@ -75,6 +78,8 @@
 
                     <tfoot>
                     <tr>
+						<th></th>
+						<th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -99,7 +104,34 @@
             </div>
         </div>
 
-
+	  <div id="edit_profit" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">កែប្រែប្រាក់ចំណេញ</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="editprofit">
+                        <div class="row">
+                            <div class="col">
+                            <input type="text" class="form-control" id="profit_amount" name="profit_amount" value="0">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" class="form-control"
+                                   name="tid" id="tid" value="0">
+                            <button type="button" class="btn btn-default"
+                                    data-dismiss="modal"> <?php echo $this->lang->line('Close') ?></button>
+                            <button type="button" class="btn btn-primary"
+                                    id="send"> <?php echo $this->lang->line('Update') ?></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -131,9 +163,9 @@
                         },
                     ],'rowCallback': function(row, data, index){
                             if(data[14] !='$ 0.00'){
-                                $(row).find('td:eq(14)').css('backgroundColor', 'red');
-                                $(row).find('td:eq(14)').css('color', 'white');
-                                $(row).find('td:eq(14)').css('font-weight', 'bold');
+                                $(row).find('td:eq(17)').css('backgroundColor', 'red');
+                                $(row).find('td:eq(17)').css('color', 'white');
+                                $(row).find('td:eq(17)').css('font-weight', 'bold');
                             }
                             $(row).find('td:eq(8)').css('color', 'red');
                         },
@@ -175,7 +207,7 @@
  
             // Update footer
             $( api.column( 12 ).footer() ).html(
-                'សរុប = $  '+ pageTotal
+                 pageTotal
                 //'$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
 
@@ -197,7 +229,7 @@
  
             // Update footer
             $( api.column( 13 ).footer() ).html(
-                'សរុប = $  '+ pageTotal
+                pageTotal
              //   '$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
              // Total over all pages
@@ -218,7 +250,7 @@
  
             // Update footer
             $( api.column( 14 ).footer() ).html(
-                'សរុប = $  '+ pageTotal
+                 pageTotal
                // '$  '+pageTotal +'<br/> សរុប= $  '+ total 
             );
 
@@ -262,8 +294,39 @@
                     alert("Date range is Required");
                 }
             })
+			
+			
+            $(document).on('click', "[name='edit-profit']", function (e) {
+                e.preventDefault();
+                var tid = $(this).attr('data_id');
+                $("#profit_amount").val($("#po").find("[edit_id='"+tid+"']").html());
+                $("#tid").val(tid);
+                $('#edit_profit').modal({backdrop: 'static', keyboard: false}).one('click', '#send', function () {
+                    var acturl = 'warehouse/update_profit';
+                    updateprofit(acturl,tid);
+                });
+            });
+            function updateprofit(url,id){
+                var data_form = $('#editprofit').serialize();
+                $.ajax({
+                    type: "GET",
+                    url: baseurl + url,
+                    data: data_form,
+                    dataType: 'json',
+                    success: function (data){
+                        if (data.status === "Success") {
+                            $("#po").find("[edit_id='"+id+"']").html(data.amount);
+                            $('#edit_profit').modal('hide');
+                        }
+                        console.log(data);
+                    },
+                    error: function(error){
+                        console.log(error);
+                    }
+                });
+            }
         });
 
-
+		
       
     </script>

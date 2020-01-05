@@ -701,6 +701,10 @@
                             data-toggle="dropdown"><i class="fa fa-money"></i><?= 'របាយការណ៍ស្តុកទាំងអស់';//$this->lang->line('Account Statements'); ?></a>
                     </li>
                     <li data-menu=""><a class="dropdown-item"
+                            href="<?php echo base_url(); ?>warehouse_summary"
+                            data-toggle="dropdown"><i class="fa fa-money"></i><?= 'របាយការណ៍ស្តុកសង្ខេប';//$this->lang->line('Account Statements'); ?></a>
+                    </li>
+                    <li data-menu=""><a class="dropdown-item"
                             href="<?php echo base_url(); ?>customer_paid_his"
                             data-toggle="dropdown"><i class="fa fa-money"></i><?= 'របាយការណ៍ភ្ញៀវបង់លុយ ជំពាក់ប្រចាំថ្ងៃ';//$this->lang->line('Account Statements'); ?></a>
                     </li>

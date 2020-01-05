@@ -217,7 +217,7 @@
 
                         // Update footer
                         $( api.column( 13 ).footer() ).html(
-                                pageTotal + '.00'
+                                pageTotal 
                                 //'$  '+pageTotal +'<br/> សរុប= $  '+ total
                                 );
 
@@ -239,7 +239,7 @@
 
                         // Update footer
                         $( api.column( 14 ).footer() ).html(
-                                pageTotal + '.00'
+                                pageTotal 
                                 //   '$  '+pageTotal +'<br/> សរុប= $  '+ total
                                 );
                         // Total over all pages
@@ -260,12 +260,12 @@
 
                         // Update footer
                         $( api.column( 15 ).footer() ).html(
-                                pageTotal+ '.00'
+                                pageTotal
                                 // '$  '+pageTotal +'<br/> សរុប= $  '+ total
                                 );
                         // Total over all pages
                         total = api
-                                .column( 16 )
+                                .column( 18 )
                                 .data()
                                 .reduce( function (a, b) {
                                     return intVal(a) + intVal(b);
@@ -273,21 +273,21 @@
 
                         // Total over this page
                         pageTotal = api
-                                .column( 16, { page: 'current'} )
+                                .column( 18, { page: 'current'} )
                                 .data()
                                 .reduce( function (a, b) {
                                     return intVal(a) + intVal(b);
                         }, 0 );
 
                         // Update footer
-                        $( api.column( 16 ).footer() ).html(
-                                pageTotal+ '.00'
+                        $( api.column( 18).footer() ).html(
+                                pageTotal
                                 // '$  '+pageTotal +'<br/> សរុប= $  '+ total
                                 );
 
                         // Total over all pages
                         total = api
-                                .column( 16 )
+                                .column( 18 )
                                 .data()
                                 .reduce( function (a, b) {
                                     return intVal(a) + intVal(b);
@@ -295,14 +295,14 @@
 
                         // Total over this page
                         pageTotal = api
-                                .column( 16, { page: 'current'} )
+                                .column( 18, { page: 'current'} )
                                 .data()
                                 .reduce( function (a, b) {
                                     return intVal(a) + intVal(b);
                         }, 0 );
 
                         // Update footer
-                        $( api.column( 16 ).footer() ).html(
+                        $( api.column( 17 ).footer() ).html(
                                 pageTotal
                                 // '$  '+pageTotal +'<br/> សរុប= $  '+ total 
                                 );
@@ -349,6 +349,27 @@
                         $( api.column( 5 ).footer() ).html(
                                 pageTotal
                                 );
+                   
+                    // Total over all pages
+                    total = api
+                                .column( 19 )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                        }, 0 );
+
+                        // Total over this page
+                        pageTotal = api
+                                .column( 19, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                        }, 0 );
+
+                        // Update footer
+                        $( api.column( 19 ).footer() ).html(
+                                pageTotal
+                                );
                     },
                 });
             };
@@ -366,12 +387,12 @@
                     draw_data(start_date, end_date,stock,inout);
 
                 }else if (start_date != '' && end_date != '' && stock !=0) {
-                    alert(stock);
+                   // alert(stock);
                     $('#po').DataTable().destroy();
                     draw_data(start_date, end_date,stock);
 
                 } else if (start_date != '' && end_date != '' && inout != 0){
-                    alert(inout);
+                   // alert(inout);
                     $('#po').DataTable().destroy();
                     draw_data(start_date, end_date,inout);
 
